@@ -1,7 +1,6 @@
 
 import '../Css/App.css';
 import {Button} from "antd";
-import BudgetCard from './BudgetCard.tsx';
 import BudgetPlanner from './BudgetPlanner.tsx';
 import React from 'react';
 
