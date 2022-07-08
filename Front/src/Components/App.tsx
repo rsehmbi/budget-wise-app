@@ -2,6 +2,7 @@
 import '../Css/App.css';
 import {Button} from "antd";
 import BudgetCard from './BudgetCard.tsx';
+import BudgetPlanner from './BudgetPlanner.tsx';
 import React from 'react';
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <Button onClick={() => {test()}}>test</Button>
-      <BudgetCard cardTitle="Grocery" amount={200} maxAmount={ 1000}></BudgetCard>
+      <BudgetPlanner></BudgetPlanner>
     </div>
   );
 }
