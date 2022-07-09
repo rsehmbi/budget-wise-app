@@ -52,7 +52,7 @@ export default function BudgetPlanner() {
             />
             {
                 budgetList.map(budget => (
-                    <BudgetCard cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
+                    <BudgetCard key={ budget["budgetname"] } cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
                )) 
             }
             
