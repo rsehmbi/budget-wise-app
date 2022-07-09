@@ -28,3 +28,23 @@ exports.test = async  (req, res) => {
 
     })
 }
+
+
+exports.getbudgetList = async  (req, res) => {
+    pool.query('SELECT * FROM budgettable WHERE userid = 1', (error, result) => {
+        if (error){
+            res.json({
+                isSuccess: false,
+                message: "Failed",
+            })
+        }
+        else{
+            res.json({
+                isSuccess: true,
+                res: result.rows,
+                message: "Success",
+            })
+        }
+
+    })
+}
