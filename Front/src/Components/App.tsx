@@ -1,6 +1,8 @@
 
 import '../Css/App.css';
 import {Button} from "antd";
+import BudgetPlanner from './BudgetPlanner.tsx';
+import React from 'react';
 
 function App() {
 
@@ -19,9 +21,8 @@ function App() {
 
   return (
     <div className="App">
-      <Button onClick={() => {test()}}>
-          test
-      </Button>
+      <Button onClick={() => {test()}}>test</Button>
+      <BudgetPlanner></BudgetPlanner>
     </div>
   );
 }
