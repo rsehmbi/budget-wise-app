@@ -6,7 +6,6 @@ import AddBudget from './AddBudget.tsx';
 export default function BudgetPlanner() {
     const [budgetList, setBudgetList] = React.useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false); 
-    
 
     const getBudgetListAPICall = async () => {
         await fetch('http://localhost:3000/getbudgetList', {
@@ -21,7 +20,7 @@ export default function BudgetPlanner() {
                 }
             })
         })
-    }
+    }    
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -31,7 +30,7 @@ export default function BudgetPlanner() {
         setIsModalVisible(false);
     };
 
-    const handleOk = () => { 
+    const handleOk = () => {
         setIsModalVisible(false);
     };
 
@@ -57,7 +56,7 @@ export default function BudgetPlanner() {
                )) 
             }
             
-            <AddBudget visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk}></AddBudget>
+            <AddBudget budgetApiCall={getBudgetListAPICall} visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk}></AddBudget>
       </>
 
   )

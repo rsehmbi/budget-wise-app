@@ -8,7 +8,6 @@ import { redColor, blueColor, yellowColor } from '../Constants/Colors.tsx'
 export default function BudgetCard({ cardTitle, amount, maxAmount }) {
     function getProgressBarColor() {
         let percent = (amount / maxAmount)
-        console.log(percent)
         if (percent >= 0.5 && percent <= 0.75) {
             return yellowColor
         }
