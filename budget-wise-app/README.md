@@ -20,3 +20,16 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+### Budget Table
+
+CREATE TABLE budgettable (
+userid int,
+budgetname varchar(255),
+amount int,
+maximumamount int
+);
+
+INSERT INTO budgettable VALUES (1, 'Car Payment', 100, 500)
+INSERT INTO budgettable VALUES (1, 'Groceries', 400, 800)
+INSERT INTO budgettable VALUES (1, 'Rentals', 400, 1000)
