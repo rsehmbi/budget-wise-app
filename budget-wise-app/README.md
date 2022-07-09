@@ -23,13 +23,18 @@ Your app is ready to be deployed!
 
 ### Budget Table
 
+```
+
 CREATE TABLE budgettable (
-userid int,
-budgetname varchar(255),
-amount int,
-maximumamount int
+    userid int,
+    budgetname varchar(255),
+    amount int,
+    maximumamount int
 );
 
+// Same user id because one user will have multiple budgets
 INSERT INTO budgettable VALUES (1, 'Car Payment', 100, 500)
 INSERT INTO budgettable VALUES (1, 'Groceries', 400, 800)
 INSERT INTO budgettable VALUES (1, 'Rentals', 400, 1000)
+
+```
