@@ -52,3 +52,28 @@ exports.addbudget = async (req, res) => {
         })
     }
 }
+
+exports.updatebudget = async (req, res) => {
+    var budgetname = req.body.budgetname
+    var amount = parseInt(req.body.amount)
+    var maxamount =  parseInt(req.body.maxamount)
+    var currentUserId = 1
+    const update_budget_query = `UPDATE "budgettable" 
+                   SET "amount" = "amount" + $1, "maximumamount" = $2 
+                   WHERE "userid" = $3 AND "budgetname" = $4`
+    try {
+        await pool.query(update_budget_query,[amount, maxamount, currentUserId, budgetname])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
