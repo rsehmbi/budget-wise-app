@@ -50,14 +50,20 @@ export default function BudgetPlanner() {
             }
                 
             />
+            <div style={budgetRows}>
             {
                 budgetList.map(budget => (
                     <BudgetCard budgetApiCall={getBudgetListAPICall} key={ budget["budgetname"] } cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
-               )) 
+            )) 
             }
-            
+            </div>
             <AddBudget budgetApiCall={getBudgetListAPICall} visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk}></AddBudget>
       </>
-
   )
+}
+
+const budgetRows = {
+    margin: 45,
+    display: "inline-flex",
+    flexWrap: "wrap",
 }

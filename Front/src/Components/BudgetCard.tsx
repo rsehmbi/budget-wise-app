@@ -62,6 +62,7 @@ const btnStyle = {
 };
 
 const cardStyle = {
+    margin: 10, 
     height: 200, 
-    width: 400,
+    width: 430,
 };
