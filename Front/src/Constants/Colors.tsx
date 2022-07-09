@@ -1,4 +1,4 @@
 // Card colors
-export var blueColor = "blue-6"
-export var redColor =  "red-6"
-export var yellowColor = "yellow-6"
+export var blueColor = "#1890ff"
+export var redColor =  "#f5222d"
+export var yellowColor = "#fadb14"

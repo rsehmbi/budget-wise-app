@@ -23,13 +23,14 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
 
     function getProgressBarColor() {
         let percent = (amount / maxAmount)
+        var color = blueColor
         if (percent >= 0.5 && percent <= 0.75) {
-            return yellowColor
+            color =  yellowColor
         }
         else if (percent > 0.75) { 
-            return redColor
+            color = redColor
         }
-        return blueColor
+        return color
     }
 
     function getProgressPercentage() { 
