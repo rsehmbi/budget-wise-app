@@ -77,3 +77,23 @@ exports.updatebudget = async (req, res) => {
         })
     }
 }
+
+exports.getBudgetNames = async(req,res) => {
+    const getAllExpenses = `Select Distinct budgetname FROM budgettable`
+    try {
+        const result = await pool.query(getAllExpenses)
+        res.json({
+            isSuccess: true,
+            res: result.rows,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}

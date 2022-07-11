@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table, Select} from 'antd';
 import { useState, useEffect } from 'react';
+import { getBudgetList, getBudgetNames } from '../Services/BudgetServices.ts';
 
 const {Option} = Select;
 
@@ -25,66 +26,66 @@ const columns = [
 
 // Properties for the whole table
 const tableProperties = { 
-    width: "80%",
-    margin: "auto"
+    width: '80%',
+    margin: 'auto'
 }
 
+const SelectMenuProperties = {
+    width: 120,
+    marginLeft: "70%",
+    marginBottom: "2rem"
+}
 
 // Table to display
 function BudgetTable(){
     const [budgetLogs, setBudgetLogs] = useState([]);
-    // const [budgetName, setBudgetNames] = useState([]);
-    // const [selectedName, setSelectedNames] = useState([]);
+    const [budgetNames, setBudgetNames] = useState([]);
+    const [selectedName, setSelectedName] = useState([]);
 
     // API to get the logs specific to userselected budget names
     useEffect(() => {
-        fetch('http://localhost:3000/getbudgetList', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'}
-        }).then((response) => {
-            response.json().then((response) => {
+        let mounted = true;
+        getBudgetList().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
                     console.log(response.res)
                 }
             })
         })
-    } )
+        return () => mounted = false;
+    }, [])
 
     // // API to get all the budget names
-    // useEffect(() => {
-    //     fetch('http://localhost:3000/getBudgetNames',{
-    //         method: 'Get',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'}
-    //     }).then((response) => {
-    //         response.json().then((response) => {
-    //             if (response) {
-    //                 setBudgetNames(response.res.map(item => ({value: item, label: item}) ))
-    //             }
-    //         })
-    //     })
-    // })
+    useEffect(() => {
+        let mounted = true;
+        getBudgetNames().then((response) => {response.json().then((response) => {
+                if (response) {
+                    var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
+                    var total = expensesType.length
+                    expensesType.push({value: 'All', label: 'All'})
+                    setBudgetNames(expensesType)
+                    // setBudgetNames(response.res)
+                    console.log(total)
+                    console.log(budgetNames)
+                }
+            })
+        })
+        return () => mounted = false;
+    },[])
 
     // To check when value is changed
-    // const handleChange = (value) => {
-    // }
+    const handleChange = (value) => {
+        setSelectedName(value)
+    }
 
     return(
     <>
-        {/* <Select
-            defaultValue="lucy"
-            style={{
-            width: 120,
-            }}
+        <Select
+            defaultValue = "All"
+            style={SelectMenuProperties}
             onChange={handleChange}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="Yiminghe">yiminghe</Option>
-        </Select> */}
+                {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
+        </Select>
 
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
     </>
