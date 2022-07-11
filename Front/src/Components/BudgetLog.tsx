@@ -39,6 +39,10 @@ const SelectMenuProperties = {                // Drop down menu style proeprties
     marginBottom: "2rem"
 }
 
+const refreshProperties = {
+    marginLeft: "1rem"
+}
+
 // Component for Table and drop down menu
 function BudgetTable(){
     const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
@@ -58,21 +62,24 @@ function BudgetTable(){
         return () => mounted = false;
     }, [])
 
+    function dropDownOptions(){
+        getBudgetNames().then((response) => {response.json().then((response) => {
+        if (response) {
+            var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
+            var total = expensesType.length
+            expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
+            setBudgetNames(expensesType)
+            // setBudgetNames(response.res)
+            console.log(total)
+            console.log(budgetNames)
+        }
+    })
+    })}
+
     // API to get all the budget names
     useEffect(() => {
         let mounted = true;
-        getBudgetNames().then((response) => {response.json().then((response) => {
-                if (response) {
-                    var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
-                    var total = expensesType.length
-                    expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
-                    setBudgetNames(expensesType)
-                    // setBudgetNames(response.res)
-                    console.log(total)
-                    console.log(budgetNames)
-                }
-            })
-        })
+        dropDownOptions()
         return () => mounted = false;
     },[])
 
@@ -103,6 +110,13 @@ function BudgetTable(){
         })
         }
     }
+
+    // Refresh after adding expense or budget
+    function refreshLogs(){
+        getBudgetLogs(selectedName)
+        dropDownOptions()
+    }
+
     return(
     <>
         <Select
@@ -113,6 +127,7 @@ function BudgetTable(){
             >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>
+        <Button style= {refreshProperties} onClick={refreshLogs} type="primary">Refresh Logs</Button>
 
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
     </>

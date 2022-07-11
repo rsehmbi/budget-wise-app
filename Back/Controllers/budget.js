@@ -10,7 +10,7 @@ pool = new Pool({
     database: 'db'
 })
 
-
+// Get logs of all budgets
 exports.getbudgetList = async  (req, res) => {
     pool.query('SELECT * FROM budgettable WHERE userid = 1', (error, result) => {
         if (error){
@@ -30,11 +30,32 @@ exports.getbudgetList = async  (req, res) => {
     })
 }
 
+// Get distinct budget names based and total expenses
+exports.getBudgetAggregate = async  (req, res) => {
+    pool.query('SELECT budgetname, sum(amount) as amount, max(maximumamount) as maximumamount FROM budgettable WHERE userid = 1 GROUP BY budgetname', (error, result) => {
+        if (error){
+            res.json({
+                isSuccess: false,
+                message: "Failed",
+            })
+        }
+        else{
+            res.json({
+                isSuccess: true,
+                res: result.rows,
+                message: "Success",
+            })
+        }
+
+    })
+}
+
+// Add a new budget name with amount, max amount etc
 exports.addbudget = async (req, res) => {
     var expense = req.body.expense
     var maxamount = req.body.maxamount
+    var amount = req.body.amount
     var currentUserId = 1 
-    var amount = 0 
 
     const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
     try {
@@ -53,6 +74,35 @@ exports.addbudget = async (req, res) => {
     }
 }
 
+// Add new expenses for budget name already in database
+exports.addExpense = async (req, res) => {
+    var budgetname = req.body.budgetname
+    var amount = parseInt(req.body.amount)
+    var maxamount =  parseInt(req.body.maxamount)
+    var currentUserId = 1
+    const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
+    try {
+        await pool.query(add_budget_query,[currentUserId, budgetname, amount, maxamount])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+/* TODO: Convert this function to Update only max amount and add option in card to update max amount 
+    Max amount will be same for a budget name and won't be shown in logs
+    Log will show budget name, expense added, description and date
+    Create another function to update expenses, budget name, description which will be placed in table showing log
+*/
 exports.updatebudget = async (req, res) => {
     var budgetname = req.body.budgetname
     var amount = parseInt(req.body.amount)

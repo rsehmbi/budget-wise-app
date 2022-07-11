@@ -7,7 +7,7 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
 
     const setDefaultValues = () => {
         setAmount(0)
-        setMaxAmount(0)
+        // setMaxAmount(0)
     }
     
     const validateInputs = () => {
@@ -27,9 +27,9 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
         
     }
 
-    const handleMaxAmountChange = (event) => { 
-        setMaxAmount(event.target.value)
-    }
+    // const handleMaxAmountChange = (event) => { 
+    //     setMaxAmount(event.target.value)
+    // }
 
     const handleAmountChange = (event) => { 
         setAmount(event.target.value)
@@ -37,8 +37,8 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
 
     const updatebudgetAPICall = async () => {
         console.log(title, amount, maxAmount)
-        await fetch('http://localhost:3000/updatebudget', {
-            method: 'PUT',
+        await fetch('http://localhost:3000/addExpense', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -46,7 +46,7 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
             body: JSON.stringify({
               'budgetname': title,
               'amount': amount,
-              'maxamount': maxAmount,
+              'maxamount': maxamount,
             }) 
         }).then((response) => {
             response.json().then((response) => {
@@ -64,8 +64,8 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
           <Input  onChange={handleAmountChange} value={amount} type="number" /> <br />
               
           <br/>
-          <label> Maximum Amount  </label> <br/>
-          <Input onChange={handleMaxAmountChange} value={maxAmount} type="number"/> <br />
+          {/* <label> Maximum Amount  </label> <br/>
+          <Input onChange={handleMaxAmountChange} value={maxAmount} type="number"/> <br /> */}
       </Modal>
       </>
   )
