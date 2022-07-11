@@ -8,7 +8,7 @@ export default function BudgetPlanner() {
     const [isModalVisible, setIsModalVisible] = useState(false); 
 
     const getBudgetListAPICall = async () => {
-        await fetch('http://localhost:3000/getbudgetList', {
+        await fetch('http://localhost:3000/getBudgetAggregate', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
