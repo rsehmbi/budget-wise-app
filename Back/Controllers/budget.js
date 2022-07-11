@@ -79,9 +79,10 @@ exports.updatebudget = async (req, res) => {
 }
 
 exports.getBudgetNames = async(req,res) => {
-    const getAllExpenses = `SELECT Distinct budgetname FROM budgettable`
+    var currentUserId = 1
+    const getAllExpenses = `SELECT Distinct budgetname FROM budgettable WHERE userid = $1`
     try {
-        const result = await pool.query(getAllExpenses)
+        const result = await pool.query(getAllExpenses, [currentUserId])
         res.json({
             isSuccess: true,
             res: result.rows,

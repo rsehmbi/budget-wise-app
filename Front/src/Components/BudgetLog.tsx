@@ -3,9 +3,9 @@ import {Table, Select} from 'antd';
 import { useState, useEffect } from 'react';
 import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
 
-const {Option} = Select;
+const {Option} = Select;                         // For specifiying drop down menu options
 
-const ALL_LOGS = 'All';
+const ALL_LOGS = 'All';                          // For state where we get all information
 
 // Columns to display in logs
 const columns = [
@@ -26,23 +26,23 @@ const columns = [
     }
 ]
 
-// Properties for the whole table
-const tableProperties = { 
+
+const tableProperties = {                      // Table Style Properties
     width: '60%',
     margin: 'auto'
 }
 
-const SelectMenuProperties = {
+const SelectMenuProperties = {                // Drop down menu style proeprties
     width: "10rem",
     marginLeft: "65%",
     marginBottom: "2rem"
 }
 
-// Table to display
+// Component for Table and drop down menu
 function BudgetTable(){
-    const [budgetLogs, setBudgetLogs] = useState([]);
-    const [budgetNames, setBudgetNames] = useState([]);
-    const [selectedName, setSelectedName] = useState([]);
+    const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
+    const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
+    const [selectedName, setSelectedName] = useState([]);         // State indicating currently selected budget name
 
     // API to get the logs specific to userselected budget names
     useEffect(() => {
@@ -57,7 +57,7 @@ function BudgetTable(){
         return () => mounted = false;
     }, [])
 
-    // // API to get all the budget names
+    // API to get all the budget names
     useEffect(() => {
         let mounted = true;
         getBudgetNames().then((response) => {response.json().then((response) => {
@@ -83,7 +83,7 @@ function BudgetTable(){
 
     // Get budget logs according to the budget name selected
     function getBudgetLogs(value){
-        if ( value === ALL_LOGS){
+        if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
             getBudgetList().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
@@ -92,7 +92,7 @@ function BudgetTable(){
             })
         })
         }
-        else{
+        else{                                     // Otherwise get log specific to the budget name
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
