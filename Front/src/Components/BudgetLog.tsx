@@ -1,9 +1,11 @@
 import React from 'react';
 import {Table, Select} from 'antd';
 import { useState, useEffect } from 'react';
-import { getBudgetList, getBudgetNames } from '../Services/BudgetServices.ts';
+import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
 
 const {Option} = Select;
+
+const ALL_LOGS = 'All';
 
 // Columns to display in logs
 const columns = [
@@ -26,13 +28,13 @@ const columns = [
 
 // Properties for the whole table
 const tableProperties = { 
-    width: '80%',
+    width: '60%',
     margin: 'auto'
 }
 
 const SelectMenuProperties = {
-    width: 120,
-    marginLeft: "70%",
+    width: "10rem",
+    marginLeft: "65%",
     marginBottom: "2rem"
 }
 
@@ -62,7 +64,7 @@ function BudgetTable(){
                 if (response) {
                     var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
                     var total = expensesType.length
-                    expensesType.push({value: 'All', label: 'All'})
+                    expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
                     setBudgetNames(expensesType)
                     // setBudgetNames(response.res)
                     console.log(total)
@@ -76,14 +78,38 @@ function BudgetTable(){
     // To check when value is changed
     const handleChange = (value) => {
         setSelectedName(value)
+        console.log(selectedName);
     }
 
+    // Get budget logs according to the budget name selected
+    function getBudgetLogs(value){
+        if ( value === ALL_LOGS){
+            getBudgetList().then((response) => {response.json().then((response) => {
+                if (response) {
+                    setBudgetLogs(response.res)
+                    console.log(response.res)
+                }
+            })
+        })
+        }
+        else{
+            getBudNameLogs(value).then((response) => {response.json().then((response) => {
+                if (response) {
+                    setBudgetLogs(response.res)
+                    console.log(response.res)
+                }
+            })
+        })
+        }
+    }
     return(
     <>
         <Select
-            defaultValue = "All"
+            defaultValue = {ALL_LOGS}
             style={SelectMenuProperties}
-            onChange={handleChange}>
+            onChange={handleChange}
+            onSelect={getBudgetLogs}
+            >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>
 

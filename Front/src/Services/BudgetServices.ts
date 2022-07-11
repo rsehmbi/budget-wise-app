@@ -15,3 +15,12 @@ export function getBudgetNames(){
                 'Accept': 'application/json'}
         })
 }
+
+export function getBudNameLogs(value){
+    return fetch(`http://localhost:3000/getBudgetList/${value}`,{
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+        })
+}
