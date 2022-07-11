@@ -1,5 +1,6 @@
 import { Modal, Input } from 'antd';
 import React from 'react';
+import BudgetTable from './BudgetLog.tsx';
 
 
 function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {

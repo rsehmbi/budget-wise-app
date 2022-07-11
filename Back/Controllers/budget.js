@@ -10,7 +10,7 @@ pool = new Pool({
     database: 'db'
 })
 
-
+// Get logs of all budgets
 exports.getbudgetList = async  (req, res) => {
     pool.query('SELECT * FROM budgettable WHERE userid = 1', (error, result) => {
         if (error){
@@ -30,7 +30,7 @@ exports.getbudgetList = async  (req, res) => {
     })
 }
 
-// SELECT userid, budgetname, SUM (amount), MAX (maximumamount) FROM budgettable WHERE userid = 1 GROUP BY budgetname
+// Get distinct budget names based and total expenses
 exports.getBudgetAggregate = async  (req, res) => {
     pool.query('SELECT budgetname, sum(amount) as amount, max(maximumamount) as maximumamount FROM budgettable WHERE userid = 1 GROUP BY budgetname', (error, result) => {
         if (error){
@@ -40,7 +40,6 @@ exports.getBudgetAggregate = async  (req, res) => {
             })
         }
         else{
-            console.log(result.rows)
             res.json({
                 isSuccess: true,
                 res: result.rows,
@@ -51,12 +50,12 @@ exports.getBudgetAggregate = async  (req, res) => {
     })
 }
 
+// Add a new budget name with amount, max amount etc
 exports.addbudget = async (req, res) => {
     var expense = req.body.expense
     var maxamount = req.body.maxamount
     var amount = req.body.amount
     var currentUserId = 1 
-    
 
     const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
     try {
@@ -75,7 +74,7 @@ exports.addbudget = async (req, res) => {
     }
 }
 
-// Add new expenses for budget name
+// Add new expenses for budget name already in database
 exports.addExpense = async (req, res) => {
     var budgetname = req.body.budgetname
     var amount = parseInt(req.body.amount)
@@ -99,7 +98,11 @@ exports.addExpense = async (req, res) => {
     }
 }
 
-// TODO: Removed from expenses card, will be used with logs to update logs
+/* TODO: Convert this function to Update only max amount and add option in card to update max amount 
+    Max amount will be same for a budget name and won't be shown in logs
+    Log will show budget name, expense added, description and date
+    Create another function to update expenses, budget name, description which will be placed in table showing log
+*/
 exports.updatebudget = async (req, res) => {
     var budgetname = req.body.budgetname
     var amount = parseInt(req.body.amount)
