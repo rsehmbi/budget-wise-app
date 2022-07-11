@@ -1,6 +1,7 @@
-import React from 'react';
+import * as React from "react";
 import {Table, Select} from 'antd';
 import { useState, useEffect } from 'react';
+// @ts-ignore
 import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
 
 const {Option} = Select;                         // For specifiying drop down menu options

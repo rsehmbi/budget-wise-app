@@ -1,5 +1,5 @@
 import { Modal, Input } from 'antd';
-import React from 'react'
+import * as React from "react";
 
 function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handleCancel}) {
     const [amount, setAmount] = React.useState(0);

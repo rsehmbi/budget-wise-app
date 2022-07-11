@@ -1,9 +1,12 @@
-import React from 'react'
+import * as React from "react";
 import { Card } from 'antd';
 import { Progress } from 'antd';
 import { Button } from 'antd';
+// @ts-ignore
 import { currencyFormatter } from '../Utils/CurrencyUtils.tsx'
+// @ts-ignore
 import { redColor, blueColor, yellowColor } from '../Constants/Colors.tsx'
+// @ts-ignore
 import AddExpense from './AddExpense.tsx';
 
 export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount }) {

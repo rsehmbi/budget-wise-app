@@ -1,8 +1,10 @@
 
 import '../Css/App.css';
+// @ts-ignore
 import BudgetPlanner from './BudgetPlanner.tsx';
+// @ts-ignore
 import BudgetTable from './BudgetLog.tsx';
-import React from 'react';
+import * as React from "react";
 
 
 function App() {
