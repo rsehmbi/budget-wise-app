@@ -1,10 +1,12 @@
 import { Modal, Input } from 'antd';
 import React from 'react';
+import BudgetTable from './BudgetLog.tsx';
 
 
 function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
   const [expense, setexpense] = React.useState("");
   const [maxamount, setmaxamount] = React.useState(0);
+  const [amount, setamount] = React.useState(0);
 
   const addbudgetAPICall = async () => {
       await fetch('http://localhost:3000/addbudget', {
@@ -15,7 +17,8 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
           },
           body: JSON.stringify({
               'expense': expense,
-              'maxamount': maxamount
+              'maxamount': maxamount,
+              'amount': amount
           }) 
       }).then((response) => {
           response.json().then((response) => {
@@ -34,8 +37,12 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
     setmaxamount(event.target.value)
   }
 
+  const handleAddAmountChange = (event) => { 
+    setamount(event.target.value)
+  }
+
   const validateInputs = () => {
-    if (expense !== "" && maxamount !== 0) { 
+    if (expense !== "" && maxamount !== 0 && amount !== 0) { 
       return true
     }
     return false
@@ -44,6 +51,7 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
   const setDefaultValues = () => {
     setexpense("")
     setmaxamount(0)
+    setamount(0)
   }
   
   const okClickHandle = () => {
@@ -65,6 +73,11 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
 
           <label> Maximum Amount  </label> <br/>
           <Input onChange={handleAmountChange}  value={maxamount} type="number" placeholder="Ex: $500, $800 etc." /> <br />
+
+          <br/>
+
+          <label> Initial Amount  </label> <br/>
+          <Input onChange={handleAddAmountChange}  value={amount} type="number" placeholder="Ex: $50, $80 etc." /> <br />
       </Modal>
       </>
 

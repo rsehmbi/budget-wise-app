@@ -3,12 +3,13 @@ import BudgetCard from './BudgetCard.tsx';
 import React, { useState } from 'react';
 import AddBudget from './AddBudget.tsx';
 
+
 export default function BudgetPlanner() {
     const [budgetList, setBudgetList] = React.useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false); 
 
     const getBudgetListAPICall = async () => {
-        await fetch('http://localhost:3000/getbudgetList', {
+        await fetch('http://localhost:3000/getBudgetAggregate', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,6 +18,7 @@ export default function BudgetPlanner() {
             response.json().then((response) => {
                 if (response) {
                     setBudgetList(response.res)
+
                 }
             })
         })
