@@ -77,3 +77,47 @@ exports.updatebudget = async (req, res) => {
         })
     }
 }
+
+exports.getBudgetNames = async(req,res) => {
+    var currentUserId = 1
+    const getAllExpenses = `SELECT Distinct budgetname FROM budgettable WHERE userid = $1`
+    try {
+        const result = await pool.query(getAllExpenses, [currentUserId])
+        res.json({
+            isSuccess: true,
+            res: result.rows,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.getNameLogs = async(req, res) => {
+    const budgetName = req.params.name
+    var currentUserId = 1
+    const getAllExpenses = `SELECT * FROM budgettable WHERE userid = $1 AND budgetname = $2`
+    try {
+        const result = await pool.query(getAllExpenses, [currentUserId, budgetName])
+        res.json({
+            isSuccess: true,
+            res: result.rows,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+
+}
