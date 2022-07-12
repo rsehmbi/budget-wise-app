@@ -79,12 +79,14 @@ function Main() {
     const renderMenu = () => {
         return (
             <div>
-                <Row style={{height: "100px", width: "100%", position: "fixed", top: 0, boxShadow: "0 2px 8px #f0f1f2",zIndex: 1000, backgroundColor: "#e7e7e7"}}>
-                    <Col span={12} style={{paddingTop: "20px", paddingLeft: "25px", height: "80px"}}>
-                        Budget Wise App
+                <Row style={{height: "50px", width: "100%", position: "fixed", top: 0, boxShadow: "0 2px 8px #f0f1f2",zIndex: 1000, backgroundColor: "#e7e7e7"}}>
+                    <Col span={12}>
+                        <Row style={{paddingTop: "10px", paddingLeft: "25px", height: "40px", alignItems: "center"}}>
+                            Budget Wise App
+                        </Row>
                     </Col>
                     <Col span={12}>
-                        <Row style={{paddingRight: "25px", justifyContent: "flex-end", alignItems: "center", height: "80px", paddingTop: "10px"}}>
+                        <Row style={{paddingRight: "25px", justifyContent: "flex-end", alignItems: "center", height: "40px", paddingTop: "10px"}}>
                             <div className={'text'} style={{paddingRight: "20px"}}>{email}</div>
                             <Tooltip placement="bottom" title={"Log out"}>
                                 <Button ghost={true} type="link" onClick={logOut} shape="circle"><LoginOutlined  style={{color: "#000000"}} /></Button>

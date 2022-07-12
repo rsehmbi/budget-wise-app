@@ -17,6 +17,6 @@ export function isAuth(){
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            "x-access-token": localStorage.getItem("token")},
+            "x-access-token": localStorage.getItem("token")}
     })
 }

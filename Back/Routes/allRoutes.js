@@ -5,9 +5,31 @@ const _r = express.Router()
 const { login , isUserAuth} = require('../Controllers/login')
 const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getNameLogs } =  require('../Controllers/budget')
 
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"]
+    if (!token) {
+        res.json({
+            auth: false,
+            status: "There is not token",
+        })
+    } else{
+        jwt.verify(token, process.env.JWT_VAR, (err, decoded) => {
+            if (err){
+                res.json({
+                    auth: false,
+                    status: "you are fail to auth",
+                })
+            } else {
+                next()
+            }
+        })
+    }
+}
+
+
 _r.post('/login', login)
 _r.post('/isUserAuth', isUserAuth)
-_r.get('/getbudgetList', getbudgetList)
+_r.get('/getbudgetList',  getbudgetList)
 _r.get('/getbudgetaggregate', getBudgetAggregate)
 _r.post('/addbudget', addbudget)
 _r.post('/addExpense', addExpense)
