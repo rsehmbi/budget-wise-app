@@ -22,7 +22,7 @@ exports.login = async  (req, res) => {
     let userEmail = decrypted(req.body.email)
     let queryString = 'SELECT * FROM users WHERE ' + '"email"' + ' = ' + "'" + userEmail + "';"
     pool.query(queryString, (error, result) => {
-        if (error){
+        if (error || result.rows.length === 0){
             console.log(error)
             res.json({
                 isSuccess: false,
