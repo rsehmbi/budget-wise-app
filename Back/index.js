@@ -8,6 +8,10 @@ const PORT = process.env.PORT || 3000
 const path = require('path')
 const  reactBuild = path.join(__dirname, '../','Front', 'build')
 
+
+const dotenv = require('dotenv');
+dotenv.config();
+
 app.use(express.static(reactBuild))
 app.use(express.json())
 

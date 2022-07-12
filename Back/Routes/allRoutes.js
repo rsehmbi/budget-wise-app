@@ -2,10 +2,11 @@ const express = require('express')
 const _r = express.Router()
 
 
-const { test } = require('../Controllers/APIs')
+const { login , isUserAuth} = require('../Controllers/login')
 const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getNameLogs } =  require('../Controllers/budget')
 
-_r.post('/test', test)
+_r.post('/login', login)
+_r.post('/isUserAuth', isUserAuth)
 _r.get('/getbudgetList', getbudgetList)
 _r.get('/getbudgetaggregate', getBudgetAggregate)
 _r.post('/addbudget', addbudget)
