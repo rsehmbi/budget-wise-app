@@ -37,25 +37,26 @@ function Login(props) {
   }
 
   return (
-    <div>
-      <Row style={{justifyContent: "center", alignItems: "center", height: "50px", fontSize: "35px"}}>Budget Wise App</Row>
-      <Row style={{justifyContent: "center", paddingTop: "40px"}}>
-          <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-              render={(renderProps) => (
-                  <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                    Login
-                  </Button>
-              )}
-              buttonText="Login"
-              onSuccess={(res) => {onSuccess(res)}}
-              onFailure={(res) => {onFailure(res)}}
-              cookiePolicy={'single_host_origin'}
-          />
-      </Row>
-
-
-    </div>
+      <div className="container">
+          <div className="login-section" style={{width: "60vh"}}>
+              <Row style={{justifyContent: "center", alignItems: "center", height: "50px", fontSize: "35px"}}>Budget Wise App</Row>
+              <br />
+              <Row style={{justifyContent: "center", paddingTop: "40px"}}>
+                  <GoogleLogin
+                      clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                      render={(renderProps) => (
+                          <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                              Login
+                          </Button>
+                      )}
+                      buttonText="Login"
+                      onSuccess={(res) => {onSuccess(res)}}
+                      onFailure={(res) => {onFailure(res)}}
+                      cookiePolicy={'single_host_origin'}
+                  />
+              </Row>
+          </div>
+      </div>
   );
 }
 

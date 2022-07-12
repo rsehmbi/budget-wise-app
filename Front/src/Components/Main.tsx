@@ -94,8 +94,10 @@ function Main() {
                         </Row>
                     </Col>
                 </Row>
+                <div style={{marginTop: "50px"}}>
+                    <App />
+                </div>
 
-                <App/>
             </div>
         )
     }
