@@ -84,3 +84,29 @@ exports.isUserAuth = (req, res) => {
         })
     }
 }
+
+
+exports.signUp = async  (req, res) => {
+    let userEmail = decrypted(req.body.email)
+    let queryString = 'SELECT * FROM users WHERE ' + '"email"' + ' = ' + "'" + userEmail + "';"
+    pool.query(queryString, (error, result) => {
+        if (error || result.rows.length === 0){
+            console.log(error)
+            res.json({
+                isSuccess: false,
+                message: "no such email in db",
+            })
+        }
+        else{
+            const id = result.rows[0].id
+            const token = jwt.sign({id}, process.env.JWT_VAR, {
+                expiresIn: 2000
+            })
+            res.json({
+                isSuccess: true,
+                token: token,
+            })
+        }
+
+    })
+}

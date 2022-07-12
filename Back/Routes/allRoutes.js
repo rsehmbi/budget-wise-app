@@ -2,7 +2,7 @@ const express = require('express')
 const _r = express.Router()
 
 
-const { login , isUserAuth} = require('../Controllers/login')
+const { login , isUserAuth, signUp} = require('../Controllers/login')
 const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getNameLogs } =  require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
@@ -28,6 +28,7 @@ const verifyJWT = (req, res, next) => {
 
 
 _r.post('/login', login)
+_r.post('/signUp', signUp)
 _r.post('/isUserAuth', isUserAuth)
 _r.get('/getbudgetList',  getbudgetList)
 _r.get('/getbudgetaggregate', getBudgetAggregate)

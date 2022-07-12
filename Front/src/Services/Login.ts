@@ -11,6 +11,17 @@ export function LoginCall(email){
     })
 }
 
+export function SignUp(email){
+    return fetch('http://localhost:3000/signUp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+}
+
 export function isAuth(){
     return fetch('http://localhost:3000/isUserAuth', {
         method: 'POST',
