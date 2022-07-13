@@ -48,11 +48,13 @@ function Login(props) {
             SignUp(encrypted(email)).then((response) => {
                 response.json().then((response) => {
                     if (response.isSuccess) {
+                        message.success(response.message)
                         form.setFieldsValue(({ email: '' }))
                         setVisible(false);
                         setConfirmLoading(false);
                     }
                     else {
+                        message.error(response.message)
                         form.setFieldsValue(({ email: '' }))
                         setVisible(false);
                         setConfirmLoading(false);
@@ -91,7 +93,7 @@ function Login(props) {
                   />
                   <Button onClick={() => {setVisible(true)}} style={{marginLeft: "20px"}}>Sign up</Button>
                   <Modal
-                      title="Write your email please"
+                      title="Write your google email please"
                       visible={visible}
                       onOk={handleOk}
                       confirmLoading={confirmLoading}

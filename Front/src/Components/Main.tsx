@@ -14,6 +14,7 @@ import {gapi} from "gapi-script";
 import {isAuth} from "../Services/Login.ts";
 import {Button, Col, message, Row, Tooltip} from "antd";
 import {Route, Routes} from 'react-router-dom'
+// @ts-ignore
 import App from "./App.tsx";
 
 
