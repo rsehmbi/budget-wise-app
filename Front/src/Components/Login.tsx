@@ -101,7 +101,6 @@ function Login(props) {
                   >
                       <Form form={form} className="login-form" >
                           <Form.Item name={'email'} label="Email" rules={[{ type: 'email',message: "The input is not valid E-mail!" }]}>
-                     {/* <Form.Item rules={[{required: true,type: "email",message: "The input is not valid E-mail!"}]} name={"email"}>*/}
                               <Input
                                   onChange={(e) => {setEmail(e.target.value)}}
                                   prefix={<MailOutlined  style={{ color: "rgba(0,0,0,.25)" }}/>}
