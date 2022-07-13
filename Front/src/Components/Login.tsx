@@ -13,7 +13,8 @@ import {MailOutlined} from "@ant-design/icons";
 
 
 function Login(props) {
-    const [email, setEmail] = useState(undefined);
+    const [form] = Form.useForm()
+    const [email, setEmail] = useState('');
     const [visible, setVisible] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -40,23 +41,33 @@ function Login(props) {
     console.log("Login Failed! res: ", res)
   }
 
-    const handleOk = () => {
+    const handleOk = async () => {
         setConfirmLoading(true);
-        SignUp(encrypted(email)).then((response) => {
-            response.json().then((response) => {
-                if (response.isSuccess) {
-                    setVisible(false);
-                    setConfirmLoading(false);
-                }
-                else {
-                    setVisible(false);
-                    setConfirmLoading(false);
-                }
+        try {
+            await form.validateFields();
+            SignUp(encrypted(email)).then((response) => {
+                response.json().then((response) => {
+                    if (response.isSuccess) {
+                        form.setFieldsValue(({ email: '' }))
+                        setVisible(false);
+                        setConfirmLoading(false);
+                    }
+                    else {
+                        form.setFieldsValue(({ email: '' }))
+                        setVisible(false);
+                        setConfirmLoading(false);
+                    }
+                })
             })
-        })
+        } catch (errorInfo) {
+            setConfirmLoading(false);
+            message.error("The input is not valid E-mail!")
+        }
     };
 
     const handleCancel = () => {
+        form.setFieldsValue(({ email: '' }))
+        setEmail("")
         setVisible(false);
     };
 
@@ -80,14 +91,15 @@ function Login(props) {
                   />
                   <Button onClick={() => {setVisible(true)}} style={{marginLeft: "20px"}}>Sign up</Button>
                   <Modal
-                      title="write your email please"
+                      title="Write your email please"
                       visible={visible}
                       onOk={handleOk}
                       confirmLoading={confirmLoading}
                       onCancel={handleCancel}
                   >
-                      <Form className="login-form" >
-                      <Form.Item rules={[{required: true,type: "email",message: "The input is not valid E-mail!"}]}>
+                      <Form form={form} className="login-form" >
+                          <Form.Item name={'email'} label="Email" rules={[{ type: 'email',message: "The input is not valid E-mail!" }]}>
+                     {/* <Form.Item rules={[{required: true,type: "email",message: "The input is not valid E-mail!"}]} name={"email"}>*/}
                               <Input
                                   onChange={(e) => {setEmail(e.target.value)}}
                                   prefix={<MailOutlined  style={{ color: "rgba(0,0,0,.25)" }}/>}
