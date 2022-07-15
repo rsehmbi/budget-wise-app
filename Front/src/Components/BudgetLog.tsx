@@ -55,7 +55,7 @@ function BudgetTable(){
         getBudgetList().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
-                    console.log(response.res)
+                    console.log("The budget logs are" + response.res)
                 }
             })
         })

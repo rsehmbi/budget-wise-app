@@ -1,8 +1,11 @@
 const { response } = require('express');
 const { Pool } = require('pg');
-var pool;
+const CryptoJS = require('crypto-js');
+const jwt = require("jsonwebtoken");
 
-let TEST_TOKEN = "U2FsdGVkX18/MBV90AXZBpcvv99bu153rmAdkzO1jjc="
+var uuid = require('uuid');
+
+var pool;
 
 pool = new Pool({
     connectionString: 'postgres://abcbzhmz:WKDuSCwBbWd6SInyA0nRfGUMlI1fbOCY@heffalump.db.elephantsql.com/abcbzhmz',
@@ -13,8 +16,7 @@ pool = new Pool({
 })
 
 exports.deleteBudget = async (req, res) => {
-    console.log("I get callled")
-    var token = TEST_TOKEN
+    var token = res.locals.userid
     var budgetname = req.body.budgetname
     var delete_query_string = `DELETE FROM budgettable WHERE userid = $1 AND budgetname = $2`
     try {
@@ -35,7 +37,7 @@ exports.deleteBudget = async (req, res) => {
 }
 // Get logs of all budgets
 exports.getbudgetList = async (req, res) => {
-    var token = TEST_TOKEN
+    var token = res.locals.userid
     var query_string = `SELECT * FROM budgettable WHERE userid = $1`
     try {
         const result = await pool.query(query_string,[token])
@@ -56,7 +58,7 @@ exports.getbudgetList = async (req, res) => {
 
 // Get distinct budget names based and total expenses
 exports.getBudgetAggregate = async (req, res) => {
-    var token = TEST_TOKEN
+    var token = res.locals.userid
     pool.query('SELECT budgetname, sum(amount) as amount, max(maximumamount) as maximumamount FROM budgettable WHERE userid = $1 GROUP BY budgetname',[token], (error, result) => {
         if (error){
             res.json({
@@ -80,7 +82,7 @@ exports.addbudget = async (req, res) => {
     var expense = req.body.expense
     var maxamount = req.body.maxamount
     var amount = req.body.amount
-    var currentUserId = TEST_TOKEN
+    var currentUserId = res.locals.userid
 
     const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
     try {
@@ -104,7 +106,7 @@ exports.addExpense = async (req, res) => {
     var budgetname = req.body.budgetname
     var amount = parseInt(req.body.amount)
     var maxamount =  parseInt(req.body.maxamount)
-    var currentUserId = TEST_TOKEN
+    var currentUserId = res.locals.userid
     const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
     try {
         await pool.query(add_budget_query,[currentUserId, budgetname, amount, maxamount])
@@ -131,7 +133,7 @@ exports.updatebudget = async (req, res) => {
     var budgetname = req.body.budgetname
     var amount = parseInt(req.body.amount)
     var maxamount =  parseInt(req.body.maxamount)
-    var currentUserId = TEST_TOKEN
+    var currentUserId = res.locals.userid
     const update_budget_query = `UPDATE "budgettable" 
                    SET "amount" = "amount" + $1, "maximumamount" = $2 
                    WHERE "userid" = $3 AND "budgetname" = $4`
@@ -152,7 +154,7 @@ exports.updatebudget = async (req, res) => {
 }
 
 exports.getBudgetNames = async(req,res) => {
-    var currentUserId = TEST_TOKEN
+    var currentUserId = res.locals.userid
     const getAllExpenses = `SELECT budgetname FROM budgettable WHERE userid = $1`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId])
@@ -173,7 +175,7 @@ exports.getBudgetNames = async(req,res) => {
 
 exports.getNameLogs = async(req, res) => {
     const budgetName = req.params.name
-    var currentUserId = TEST_TOKEN
+    var currentUserId = res.locals.userid
     const getAllExpenses = `SELECT * FROM budgettable WHERE userid = $1 AND budgetname = $2`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId, budgetName])

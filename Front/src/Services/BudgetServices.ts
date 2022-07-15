@@ -5,7 +5,8 @@ export function getBudgetList(){
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'}
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()}
     })
 }
 
@@ -15,7 +16,8 @@ export function getBudgetNames(){
             method: 'Get',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'}
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()}
         })
 }
 
@@ -25,6 +27,7 @@ export function getBudNameLogs(value){
             method: 'Get',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'}
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()}
         })
 }

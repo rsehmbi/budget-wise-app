@@ -1,6 +1,6 @@
 const express = require('express')
 const _r = express.Router()
-
+const jwt = require("jsonwebtoken");
 
 const { login , isUserAuth, signUp} = require('../Controllers/login')
 const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getNameLogs, deleteBudget } =  require('../Controllers/budget')
@@ -20,6 +20,7 @@ const verifyJWT = (req, res, next) => {
                     status: "you are fail to auth",
                 })
             } else {
+                res.locals.userid = decoded.id;  
                 next()
             }
         })
@@ -30,13 +31,13 @@ const verifyJWT = (req, res, next) => {
 _r.post('/login', login)
 _r.post('/signUp', signUp)
 _r.post('/isUserAuth', isUserAuth)
-_r.get('/getbudgetList',  getbudgetList)
-_r.get('/getbudgetaggregate', getBudgetAggregate)
-_r.post('/addbudget', addbudget)
-_r.post('/addExpense', addExpense)
-_r.put('/updatebudget', updatebudget)
-_r.get('/getBudgetNames', getBudgetNames)
-_r.delete('/deleteBudget', deleteBudget)
-_r.get('/getBudgetList/:name', getNameLogs)
+_r.get('/getbudgetList', verifyJWT,  getbudgetList)
+_r.get('/getbudgetaggregate', verifyJWT, getBudgetAggregate)
+_r.post('/addbudget',verifyJWT, addbudget)
+_r.post('/addExpense', verifyJWT, addExpense)
+_r.put('/updatebudget', verifyJWT, updatebudget)
+_r.get('/getBudgetNames',verifyJWT, getBudgetNames)
+_r.delete('/deleteBudget', verifyJWT, deleteBudget)
+_r.get('/getBudgetList/:name', verifyJWT, getNameLogs)
 
 module.exports = _r

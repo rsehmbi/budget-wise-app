@@ -12,7 +12,8 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
-              'Accept': 'application/json'
+              'Accept': 'application/json',
+              'x-access-token': localStorage.getItem('token')?.toString()
           },
           body: JSON.stringify({
               'expense': expense,

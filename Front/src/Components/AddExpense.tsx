@@ -36,12 +36,12 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
     }
 
     const updatebudgetAPICall = async () => {
-        console.log(title, amount, maxAmount)
         await fetch('http://localhost:3000/addExpense', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
             },
             body: JSON.stringify({
               'budgetname': title,

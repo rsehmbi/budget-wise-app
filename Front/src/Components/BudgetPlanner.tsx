@@ -1,4 +1,4 @@
-import {PageHeader, Button} from 'antd';
+import {PageHeader, Button, Popconfirm, message} from 'antd';
 import BudgetCard from './BudgetCard.tsx';
 import React, { useState } from 'react';
 import AddBudget from './AddBudget.tsx';
@@ -9,11 +9,14 @@ export default function BudgetPlanner() {
     const [isModalVisible, setIsModalVisible] = useState(false); 
 
     const getBudgetListAPICall = async () => {
+        console.log("The test token is"+ localStorage.getItem('token'))
         await fetch('http://localhost:3000/getBudgetList', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'}
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
+            }
         }).then((response) => {
             response.json().then((response) => {
                 if (response['isSuccess']) {
@@ -42,6 +45,31 @@ export default function BudgetPlanner() {
         getBudgetListAPICall();
     }, [])
 
+    const cancel = (e: React.MouseEvent<HTMLElement>) => {
+        message.error('Cancelled');
+    };
+
+    const confirm = async (e: React.MouseEvent<HTMLElement>) => {
+        await fetch('http://localhost:3000/deleteAllBudgets', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
+            },
+            body: JSON.stringify({
+              'budgetname': cardTitle,
+            }) 
+        }).then((response) => {
+            response.json().then((response) => {
+                if (response['isSuccess']) {
+                    getBudgetListAPICall();
+                    message.success('Budget Deleted Successfully');
+                }
+            })
+        })
+    };
+    
     return (
         <>
         <PageHeader
@@ -50,6 +78,15 @@ export default function BudgetPlanner() {
             extra={
                 [
                     <Button onClick={showModal} key="1">Add Budget</Button>,
+                    <Popconfirm
+                        title="Are you sure to delete all entries?"
+                        onConfirm={confirm}
+                        onCancel={cancel}
+                        okText="Delete"
+                        cancelText="Cancel"
+                    >
+                    <Button danger key="2">Delete All</Button>,
+                    </Popconfirm>  
                 ]
             }
                 

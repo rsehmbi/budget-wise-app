@@ -37,7 +37,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
     }
 
     function getProgressPercentage() { 
-        return  (amount / maxAmount) * 100 
+        return  ((amount / maxAmount) * 100).toFixed(0) 
     }
     
     const confirm = async (e: React.MouseEvent<HTMLElement>) => {
@@ -45,7 +45,8 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
             },
             body: JSON.stringify({
               'budgetname': cardTitle,
