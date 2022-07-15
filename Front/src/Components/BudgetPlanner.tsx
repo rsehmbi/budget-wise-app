@@ -88,9 +88,8 @@ export default function BudgetPlanner() {
             />
             <div style={budgetRows}>
             {
-                    budgetList.map((budget, index) => (
-                    <ul key={index}></ul>
-                    // <BudgetCard budgetApiCall={getBudgetListAPICall} cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
+                budgetList.map(budget => (
+                    <BudgetCard budgetApiCall={getBudgetListAPICall} key={ budget["budgetname"] } cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
             )) 
             }
             </div>
