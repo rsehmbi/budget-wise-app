@@ -3,7 +3,18 @@ const _r = express.Router()
 const jwt = require("jsonwebtoken");
 
 const { login , isUserAuth, signUp} = require('../Controllers/login')
-const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getNameLogs, deleteBudget, deleteAllBudgets } =  require('../Controllers/budget')
+const {
+    getbudgetList,
+    getBudgetAggregate,
+    addbudget,
+    addExpense,
+    updatebudget,
+    getBudgetNames,
+    getNameLogs,
+    deleteBudget,
+    deleteAllBudgets,
+    updateMaxAmount
+} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -31,7 +42,7 @@ const verifyJWT = (req, res, next) => {
 _r.post('/login', login)
 _r.post('/signUp', signUp)
 _r.post('/isUserAuth', isUserAuth)
-_r.get('/getbudgetList', verifyJWT,  getbudgetList)
+_r.get('/getbudgetList', verifyJWT, getbudgetList)
 _r.get('/getbudgetaggregate', verifyJWT, getBudgetAggregate)
 _r.post('/addbudget',verifyJWT, addbudget)
 _r.post('/addExpense', verifyJWT, addExpense)
@@ -39,6 +50,7 @@ _r.put('/updatebudget', verifyJWT, updatebudget)
 _r.get('/getBudgetNames',verifyJWT, getBudgetNames)
 _r.delete('/deleteBudget', verifyJWT, deleteBudget)
 _r.delete('/deleteAllBudgets', verifyJWT, deleteAllBudgets)
+_r.put('/updateMaxAmount', verifyJWT, updateMaxAmount)
 _r.get('/getBudgetList/:name', verifyJWT, getNameLogs)
 
 module.exports = _r

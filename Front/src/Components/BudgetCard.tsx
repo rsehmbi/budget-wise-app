@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Card } from 'antd';
+import { Card, Modal, Input } from 'antd';
 import { Progress } from 'antd';
 import { Button, Popconfirm, message } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 // @ts-ignore
 import { currencyFormatter } from '../Utils/CurrencyUtils.tsx'
 // @ts-ignore
@@ -11,7 +12,44 @@ import AddExpense from './AddExpense.tsx';
 
 export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false); 
+    const [isEditModalVisible, setIsEditModalVisible] = React.useState(false);
+    const [maxEditCardAmount, setMaxEditAmount] = React.useState(maxAmount);
 
+    const updateMaxAmountAPICall = async () => {
+        await fetch('http://localhost:3000/updateMaxAmount', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
+            },
+            body: JSON.stringify({
+                'maxamount': maxEditCardAmount,
+                'budgetname': cardTitle,
+            }) 
+        }).then((response) => {
+            response.json().then((response) => {
+                if (response) {
+                    budgetApiCall();
+                }
+            })
+        })
+    }
+    
+    const showEditModal = () => {
+        setIsEditModalVisible(true);
+    };
+
+    const handleEditOk = () => {
+        updateMaxAmountAPICall();
+        setMaxEditAmount(maxEditCardAmount)
+        setIsEditModalVisible(false);
+    };
+
+    const handleEditCancel = () => {
+        setIsEditModalVisible(false);
+    };
+    
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -65,9 +103,23 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
         message.error('Cancelled');
     };
     
+    const handleMaxAmountChange = (event) => { 
+        setMaxEditAmount(event.target.value)
+    }
 
   return (
-      <Card title={cardTitle} style={cardStyle} extra={<div>{currencyFormatter.format(amount)} / {currencyFormatter.format(maxAmount)}</div>}>
+      <Card title={cardTitle} style={cardStyle}
+          extra=
+          {
+              <div>{currencyFormatter.format(amount)} / {currencyFormatter.format(maxAmount)}
+                   <EditOutlined onClick={showEditModal} />
+                   <Modal title="Edit Maximum Amount" visible={isEditModalVisible} onOk={handleEditOk} onCancel={handleEditCancel}>
+                    <br/>
+                    <label> Maximum Amount  </label> <br/>
+                    <Input onChange={handleMaxAmountChange} value={maxEditCardAmount} type="number"/> <br />
+                   </Modal>
+              </div>
+          }>
           <Progress percent={getProgressPercentage()} strokeColor={getProgressBarColor()} status="active" />
             <div style={btnContainer}>
               <Button onClick={showModal}> Add Expense</Button>
@@ -82,7 +134,6 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
                 </Popconfirm>
             </div>
           <AddExpense budgetApiCall={ budgetApiCall } title={cardTitle} maxamount={ maxAmount } visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk} ></AddExpense>
-
       </Card>
   )
 }
