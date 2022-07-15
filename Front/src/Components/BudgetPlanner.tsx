@@ -1,4 +1,4 @@
-import {PageHeader, Button, message} from 'antd';
+import {PageHeader, Button} from 'antd';
 import BudgetCard from './BudgetCard.tsx';
 import React, { useState } from 'react';
 import AddBudget from './AddBudget.tsx';
@@ -9,18 +9,18 @@ export default function BudgetPlanner() {
     const [isModalVisible, setIsModalVisible] = useState(false); 
 
     const getBudgetListAPICall = async () => {
-        await fetch('http://localhost:3000/getBudgetAggregate', {
+        await fetch('http://localhost:3000/getBudgetList', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'}
         }).then((response) => {
             response.json().then((response) => {
-                if (response.success) {
+                if (response['isSuccess']) {
                     setBudgetList(response.res)
                 }
                 else{
-                    console.log(response.message)
+                    console.log("Error while calling getBudgetList API"+ response.message)
                 }
             })
         })

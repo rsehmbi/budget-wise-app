@@ -27,9 +27,9 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
         
     }
 
-    // const handleMaxAmountChange = (event) => { 
-    //     setMaxAmount(event.target.value)
-    // }
+    const handleMaxAmountChange = (event) => { 
+        setMaxAmount(event.target.value)
+    }
 
     const handleAmountChange = (event) => { 
         setAmount(event.target.value)
@@ -64,8 +64,8 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
           <Input  onChange={handleAmountChange} value={amount} type="number" /> <br />
               
           <br/>
-          {/* <label> Maximum Amount  </label> <br/>
-          <Input onChange={handleMaxAmountChange} value={maxAmount} type="number"/> <br /> */}
+          <label> Maximum Amount  </label> <br/>
+          <Input onChange={handleMaxAmountChange} value={maxAmount} type="number"/> <br />
       </Modal>
       </>
   )

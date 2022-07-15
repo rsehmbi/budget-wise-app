@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Select, Button, message} from 'antd';
+import {Table, Select, Button} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
@@ -98,7 +98,7 @@ function BudgetTable(){
             getBudgetList().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
-                    console.log(response.res)
+                    console.log("The budget log is" + response.res)
                 }
             })
         })

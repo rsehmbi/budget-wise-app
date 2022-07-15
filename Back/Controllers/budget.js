@@ -2,8 +2,7 @@ const { response } = require('express');
 const { Pool } = require('pg');
 var pool;
 
-const contants = require('./constants');
-let TEST_TOKEN = contants.TEST_TOKEN
+let TEST_TOKEN = "U2FsdGVkX18/MBV90AXZBpcvv99bu153rmAdkzO1jjc="
 
 pool = new Pool({
     connectionString: 'postgres://abcbzhmz:WKDuSCwBbWd6SInyA0nRfGUMlI1fbOCY@heffalump.db.elephantsql.com/abcbzhmz',
@@ -18,10 +17,11 @@ exports.getbudgetList = async (req, res) => {
     var token = TEST_TOKEN
     var query_string = `SELECT * FROM budgettable WHERE userid = $1`
     try {
-        await pool.query(query_string,[token])
+        const result = await pool.query(query_string,[token])
         res.json({
             isSuccess: true,
             message: "Success",
+            res: result.rows,
         })
     }
     catch (error){
@@ -93,7 +93,6 @@ exports.addExpense = async (req, res) => {
         })
     }
     catch (error) {
-        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
@@ -123,7 +122,6 @@ exports.updatebudget = async (req, res) => {
         })
     }
     catch (error) {
-        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
@@ -134,7 +132,7 @@ exports.updatebudget = async (req, res) => {
 
 exports.getBudgetNames = async(req,res) => {
     var currentUserId = TEST_TOKEN
-    const getAllExpenses = `SELECT Distinct budgetname FROM budgettable WHERE userid = $1`
+    const getAllExpenses = `SELECT budgetname FROM budgettable WHERE userid = $1`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId])
         res.json({
@@ -144,7 +142,6 @@ exports.getBudgetNames = async(req,res) => {
         })
     }
     catch (error) {
-        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
@@ -155,7 +152,7 @@ exports.getBudgetNames = async(req,res) => {
 
 exports.getNameLogs = async(req, res) => {
     const budgetName = req.params.name
-    var currentUserId = TEST_TOKENs
+    var currentUserId = TEST_TOKEN
     const getAllExpenses = `SELECT * FROM budgettable WHERE userid = $1 AND budgetname = $2`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId, budgetName])
@@ -166,7 +163,6 @@ exports.getNameLogs = async(req, res) => {
         })
     }
     catch (error) {
-        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
