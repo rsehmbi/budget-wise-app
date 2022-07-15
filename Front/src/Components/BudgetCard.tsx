@@ -117,7 +117,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
           extra=
           {
               <div>{currencyFormatter.format(amount)} / {currencyFormatter.format(maxAmount)}
-                   <EditOutlined onClick={showEditModal} />
+                  {' '}<EditOutlined onClick={showEditModal} />
                    <Modal title="Edit Maximum Amount" visible={isEditModalVisible} onOk={handleEditOk} onCancel={handleEditCancel}>
                     <br/>
                     <label> Maximum Amount  </label> <br/>
