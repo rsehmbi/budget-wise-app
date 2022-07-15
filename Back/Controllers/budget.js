@@ -121,15 +121,15 @@ exports.addbudget = async (req, res) => {
     }
 }
 
-// Add new expenses for budget name already in database
+// Add new expenses for budget name already in database to the expensetable
 exports.addExpense = async (req, res) => {
-    var budgetname = req.body.budgetname
+    var budgetCategory = req.body.budgetcategory
     var amount = parseInt(req.body.amount)
-    var maxamount =  parseInt(req.body.maxamount)
+    var description =  req.body.description
     var currentUserId = res.locals.userid
-    const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
+    const add_budget_query = `INSERT INTO expensetable (userid, budgetcategory, amount, description, date) VALUES ($1,$2,$3,$4, NOW())`
     try {
-        await pool.query(add_budget_query,[currentUserId, budgetname, amount, maxamount])
+        await pool.query(add_budget_query,[currentUserId, budgetCategory, amount, description])
         res.json({
             isSuccess: true,
             message: "Success",
