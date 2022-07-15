@@ -50,18 +50,20 @@ function BudgetTable(){
     const [selectedName, setSelectedName] = useState([]);         // State indicating currently selected budget name
 
     // API to get the logs specific to userselected budget names
-    useEffect(() => {
-        let mounted = true;
+    function getBudgetCategories(){
         getBudgetList().then((response) => {response.json().then((response) => {
-                if (response) {
-                    setBudgetLogs(response.res)
-                    console.log("The budget logs are" + response.res)
-                }
-            })
+            if (response.isSuccess) {
+                setBudgetLogs(response.res)
+                console.log("The budget logs are" + response.res)
+            }
+            else{ 
+                console.log("Error in getting Budget Categoroes" + response.error)
+            }
         })
-        return () => mounted = false;
-    }, [])
+    })
+    }
 
+    // Function to get the drop down functions for the API built 
     function dropDownOptions(){
         getBudgetNames().then((response) => {response.json().then((response) => {
         if (response.isSuccess) {
@@ -81,9 +83,8 @@ function BudgetTable(){
 
     // API to get all the budget names
     useEffect(() => {
-        let mounted = true;
         dropDownOptions()
-        return () => mounted = false;
+        getBudgetCategories()
     },[])
 
     // To check when value is changed
