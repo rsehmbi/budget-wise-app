@@ -9,7 +9,7 @@ import * as React from "react";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" key="1">
       <BudgetPlanner></BudgetPlanner>
       <BudgetTable></BudgetTable>
     </div>

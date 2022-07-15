@@ -55,7 +55,6 @@ function BudgetTable(){
         getBudgetList().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
-                    console.log("The budget logs are" + response.res)
                 }
             })
         })
@@ -64,14 +63,13 @@ function BudgetTable(){
 
     function dropDownOptions(){
         getBudgetNames().then((response) => {response.json().then((response) => {
-        if (response.isSuccess) {
-            var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
+            if (response.isSuccess) {
+                var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
             var total = expensesType.length
             expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
             setBudgetNames(expensesType)
             // setBudgetNames(response.res)
-            console.log(total)
-            console.log(budgetNames)
+
         }
         else{
             console.log(response.message)
@@ -89,7 +87,6 @@ function BudgetTable(){
     // To check when value is changed
     const handleChange = (value) => {
         setSelectedName(value)
-        console.log(selectedName);
     }
 
     // Get budget logs according to the budget name selected
@@ -98,7 +95,6 @@ function BudgetTable(){
             getBudgetList().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
-                    console.log("The budget log is" + response.res)
                 }
             })
         })
@@ -107,7 +103,6 @@ function BudgetTable(){
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
-                    console.log(response.res)
                 }
             })
         })
