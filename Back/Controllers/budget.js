@@ -15,6 +15,26 @@ pool = new Pool({
     database: 'db'
 })
 
+exports.deleteAllBudgets = async (req, res) => {
+    var token = res.locals.userid
+    var delete_query_string = `DELETE FROM budgettable WHERE userid = $1`
+    try {
+        const result = await pool.query(delete_query_string,[token])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
 exports.deleteBudget = async (req, res) => {
     var token = res.locals.userid
     var budgetname = req.body.budgetname

@@ -56,10 +56,7 @@ export default function BudgetPlanner() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'x-access-token': localStorage.getItem('token')?.toString()
-            },
-            body: JSON.stringify({
-              'budgetname': cardTitle,
-            }) 
+            }
         }).then((response) => {
             response.json().then((response) => {
                 if (response['isSuccess']) {
