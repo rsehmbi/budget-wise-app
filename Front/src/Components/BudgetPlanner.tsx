@@ -84,13 +84,13 @@ export default function BudgetPlanner() {
                     <Button danger key="2">Delete All</Button>,
                     </Popconfirm>  
                 ]
-            }
-                
+            }    
             />
             <div style={budgetRows}>
             {
-                budgetList.map(budget => (
-                    <BudgetCard budgetApiCall={getBudgetListAPICall} key={ budget["budgetname"] } cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
+                    budgetList.map((budget, index) => (
+                    <ul key={index}></ul>
+                    // <BudgetCard budgetApiCall={getBudgetListAPICall} cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
             )) 
             }
             </div>

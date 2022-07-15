@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Modal, Input } from 'antd';
+import { Card, Modal, Input, Alert } from 'antd';
 import { Progress } from 'antd';
 import { Button, Popconfirm, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
@@ -104,7 +104,12 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
     };
     
     const handleMaxAmountChange = (event) => { 
-        setMaxEditAmount(event.target.value)
+        if (parseInt(event.target.value) < 0) {
+            message.info('Please enter positive values');
+        }
+        else { 
+            setMaxEditAmount(event.target.value)
+        } 
     }
 
   return (
@@ -116,7 +121,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
                    <Modal title="Edit Maximum Amount" visible={isEditModalVisible} onOk={handleEditOk} onCancel={handleEditCancel}>
                     <br/>
                     <label> Maximum Amount  </label> <br/>
-                    <Input onChange={handleMaxAmountChange} value={maxEditCardAmount} type="number"/> <br />
+                    <Input onChange={handleMaxAmountChange} min="0" value={maxEditCardAmount} type="number"/> <br />
                    </Modal>
               </div>
           }>
