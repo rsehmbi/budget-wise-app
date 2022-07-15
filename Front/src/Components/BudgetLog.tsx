@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Select, Button} from 'antd';
+import {Table, Select, Button, message} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
@@ -64,7 +64,7 @@ function BudgetTable(){
 
     function dropDownOptions(){
         getBudgetNames().then((response) => {response.json().then((response) => {
-        if (response) {
+        if (response.isSuccess) {
             var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
             var total = expensesType.length
             expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
@@ -72,6 +72,9 @@ function BudgetTable(){
             // setBudgetNames(response.res)
             console.log(total)
             console.log(budgetNames)
+        }
+        else{
+            console.log(response.message)
         }
     })
     })}

@@ -1,4 +1,4 @@
-import { PageHeader, Button } from 'antd';
+import {PageHeader, Button, message} from 'antd';
 import BudgetCard from './BudgetCard.tsx';
 import React, { useState } from 'react';
 import AddBudget from './AddBudget.tsx';
@@ -16,9 +16,11 @@ export default function BudgetPlanner() {
                 'Accept': 'application/json'}
         }).then((response) => {
             response.json().then((response) => {
-                if (response) {
+                if (response.success) {
                     setBudgetList(response.res)
-
+                }
+                else{
+                    console.log(response.message)
                 }
             })
         })
