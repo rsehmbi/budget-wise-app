@@ -3,6 +3,7 @@ import {Table, Select, Button} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import { parseDate } from "../Utils/UtilFunctions.ts";
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
@@ -54,12 +55,13 @@ function BudgetTable(){
     const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
     const [selectedName, setSelectedName] = useState([]);         // State indicating currently selected budget name
 
-    // API to get the logs specific to userselected budget names
+    // Get all budget logs
     function getBudgetCategories(){
         getBudgetLogs().then((response) => {response.json().then((response) => {
             if (response.isSuccess) {
+                parseDate(response.res)
                 setBudgetLogs(response.res)
-                console.log("The budget logs are" + response.res)
+                // console.log("The budget logs are" + response.res)
             }
             else{ 
                 console.log("Error in getting Budget Categoroes" + response.error)
@@ -75,8 +77,7 @@ function BudgetTable(){
             var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
             expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
             setBudgetNames(expensesType)
-            // setBudgetNames(response.res)
-            console.log("The budget names are: " + budgetNames)
+            // console.log("The budget names are: " + budgetNames)
         }
         else{
             console.log("Drop down menu failure: " +response.message)
@@ -102,8 +103,9 @@ function BudgetTable(){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
             getBudgetLogs().then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
+                    parseDate(response.res)
                     setBudgetLogs(response.res)
-                    console.log("The budget log is" + response.res)
+                    // console.log("The budget log is" + response.res)
                 }
                 else{
                     console.log("Failed to get all budget logs: " + response.error)
@@ -114,8 +116,9 @@ function BudgetTable(){
         else{                                     // Otherwise get log specific to the budget name
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
+                    parseDate(response.res)
                     setBudgetLogs(response.res)
-                    console.log(response.res)
+                    // console.log(response.res)
                 }
                 else{
                     console.log("Failed to get category specific logs: "+response.error)

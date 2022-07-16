@@ -37,9 +37,10 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
     setmaxamount(event.target.value)
   }
 
-  const handleAddAmountChange = (event) => { 
-    setamount(event.target.value)
-  }
+  // Commenting it out until deature finalizes
+  // const handleAddAmountChange = (event) => { 
+  //   setamount(event.target.value)
+  // }
 
   const validateInputs = () => {
     if (expense !== "" && maxamount !== 0 && amount !== 0) { 
@@ -75,9 +76,9 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
           <Input onChange={handleAmountChange}  value={maxamount} type="number" placeholder="Ex: $500, $800 etc." /> <br />
 
           <br/>
-
+          {/* Can't Initial amount as we need description too for each amount, will need a query change if this is needed to add to both tables
           <label> Initial Amount  </label> <br/>
-          <Input onChange={handleAddAmountChange}  value={amount} type="number" placeholder="Ex: $50, $80 etc." /> <br />
+          <Input onChange={handleAddAmountChange}  value={amount} type="number" placeholder="Ex: $50, $80 etc." /> <br /> */}
       </Modal>
       </>
 
