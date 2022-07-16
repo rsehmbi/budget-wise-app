@@ -19,7 +19,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
 
     const okClickHandle = () => {
         if (validateInputs() === true) {
-            updatebudgetAPICall();
+            addExpenseAPICall();
             handleOk();
             setDefaultValues();
         }
@@ -34,7 +34,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
         setAmount(event.target.value)
     }
 
-    const updatebudgetAPICall = async () => {
+    const addExpenseAPICall = async () => {
         await fetch('http://localhost:3000/addExpense', {
             method: 'POST',
             headers: {

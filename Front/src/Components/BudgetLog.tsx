@@ -11,8 +11,8 @@ const ALL_LOGS = 'All';                          // For state where we get all i
 // Columns to display in logs
 const columns = [
     {
-        title: 'Budget Name',
-        dataIndex: 'budgetname',
+        title: 'Budget Category',
+        dataIndex: 'budgetcategory',
         key: 'budgetname',
     },
     {
@@ -21,9 +21,14 @@ const columns = [
         key: 'amount',
     },
     {
-        title: 'Max Amount',
-        dataIndex: 'maximumamount',
-        key: 'maximumamount',
+        title: 'Desciption',
+        dataIndex: 'description',
+        key: 'description',
+    },
+    {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
     }
 ]
 
@@ -68,23 +73,22 @@ function BudgetTable(){
         getBudgetNames().then((response) => {response.json().then((response) => {
         if (response.isSuccess) {
             var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
-            var total = expensesType.length
             expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
             setBudgetNames(expensesType)
             // setBudgetNames(response.res)
-            console.log(total)
-            console.log(budgetNames)
+            console.log("The budget names are: " + budgetNames)
         }
         else{
-            console.log(response.message)
+            console.log("Drop down menu failure: " +response.message)
         }
     })
     })}
 
     // API to get all the budget names
     useEffect(() => {
-        dropDownOptions()
-        getBudgetCategories()
+        dropDownOptions();
+        getBudgetCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     // To check when value is changed
