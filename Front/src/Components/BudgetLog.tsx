@@ -1,9 +1,10 @@
 import * as React from "react";
-import {Table, Select, Button} from 'antd';
+import {Table, Select, Button, Space} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
 import { parseDate } from "../Utils/UtilFunctions.ts";
+import { DeleteFilled, EditFilled } from "@ant-design/icons";
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
@@ -30,7 +31,17 @@ const columns = [
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
-    }
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        render: (_) => (
+          <Space size="middle">
+            <Button icon={<EditFilled />}></Button>
+            <Button danger icon={<DeleteFilled />}></Button>
+          </Space>
+        ),
+      }
 ]
 
 
