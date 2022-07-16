@@ -131,7 +131,7 @@ function BudgetTable(){
             defaultValue = {ALL_LOGS}
             style={SelectMenuProperties}
             onChange={handleChange}
-            onSelect={getBudgetLogs}
+            onSelect={getAllBudgetLogs}
             >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>

@@ -196,7 +196,7 @@ exports.getBudgetNames = async(req,res) => {
 exports.getNameLogs = async(req, res) => {
     const budgetName = req.params.name
     var currentUserId = res.locals.userid
-    const getAllExpenses = `SELECT * FROM expense WHERE userid = $1 AND budgetcategory = $2`
+    const getAllExpenses = `SELECT * FROM expensetable WHERE userid = $1 AND budgetcategory = $2`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId, budgetName])
         res.json({
@@ -220,8 +220,7 @@ exports.getBudgetLogs = async (req, res) => {
     var token = res.locals.userid
     var query_string = `SELECT * FROM expensetable WHERE userid = $1`
     try {
-        const result = await pool.query(query_string,[token])
-        console.log(result.rows)
+        const result = await pool.query(query_string, [token])
         res.json({
             isSuccess: true,
             message: "Success",
