@@ -2,8 +2,7 @@ const { response } = require('express');
 const { Pool } = require('pg');
 var pool;
 
-const contants = require('./constants');
-let TEST_TOKEN = contants.TEST_TOKEN
+var TEST_TOKEN = "U2FsdGVkX18/MBV90AXZBpcvv99bu153rmAdkzO1jjc="
 
 pool = new Pool({
     connectionString: 'postgres://abcbzhmz:WKDuSCwBbWd6SInyA0nRfGUMlI1fbOCY@heffalump.db.elephantsql.com/abcbzhmz',
