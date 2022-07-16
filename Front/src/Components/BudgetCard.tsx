@@ -16,7 +16,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
     const [maxEditCardAmount, setMaxEditAmount] = React.useState(maxAmount);
 
     const updateMaxAmountAPICall = async () => {
-        await fetch('/updateMaxAmount', {
+        await fetch('http://localhost:3000/updateMaxAmount', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

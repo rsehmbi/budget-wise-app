@@ -86,12 +86,12 @@ function Main() {
                             Budget Wise App
                         </Row>
                     </Col>
-                    <Col span={12}>
+                    {/* <Col span={12}>
                         <Row style={{paddingTop: "10px", paddingLeft: "25px", height: "40px", alignItems: "center", justifyContent:"center"}}>
                             <Link to="/"><div>Budget Portfolio</div> </Link>
                             <Link to="/BudgetLog"><div>Budget Logs</div></Link>
                         </Row>
-                    </Col>
+                    </Col> */}
                     <Col span={6}>
                         <Row style={{paddingRight: "25px", justifyContent: "flex-end", alignItems: "center", height: "40px", paddingTop: "10px"}}>
                             <div className={'text'} style={{paddingRight: "20px"}}>{email}</div>
@@ -102,10 +102,11 @@ function Main() {
                     </Col>
                 </Row>
                 <div style={{marginTop: "50px"}}>
-                    <Routes>
+                    {/* <Routes>
                         <Route path="/" element={<BudgetPlanner/>}></Route>
                         <Route path="/BudgetLog" element={<BudgetTable/>}> </Route>
-                    </Routes>
+                    </Routes> */}
+                    <App/>
                 </div>
             </div>
         )

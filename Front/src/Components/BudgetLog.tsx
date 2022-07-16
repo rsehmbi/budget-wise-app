@@ -3,7 +3,7 @@ import {Table, Select, Button, Space} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
-import { parseDate } from "../Utils/UtilFunctions.ts";
+import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 
 const {Option} = Select;                         // For specifiying drop down menu options
@@ -70,7 +70,8 @@ function BudgetTable(){
     function getBudgetCategories(){
         getBudgetLogs().then((response) => {response.json().then((response) => {
             if (response.isSuccess) {
-                parseDate(response.res)
+                parseDate(response.res)       // Set date format
+                addCurrency(response.res)     // Add currency type
                 setBudgetLogs(response.res)
                 // console.log("The budget logs are" + response.res)
             }
@@ -113,7 +114,8 @@ function BudgetTable(){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
             getBudgetLogs().then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
-                    parseDate(response.res)
+                    parseDate(response.res)        // Set date format
+                    addCurrency(response.res)      // Add currency type
                     setBudgetLogs(response.res)
                     // console.log("The budget log is" + response.res)
                 }
@@ -126,7 +128,8 @@ function BudgetTable(){
         else{                                     // Otherwise get log specific to the budget name
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
-                    parseDate(response.res)
+                    parseDate(response.res)       // Set date formate
+                    addCurrency(response.res)     // Add currency type
                     setBudgetLogs(response.res)
                     // console.log(response.res)
                 }

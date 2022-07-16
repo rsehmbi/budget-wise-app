@@ -8,7 +8,7 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
   const [amount, setamount] = React.useState(0);
 
   const addbudgetAPICall = async () => {
-      await fetch('/addbudget', {
+      await fetch('http://localhost:3000/addbudget', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',

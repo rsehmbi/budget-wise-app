@@ -1,7 +1,7 @@
 
 
 export function LoginCall(email){
-    return fetch('/login', {
+    return fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ export function LoginCall(email){
 }
 
 export function SignUp(email){
-    return fetch('/signUp', {
+    return fetch('http://localhost:3000/signUp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export function SignUp(email){
 }
 
 export function isAuth(){
-    return fetch('/isUserAuth', {
+    return fetch('http://localhost:3000/isUserAuth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

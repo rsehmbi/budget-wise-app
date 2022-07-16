@@ -36,7 +36,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
     }
 
     const addExpenseAPICall = async () => {
-        await fetch('/addExpense', {
+        await fetch('http://localhost:3000/addExpense', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
