@@ -3,7 +3,7 @@ const _r = express.Router()
 const jwt = require("jsonwebtoken");
 
 const { login , isUserAuth, signUp} = require('../Controllers/login')
-const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getNameLogs, deleteBudget, deleteAllBudgets } =  require('../Controllers/budget')
+const { getbudgetList, getBudgetAggregate, addbudget, addExpense, updatebudget, getBudgetNames, getBudgetLogs, getNameLogs, deleteBudget, deleteAllBudgets } =  require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -39,6 +39,7 @@ _r.put('/updatebudget', verifyJWT, updatebudget)
 _r.get('/getBudgetNames',verifyJWT, getBudgetNames)
 _r.delete('/deleteBudget', verifyJWT, deleteBudget)
 _r.delete('/deleteAllBudgets', verifyJWT, deleteAllBudgets)
-_r.get('/getBudgetList/:name', verifyJWT, getNameLogs)
+_r.get('/getbudgetlogs', verifyJWT, getBudgetLogs)
+_r.get('/getbudgetlogs/:name', verifyJWT, getNameLogs)
 
 module.exports = _r

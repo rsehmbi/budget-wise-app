@@ -55,7 +55,7 @@ exports.deleteBudget = async (req, res) => {
         })
     }
 }
-// Get logs of all budgets
+// Get logs of all budgets from budgettable
 exports.getbudgetList = async (req, res) => {
     var token = res.locals.userid
     var query_string = `SELECT * FROM budgettable WHERE userid = $1`
@@ -196,7 +196,7 @@ exports.getBudgetNames = async(req,res) => {
 exports.getNameLogs = async(req, res) => {
     const budgetName = req.params.name
     var currentUserId = res.locals.userid
-    const getAllExpenses = `SELECT * FROM budgettable WHERE userid = $1 AND budgetname = $2`
+    const getAllExpenses = `SELECT * FROM expense WHERE userid = $1 AND budgetcategory = $2`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId, budgetName])
         res.json({
@@ -213,4 +213,27 @@ exports.getNameLogs = async(req, res) => {
         })
     }
 
+}
+
+// Get logs of all budgets from expensetable
+exports.getBudgetLogs = async (req, res) => {
+    var token = res.locals.userid
+    var query_string = `SELECT * FROM expensetable WHERE userid = $1`
+    try {
+        const result = await pool.query(query_string,[token])
+        console.log(result.rows)
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+        
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
 }

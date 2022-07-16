@@ -2,7 +2,7 @@ import * as React from "react";
 import {Table, Select, Button} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
-import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
@@ -56,7 +56,7 @@ function BudgetTable(){
 
     // API to get the logs specific to userselected budget names
     function getBudgetCategories(){
-        getBudgetList().then((response) => {response.json().then((response) => {
+        getBudgetLogs().then((response) => {response.json().then((response) => {
             if (response.isSuccess) {
                 setBudgetLogs(response.res)
                 console.log("The budget logs are" + response.res)
@@ -97,10 +97,10 @@ function BudgetTable(){
         console.log(selectedName);
     }
 
-    // Get budget logs according to the budget name selected
-    function getBudgetLogs(value){
+    // Get budget logs according to the budget name selected by user
+    function getAllBudgetLogs(value){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
-            getBudgetList().then((response) => {response.json().then((response) => {
+            getBudgetLogs().then((response) => {response.json().then((response) => {
                 if (response) {
                     setBudgetLogs(response.res)
                     console.log("The budget log is" + response.res)
@@ -121,7 +121,7 @@ function BudgetTable(){
 
     // Refresh after adding expense or budget
     function refreshLogs(){
-        getBudgetLogs(selectedName)
+        getAllBudgetLogs(selectedName)
         dropDownOptions()
     }
 
