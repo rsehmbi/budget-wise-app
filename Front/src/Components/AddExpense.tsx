@@ -20,6 +20,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
     const okClickHandle = () => {
         if (validateInputs() === true) {
             addExpenseAPICall();
+
             handleOk();
             setDefaultValues();
         }
