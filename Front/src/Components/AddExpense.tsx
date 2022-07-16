@@ -1,17 +1,17 @@
 import { Modal, Input } from 'antd';
 import * as React from "react";
 
-function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handleCancel}) {
+function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
     const [amount, setAmount] = React.useState(0);
-    const [maxAmount, setMaxAmount] = React.useState(maxamount);
+    const [expenseDescrip, SetExpenseDescrip] = React.useState("")
 
     const setDefaultValues = () => {
         setAmount(0)
-        // setMaxAmount(0)
+        SetExpenseDescrip("")
     }
     
     const validateInputs = () => {
-        if (amount !== 0 && maxAmount !== 0) { 
+        if (amount !== 0 && expenseDescrip !== "") { 
             return true
         }
         return false
@@ -19,23 +19,23 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
 
     const okClickHandle = () => {
         if (validateInputs() === true) {
-            updatebudgetAPICall();
+            addExpenseAPICall();
+
             handleOk();
             setDefaultValues();
         }
         handleCancel()
-        
     }
 
-    const handleMaxAmountChange = (event) => { 
-        setMaxAmount(event.target.value)
+    const handleDesciptionChange = (event) => { 
+        SetExpenseDescrip(event.target.value)
     }
 
     const handleAmountChange = (event) => { 
         setAmount(event.target.value)
     }
 
-    const updatebudgetAPICall = async () => {
+    const addExpenseAPICall = async () => {
         await fetch('http://localhost:3000/addExpense', {
             method: 'POST',
             headers: {
@@ -44,9 +44,9 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
                 'x-access-token': localStorage.getItem('token')?.toString()
             },
             body: JSON.stringify({
-              'budgetname': title,
+              'budgetcategory': title,
               'amount': amount,
-              'maxamount': maxamount,
+              'description': expenseDescrip ,
             }) 
         }).then((response) => {
             response.json().then((response) => {
@@ -64,8 +64,8 @@ function AddExpense({ budgetApiCall, title, maxamount, visible, handleOk, handle
           <Input  onChange={handleAmountChange} value={amount} type="number" /> <br />
               
           <br/>
-          <label> Maximum Amount  </label> <br/>
-          <Input onChange={handleMaxAmountChange} value={maxAmount} type="number"/> <br />
+          <label> Description </label> <br/>
+          <Input onChange={handleDesciptionChange} maxLength={20} value={expenseDescrip} type="string"/> <br />
       </Modal>
       </>
   )

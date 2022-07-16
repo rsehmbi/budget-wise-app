@@ -138,7 +138,8 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
                 <Button danger style={btnStyle}> Delete Expense</Button>
                 </Popconfirm>
             </div>
-          <AddExpense budgetApiCall={ budgetApiCall } title={cardTitle} maxamount={ maxAmount } visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk} ></AddExpense>
+          <AddExpense budgetApiCall={ budgetApiCall } title={cardTitle} visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk} ></AddExpense>
+
       </Card>
   )
 }

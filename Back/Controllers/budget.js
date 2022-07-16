@@ -55,7 +55,7 @@ exports.deleteBudget = async (req, res) => {
         })
     }
 }
-// Get logs of all budgets
+// Get logs of all budgets from budgettable
 exports.getbudgetList = async (req, res) => {
     var token = res.locals.userid
     var query_string = `SELECT * FROM budgettable WHERE userid = $1`
@@ -121,15 +121,18 @@ exports.addbudget = async (req, res) => {
     }
 }
 
-// Add new expenses for budget name already in database
+// Add new expenses for budget name already in database to the expensetable and update amount in budgettable
 exports.addExpense = async (req, res) => {
-    var budgetname = req.body.budgetname
+    var budgetCategory = req.body.budgetcategory
     var amount = parseInt(req.body.amount)
-    var maxamount =  parseInt(req.body.maxamount)
+    var description =  req.body.description
     var currentUserId = res.locals.userid
-    const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
+    const add_budget_query = `INSERT INTO expensetable (userid, budgetcategory, amount, description, date) VALUES ($1,$2,$3,$4, CURRENT_DATE)`
+    const update_amount = `UPDATE budgettable SET amount = (SELECT sum(amount) FROM expensetable WHERE budgetcategory=$1 AND userid=$2 GROUP BY budgetcategory) WHERE userid=$3 AND budgetname=$4`
+    
     try {
-        await pool.query(add_budget_query,[currentUserId, budgetname, amount, maxamount])
+        await pool.query(add_budget_query,[currentUserId, budgetCategory, amount, description])
+        await pool.query(update_amount, [budgetCategory, currentUserId, currentUserId, budgetCategory])
         res.json({
             isSuccess: true,
             message: "Success",
@@ -222,7 +225,7 @@ exports.getBudgetNames = async(req,res) => {
 exports.getNameLogs = async(req, res) => {
     const budgetName = req.params.name
     var currentUserId = res.locals.userid
-    const getAllExpenses = `SELECT * FROM budgettable WHERE userid = $1 AND budgetname = $2`
+    const getAllExpenses = `SELECT * FROM expensetable WHERE userid = $1 AND budgetcategory = $2`
     try {
         const result = await pool.query(getAllExpenses, [currentUserId, budgetName])
         res.json({
@@ -239,4 +242,26 @@ exports.getNameLogs = async(req, res) => {
         })
     }
 
+}
+
+// Get logs of all budgets from expensetable
+exports.getBudgetLogs = async (req, res) => {
+    var token = res.locals.userid
+    var query_string = `SELECT * FROM expensetable WHERE userid = $1`
+    try {
+        const result = await pool.query(query_string, [token])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+        
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
 }

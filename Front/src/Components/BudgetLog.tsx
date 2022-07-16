@@ -2,7 +2,8 @@ import * as React from "react";
 import {Table, Select, Button} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
-import { getBudgetList, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import { parseDate } from "../Utils/UtilFunctions.ts";
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
@@ -11,8 +12,8 @@ const ALL_LOGS = 'All';                          // For state where we get all i
 // Columns to display in logs
 const columns = [
     {
-        title: 'Budget Name',
-        dataIndex: 'budgetname',
+        title: 'Budget Category',
+        dataIndex: 'budgetcategory',
         key: 'budgetname',
     },
     {
@@ -21,9 +22,14 @@ const columns = [
         key: 'amount',
     },
     {
-        title: 'Max Amount',
-        dataIndex: 'maximumamount',
-        key: 'maximumamount',
+        title: 'Desciption',
+        dataIndex: 'description',
+        key: 'description',
+    },
+    {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
     }
 ]
 
@@ -49,39 +55,41 @@ function BudgetTable(){
     const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
     const [selectedName, setSelectedName] = useState([]);         // State indicating currently selected budget name
 
-    // API to get the logs specific to userselected budget names
-    useEffect(() => {
-        let mounted = true;
-        getBudgetList().then((response) => {response.json().then((response) => {
-                if (response) {
-                    setBudgetLogs(response.res)
-                }
-            })
+    // Get all budget logs
+    function getBudgetCategories(){
+        getBudgetLogs().then((response) => {response.json().then((response) => {
+            if (response.isSuccess) {
+                parseDate(response.res)
+                setBudgetLogs(response.res)
+                // console.log("The budget logs are" + response.res)
+            }
+            else{ 
+                console.log("Error in getting Budget Categoroes" + response.error)
+            }
         })
-        return () => mounted = false;
-    }, [])
+    })
+    }
 
+    // Function to get the drop down functions for the API built 
     function dropDownOptions(){
         getBudgetNames().then((response) => {response.json().then((response) => {
-            if (response.isSuccess) {
-                var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
-            var total = expensesType.length
+        if (response.isSuccess) {
+            var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
             expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
             setBudgetNames(expensesType)
-            // setBudgetNames(response.res)
-
+            // console.log("The budget names are: " + budgetNames)
         }
         else{
-            console.log(response.message)
+            console.log("Drop down menu failure: " +response.message)
         }
     })
     })}
 
     // API to get all the budget names
     useEffect(() => {
-        let mounted = true;
-        dropDownOptions()
-        return () => mounted = false;
+        dropDownOptions();
+        getBudgetCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     // To check when value is changed
@@ -89,20 +97,30 @@ function BudgetTable(){
         setSelectedName(value)
     }
 
-    // Get budget logs according to the budget name selected
-    function getBudgetLogs(value){
+    // Get budget logs according to the budget name selected by user
+    function getAllBudgetLogs(value){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
-            getBudgetList().then((response) => {response.json().then((response) => {
-                if (response) {
+            getBudgetLogs().then((response) => {response.json().then((response) => {
+                if (response.isSuccess) {
+                    parseDate(response.res)
                     setBudgetLogs(response.res)
+                    // console.log("The budget log is" + response.res)
+                }
+                else{
+                    console.log("Failed to get all budget logs: " + response.error)
                 }
             })
         })
         }
         else{                                     // Otherwise get log specific to the budget name
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
-                if (response) {
+                if (response.isSuccess) {
+                    parseDate(response.res)
                     setBudgetLogs(response.res)
+                    // console.log(response.res)
+                }
+                else{
+                    console.log("Failed to get category specific logs: "+response.error)
                 }
             })
         })
@@ -111,7 +129,7 @@ function BudgetTable(){
 
     // Refresh after adding expense or budget
     function refreshLogs(){
-        getBudgetLogs(selectedName)
+        getAllBudgetLogs(selectedName)
         dropDownOptions()
     }
 
@@ -121,7 +139,7 @@ function BudgetTable(){
             defaultValue = {ALL_LOGS}
             style={SelectMenuProperties}
             onChange={handleChange}
-            onSelect={getBudgetLogs}
+            onSelect={getAllBudgetLogs}
             >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>
