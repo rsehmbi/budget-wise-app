@@ -16,7 +16,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
     const [maxEditCardAmount, setMaxEditAmount] = React.useState(maxAmount);
 
     const updateMaxAmountAPICall = async () => {
-        await fetch('http://localhost:3000/updateMaxAmount', {
+        await fetch('/updateMaxAmount', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
     }
     
     const confirm = async (e: React.MouseEvent<HTMLElement>) => {
-        await fetch('http://localhost:3000/deleteBudget', {
+        await fetch('/deleteBudget', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

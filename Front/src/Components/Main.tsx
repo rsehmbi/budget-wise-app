@@ -13,8 +13,9 @@ import {gapi} from "gapi-script";
 // @ts-ignore
 import {isAuth} from "../Services/Login.ts";
 import {Button, Col, message, Row, Tooltip} from "antd";
-import {Route, Routes} from 'react-router-dom'
+// import {Route, Routes} from 'react-router-dom'
 import App from "./App.tsx";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 
 
 export function encrypted(encryptString: string){
@@ -80,12 +81,18 @@ function Main() {
         return (
             <div>
                 <Row style={{height: "50px", width: "100%", position: "fixed", top: 0, boxShadow: "0 2px 8px #f0f1f2",zIndex: 1000, backgroundColor: "#e7e7e7"}}>
-                    <Col span={12}>
+                    <Col span={6}>
                         <Row style={{paddingTop: "10px", paddingLeft: "25px", height: "40px", alignItems: "center"}}>
                             Budget Wise App
                         </Row>
                     </Col>
                     <Col span={12}>
+                        <Row style={{paddingTop: "10px", paddingLeft: "25px", height: "40px", alignItems: "center", justifyContent:"center"}}>
+                            <Link to="/"><div>Budget Portfolio</div> </Link>
+                            <Link to="/BudgetLog"><div>Budget Logs</div></Link>
+                        </Row>
+                    </Col>
+                    <Col span={6}>
                         <Row style={{paddingRight: "25px", justifyContent: "flex-end", alignItems: "center", height: "40px", paddingTop: "10px"}}>
                             <div className={'text'} style={{paddingRight: "20px"}}>{email}</div>
                             <Tooltip placement="bottom" title={"Log out"}>
@@ -95,7 +102,10 @@ function Main() {
                     </Col>
                 </Row>
                 <div style={{marginTop: "50px"}}>
-                    <App />
+                    <Routes>
+                        <Route path="/" element={<BudgetPlanner/>}></Route>
+                        <Route path="/BudgetLog" element={<BudgetTable/>}> </Route>
+                    </Routes>
                 </div>
             </div>
         )

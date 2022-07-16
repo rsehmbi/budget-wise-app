@@ -37,8 +37,8 @@ const columns = [
         key: 'action',
         render: (_) => (
           <Space size="middle">
-            <Button icon={<EditFilled />}></Button>
-            <Button danger icon={<DeleteFilled />}></Button>
+            <Button type="link" icon={<EditFilled />}></Button>
+            <Button type="link" danger icon={<DeleteFilled />}></Button>
           </Space>
         ),
       }

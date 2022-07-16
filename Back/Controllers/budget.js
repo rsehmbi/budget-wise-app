@@ -61,6 +61,7 @@ exports.getbudgetList = async (req, res) => {
     var query_string = `SELECT * FROM budgettable WHERE userid = $1`
     try {
         const result = await pool.query(query_string,[token])
+        console.log(result.rows)
         res.json({
             isSuccess: true,
             message: "Success",
