@@ -147,6 +147,32 @@ exports.addExpense = async (req, res) => {
     }
 }
 
+
+exports.updateMaxAmount = async (req, res) => {
+    var maxamount = parseInt(req.body.maxamount)
+    var budgetname =  req.body.budgetname
+    var currentUserId = res.locals.userid
+    
+    const update_budget_query = `UPDATE "budgettable" 
+                   SET "maximumamount" = $1 
+                   WHERE "userid" = $2 AND "budgetname" = $3`
+    try {
+        await pool.query(update_budget_query,[maxamount, currentUserId, budgetname])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+        console.log(error)
+    }
+}
+
 /* TODO: Convert this function to Update only max amount and add option in card to update max amount 
     Max amount will be same for a budget name and won't be shown in logs
     Log will show budget name, expense added, description and date

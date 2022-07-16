@@ -9,7 +9,6 @@ export default function BudgetPlanner() {
     const [isModalVisible, setIsModalVisible] = useState(false); 
 
     const getBudgetListAPICall = async () => {
-        console.log("The test token is"+ localStorage.getItem('token'))
         await fetch('http://localhost:3000/getBudgetList', {
             method: 'GET',
             headers: {
@@ -85,8 +84,7 @@ export default function BudgetPlanner() {
                     <Button danger key="2">Delete All</Button>,
                     </Popconfirm>  
                 ]
-            }
-                
+            }    
             />
             <div style={budgetRows}>
             {

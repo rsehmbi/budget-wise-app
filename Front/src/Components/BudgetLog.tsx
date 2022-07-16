@@ -95,7 +95,6 @@ function BudgetTable(){
     // To check when value is changed
     const handleChange = (value) => {
         setSelectedName(value)
-        console.log(selectedName);
     }
 
     // Get budget logs according to the budget name selected by user

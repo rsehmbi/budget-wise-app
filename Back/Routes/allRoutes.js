@@ -31,7 +31,7 @@ const verifyJWT = (req, res, next) => {
 _r.post('/login', login)
 _r.post('/signUp', signUp)
 _r.post('/isUserAuth', isUserAuth)
-_r.get('/getbudgetList', verifyJWT,  getbudgetList)
+_r.get('/getbudgetList', verifyJWT, getbudgetList)
 _r.get('/getbudgetaggregate', verifyJWT, getBudgetAggregate)
 _r.post('/addbudget',verifyJWT, addbudget)
 _r.post('/addExpense', verifyJWT, addExpense)
