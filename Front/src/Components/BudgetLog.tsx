@@ -101,18 +101,24 @@ function BudgetTable(){
     function getAllBudgetLogs(value){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
             getBudgetLogs().then((response) => {response.json().then((response) => {
-                if (response) {
+                if (response.isSuccess) {
                     setBudgetLogs(response.res)
                     console.log("The budget log is" + response.res)
+                }
+                else{
+                    console.log("Failed to get all budget logs: " + response.error)
                 }
             })
         })
         }
         else{                                     // Otherwise get log specific to the budget name
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
-                if (response) {
+                if (response.isSuccess) {
                     setBudgetLogs(response.res)
                     console.log(response.res)
+                }
+                else{
+                    console.log("Failed to get category specific logs: "+response.error)
                 }
             })
         })
