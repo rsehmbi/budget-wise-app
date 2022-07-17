@@ -64,8 +64,7 @@ const refreshProperties = {
 function BudgetTable(){
     const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
     const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
-    const [selectedName, setSelectedName] = useState([]);         // State indicating currently selected budget name
-
+    
     // Get all budget logs
     function getBudgetCategories(){
         getBudgetLogs().then((response) => {response.json().then((response) => {
@@ -141,12 +140,6 @@ function BudgetTable(){
         }
     }
 
-    // Refresh after adding expense or budget
-    function refreshLogs(){
-        getAllBudgetLogs(selectedName)
-        dropDownOptions()
-    }
-
     return(
     <>
         <Select
@@ -157,7 +150,7 @@ function BudgetTable(){
             >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>
-        <Button style= {refreshProperties} onClick={refreshLogs} type="primary">Refresh Logs</Button>
+        <Button style= {refreshProperties} type="primary">Refresh Logs</Button>
 
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
     </>
