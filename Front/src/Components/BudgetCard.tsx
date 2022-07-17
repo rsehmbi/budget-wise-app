@@ -40,10 +40,16 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
         setIsEditModalVisible(true);
     };
 
+
     const handleEditOk = () => {
-        updateMaxAmountAPICall();
-        setMaxEditAmount(maxEditCardAmount)
-        setIsEditModalVisible(false);
+        if (!Number.isInteger(Number(maxEditCardAmount))) {
+            message.warning("Max amount should be integer")
+        }
+        else{
+            updateMaxAmountAPICall();
+            setMaxEditAmount(maxEditCardAmount)
+            setIsEditModalVisible(false);
+        }
     };
 
     const handleEditCancel = () => {

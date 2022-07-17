@@ -11,10 +11,20 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
     }
     
     const validateInputs = () => {
-        if (amount !== 0 && expenseDescrip !== "") { 
+        if (expenseDescrip === ""){
+            message.warning("Please enter the expense name")
+            return false
+
+        } else if (amount === 0){
+            message.warning("Max amount should not be equal to 0")
+            return false
+
+        }else if (!Number.isInteger(Number(amount))){
+            message.warning("Max amount should be integer")
+            return false
+        }else{
             return true
         }
-        return false
     }
 
     const okClickHandle = () => {
@@ -23,7 +33,12 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
 
             handleOk();
             setDefaultValues();
+            handlePreCancel()
         }
+    }
+
+    const handlePreCancel = () => {
+        setDefaultValues()
         handleCancel()
     }
 
@@ -63,7 +78,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
     
   return (
         <>
-          <Modal title={ title } visible={visible} onOk={okClickHandle} onCancel={handleCancel}>
+          <Modal title={ title } visible={visible} onOk={okClickHandle} onCancel={handlePreCancel}>
           <label> Amount  </label> <br/>
           <Input  onChange={handleAmountChange} value={amount} type="number" /> <br />
               

@@ -1,8 +1,8 @@
-import { Modal, Input } from 'antd';
+import {Modal, Input, message} from 'antd';
 import React from 'react';
 
 
-function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
+ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk, budgetList}) {
   const [expense, setexpense] = React.useState("");
   const [maxamount, setmaxamount] = React.useState(0);
   const [amount, setamount] = React.useState(0);
@@ -33,7 +33,7 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
     setexpense(event.target.value)
   }
 
-  const handleAmountChange = (event) => { 
+  const handleAmountChange = (event) => {
     setmaxamount(event.target.value)
   }
 
@@ -42,11 +42,41 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
   //   setamount(event.target.value)
   // }
 
+     const validateCopies = (expens) => {
+         budgetList.map((el) => {
+             if(el.budgetname === expens){
+                 return true
+             }
+         })
+         return false
+     }
+
   const validateInputs = () => {
-    if (expense !== "" && maxamount !== 0) { 
-      return true
+    if (expense === ""){
+        message.warning("Please enter the expense name")
+        return false
+
+    }else if(validateCopies(expense)) {
+        message.warning("expense name already exists")
+        return false
     }
-    return false
+    else if (maxamount === 0){
+        message.warning("Max amount should not be equal to 0")
+        return false
+
+    }else if (!Number.isInteger(Number(maxamount))){
+        message.warning("Max amount should be integer")
+        return false
+    }else{
+        return true
+    }
+
+
+  }
+
+  const handlePreCancel = () => {
+      setDefaultValues()
+      handleCancel()
   }
 
   const setDefaultValues = () => {
@@ -60,13 +90,14 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
       addbudgetAPICall();
       handleOk();
       setDefaultValues();
+      handlePreCancel()
     }
-    handleCancel()
+
   }
 
     return (
       <>
-        <Modal title="Add Budget" visible={visible} onOk={okClickHandle} onCancel={handleCancel}>
+        <Modal title="Add Budget" visible={visible} onOk={okClickHandle} onCancel={handlePreCancel}>
           <label> Expense </label> <br/>
           <Input onChange={handleExpenseChange} value={expense} placeholder="Ex: Groceries, car payment etc." /> <br />
           
