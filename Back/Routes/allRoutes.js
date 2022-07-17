@@ -40,7 +40,9 @@ const verifyJWT = (req, res, next) => {
 _r.post('/login', login)
 _r.post('/signUp', signUp)
 _r.post('/isUserAuth', isUserAuth)
+
 _r.get('/getbudgetList', verifyJWT, getbudgetList)
+
 _r.get('/getbudgetaggregate', verifyJWT, getBudgetAggregate)
 _r.post('/addbudget',verifyJWT, addbudget)
 _r.post('/addExpense', verifyJWT, addExpense)
@@ -49,7 +51,9 @@ _r.get('/BudgetLog/getBudgetNames',verifyJWT, getBudgetNames)
 _r.delete('/deleteBudget', verifyJWT, deleteBudget)
 _r.delete('/deleteAllBudgets', verifyJWT, deleteAllBudgets)
 _r.put('/updateMaxAmount', verifyJWT, updateMaxAmount)
+
 _r.get('/BudgetLog/getbudgetlogs', verifyJWT, getBudgetLogs)
+
 _r.get('/BudgetLog/getbudgetlogs/:name', verifyJWT, getNameLogs)
 
 module.exports = _r
