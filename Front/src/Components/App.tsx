@@ -7,7 +7,7 @@ import BudgetTable from './BudgetLog.tsx';
 import {Menu} from 'antd'
 import * as React from "react";
 
-import { BrowserRouter as Router, Route, Link, Routes} from "react-router-dom";
+import {Route, Link, Routes} from "react-router-dom";
 
 const items = [
   { label: <Link to="/">Budget Portfolio</Link>, key: 'budget' }, // remember to pass the key prop
@@ -16,7 +16,7 @@ const items = [
 
 function App() {
   function selectItem(menuItem) {
-      if(menuItem=='budget'){
+      if(menuItem==='budget'){
         
       }
   };
@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="App" key="1">
-      <Menu style={{ width: 256 }}
+      <Menu  mode="horizontal"
              defaultSelectedKeys={['budget']} 
              onClick={selectItem} 
              items={items} />
@@ -32,8 +32,6 @@ function App() {
             <Route path="/" element={<BudgetPlanner/>}></Route>
             <Route path="/BudgetLog" element={<BudgetTable/>}> </Route>
         </Routes>
-      {/* <BudgetPlanner></BudgetPlanner>
-      <BudgetTable></BudgetTable> */}
     </div>
   );
 }

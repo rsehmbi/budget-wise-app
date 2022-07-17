@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './Css/index.css';
-import App from './Components/App.tsx';
 import reportWebVitals from './reportWebVitals';
 import Main from "./Components/Main.tsx";
 import { BrowserRouter } from 'react-router-dom';
@@ -12,7 +11,6 @@ root.render(
     <BrowserRouter>
       <Main />
     </BrowserRouter>
-    {/* <Main/> */}
   </React.StrictMode>
   
 );
