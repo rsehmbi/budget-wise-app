@@ -1,7 +1,7 @@
 
 
 export function LoginCall(email){
-    return fetch('/login', {
+    return fetch('http://34.123.234.76/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
