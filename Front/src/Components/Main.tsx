@@ -1,9 +1,9 @@
 import {LoginOutlined} from '@ant-design/icons';
 import '../Css/App.css';
-// @ts-ignore
-import BudgetPlanner from './BudgetPlanner.tsx';
-// @ts-ignore
-import BudgetTable from './BudgetLog.tsx';
+// // @ts-ignore
+// import BudgetPlanner from './BudgetPlanner.tsx';
+// // @ts-ignore
+// import BudgetTable from './BudgetLog.tsx';
 import * as React from "react";
 // @ts-ignore
 import Login from "./Login.tsx";
@@ -12,8 +12,8 @@ import {useEffect} from "react";
 import {gapi} from "gapi-script";
 // @ts-ignore
 import {isAuth} from "../Services/Login.ts";
-import {Button, Col, message, Row, Tooltip} from "antd";
-import {Route, Routes} from 'react-router-dom'
+import {Button, Col, Row, Tooltip} from "antd";
+// import {Route, Routes} from 'react-router-dom'
 import App from "./App.tsx";
 
 
@@ -95,7 +95,7 @@ function Main() {
                     </Col>
                 </Row>
                 <div style={{marginTop: "50px"}}>
-                    <App />
+                    <App/>
                 </div>
             </div>
         )

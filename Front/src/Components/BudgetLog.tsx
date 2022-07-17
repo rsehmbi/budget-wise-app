@@ -1,9 +1,11 @@
 import * as React from "react";
-import {Table, Select, Button} from 'antd';
+import {Table, Select, Button, Space} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
-import { parseDate } from "../Utils/UtilFunctions.ts";
+// @ts-ignore
+import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
+import { DeleteFilled, EditFilled } from "@ant-design/icons";
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
@@ -30,7 +32,17 @@ const columns = [
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
-    }
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        render: (_) => (
+          <Space size="middle">
+            <Button type="link" icon={<EditFilled />}></Button>
+            <Button type="link" danger icon={<DeleteFilled />}></Button>
+          </Space>
+        ),
+      }
 ]
 
 
@@ -42,24 +54,22 @@ const tableProperties = {                      // Table Style Properties
 const SelectMenuProperties = {                // Drop down menu style proeprties
     width: "10rem",
     marginLeft: "65%",
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    marginTop: "2rem"
 }
 
-const refreshProperties = {
-    marginLeft: "1rem"
-}
 
 // Component for Table and drop down menu
 function BudgetTable(){
     const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
     const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
-    const [selectedName, setSelectedName] = useState([]);         // State indicating currently selected budget name
-
+    
     // Get all budget logs
     function getBudgetCategories(){
         getBudgetLogs().then((response) => {response.json().then((response) => {
             if (response.isSuccess) {
-                parseDate(response.res)
+                parseDate(response.res)       // Set date format
+                addCurrency(response.res)     // Add currency type
                 setBudgetLogs(response.res)
                 // console.log("The budget logs are" + response.res)
             }
@@ -92,17 +102,13 @@ function BudgetTable(){
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    // To check when value is changed
-    const handleChange = (value) => {
-        setSelectedName(value)
-    }
-
     // Get budget logs according to the budget name selected by user
     function getAllBudgetLogs(value){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
             getBudgetLogs().then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
-                    parseDate(response.res)
+                    parseDate(response.res)        // Set date format
+                    addCurrency(response.res)      // Add currency type
                     setBudgetLogs(response.res)
                     // console.log("The budget log is" + response.res)
                 }
@@ -115,7 +121,8 @@ function BudgetTable(){
         else{                                     // Otherwise get log specific to the budget name
             getBudNameLogs(value).then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
-                    parseDate(response.res)
+                    parseDate(response.res)       // Set date formate
+                    addCurrency(response.res)     // Add currency type
                     setBudgetLogs(response.res)
                     // console.log(response.res)
                 }
@@ -127,23 +134,15 @@ function BudgetTable(){
         }
     }
 
-    // Refresh after adding expense or budget
-    function refreshLogs(){
-        getAllBudgetLogs(selectedName)
-        dropDownOptions()
-    }
-
     return(
     <>
         <Select
             defaultValue = {ALL_LOGS}
             style={SelectMenuProperties}
-            onChange={handleChange}
             onSelect={getAllBudgetLogs}
             >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>
-        <Button style= {refreshProperties} onClick={refreshLogs} type="primary">Refresh Logs</Button>
 
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
     </>

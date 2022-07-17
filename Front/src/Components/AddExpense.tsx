@@ -65,7 +65,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
               
           <br/>
           <label> Description </label> <br/>
-          <Input onChange={handleDesciptionChange} maxLength={20} value={expenseDescrip} type="string"/> <br />
+          <Input onChange={handleDesciptionChange} placeholder={"Describe your expense"} maxLength={20} value={expenseDescrip} type="string"/> <br />
       </Modal>
       </>
   )
