@@ -10,7 +10,7 @@ export default function BudgetPlanner() {
 
     const getBudgetListAPICall = async () => {
         await fetch('/getBudgetList', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',

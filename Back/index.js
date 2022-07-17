@@ -19,9 +19,9 @@ app.use(express.json())
 // I set up my app differently through front end and back end 
 // that's why i enabled cors and in my api calls you will see the localhost:3000/:APICALL
 
-app.get('/*', async(req, res) => {
+/*app.get('/!*', async(req, res) => {
     res.sendFile(path.join(reactBuild, 'index.html'))
-})
+})*/
 
 app.use('/', require('./Routes/allRoutes'))
 
