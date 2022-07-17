@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Select, Button, Space, PageHeader} from 'antd';
+import {Table, Select, Button, Space, PageHeader, message} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
@@ -38,8 +38,8 @@ const columns = [
         key: 'action',
         render: (_) => (
           <Space size="middle">
-            <Button type="link" icon={<EditFilled />}></Button>
-            <Button type="link" danger icon={<DeleteFilled />}></Button>
+            <Button type="link" onClick={()=>message.warning("Feature in progress")} icon={<EditFilled />}></Button>
+            <Button type="link" onClick={()=>message.warning("Feature in progress")} danger icon={<DeleteFilled />}></Button>
           </Space>
         ),
       }
