@@ -3,6 +3,7 @@ import {Table, Select, Button, Space} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+// @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 
@@ -53,12 +54,10 @@ const tableProperties = {                      // Table Style Properties
 const SelectMenuProperties = {                // Drop down menu style proeprties
     width: "10rem",
     marginLeft: "65%",
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    marginTop: "2rem"
 }
 
-const refreshProperties = {
-    marginLeft: "1rem"
-}
 
 // Component for Table and drop down menu
 function BudgetTable(){
@@ -103,11 +102,6 @@ function BudgetTable(){
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    // To check when value is changed
-    const handleChange = (value) => {
-        setSelectedName(value)
-    }
-
     // Get budget logs according to the budget name selected by user
     function getAllBudgetLogs(value){
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
@@ -145,12 +139,10 @@ function BudgetTable(){
         <Select
             defaultValue = {ALL_LOGS}
             style={SelectMenuProperties}
-            onChange={handleChange}
             onSelect={getAllBudgetLogs}
             >
                 {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
         </Select>
-        <Button style= {refreshProperties} type="primary">Refresh Logs</Button>
 
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
     </>
