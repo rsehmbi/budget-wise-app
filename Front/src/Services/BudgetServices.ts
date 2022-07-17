@@ -13,7 +13,7 @@
 // API call to get all logs for a user
 export function getBudgetLogs(){
     return fetch('/BudgetLog/getbudgetlogs', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

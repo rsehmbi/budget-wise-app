@@ -23,6 +23,10 @@ app.use(express.json())
     res.sendFile(path.join(reactBuild, 'index.html'))
 })*/
 
+app.get('/BudgetLog', async(req, res) => {
+    res.sendFile(path.join(reactBuild, 'index.html'))
+})
+
 app.use('/', require('./Routes/allRoutes'))
 
 app.listen(PORT, () => {
