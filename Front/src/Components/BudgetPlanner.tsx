@@ -9,8 +9,8 @@ export default function BudgetPlanner() {
     const [isModalVisible, setIsModalVisible] = useState(false); 
 
     const getBudgetListAPICall = async () => {
-        await fetch('http://localhost:3000/getBudgetList', {
-            method: 'GET',
+        await fetch('/getBudgetList', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -49,7 +49,7 @@ export default function BudgetPlanner() {
     };
 
     const confirm = async (e: React.MouseEvent<HTMLElement>) => {
-        await fetch('http://localhost:3000/deleteAllBudgets', {
+        await fetch('/deleteAllBudgets', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
