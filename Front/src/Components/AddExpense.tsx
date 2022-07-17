@@ -1,4 +1,4 @@
-import { Modal, Input } from 'antd';
+import { Modal, Input, message } from 'antd';
 import * as React from "react";
 
 function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
@@ -50,8 +50,12 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
             }) 
         }).then((response) => {
             response.json().then((response) => {
-                if (response) {
+                if (response.isSuccess) {
                     budgetApiCall();
+                    message.success('Expense added successfully');
+                }
+                else{
+                    console.log("Error in adding expense:" + response.error)
                 }
             })
         })

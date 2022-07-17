@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Select, Button, Space} from 'antd';
+import {Table, Select, Button, Space, PageHeader} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
@@ -47,15 +47,15 @@ const columns = [
 
 
 const tableProperties = {                      // Table Style Properties
-    width: '60%',
+    width: '90%',
     margin: 'auto'
 }
 
 const SelectMenuProperties = {                // Drop down menu style proeprties
     width: "10rem",
-    marginLeft: "65%",
-    marginBottom: "2rem",
-    marginTop: "2rem"
+    // marginLeft: "80%",
+    // marginBottom: "2rem",
+    // marginTop: "2rem"
 }
 
 
@@ -136,14 +136,24 @@ function BudgetTable(){
 
     return(
     <>
-        <Select
-            defaultValue = {ALL_LOGS}
-            style={SelectMenuProperties}
-            onSelect={getAllBudgetLogs}
-            >
-                {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
-        </Select>
+        <PageHeader
+            title="Budget Logs"
+            subTitle="Check your expenditure"
+            extra={
+                [
+                    <Select
+                    defaultValue = {ALL_LOGS}
+                    style={SelectMenuProperties}
+                    onSelect={getAllBudgetLogs}
+                    >
+                        {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
+                    </Select>
 
+                ]
+                    
+            }    
+            />
+      
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
     </>
     )
