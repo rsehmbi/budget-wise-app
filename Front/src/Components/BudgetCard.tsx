@@ -79,7 +79,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
     }
     
     const confirm = async (e: React.MouseEvent<HTMLElement>) => {
-        await fetch('/deleteBudget', {
+        await fetch('http://localhost:3000/deleteBudget', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -43,7 +43,7 @@ function AddBudget({ budgetApiCall, visible, handleCancel, handleOk }) {
   // }
 
   const validateInputs = () => {
-    if (expense !== "" && maxamount !== 0 && amount !== 0) { 
+    if (expense !== "" && maxamount !== 0) { 
       return true
     }
     return false
