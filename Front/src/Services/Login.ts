@@ -1,7 +1,7 @@
 
 
 export function LoginCall(email){
-    return fetch('http://budget-wise-app.ey.r.appspot.com/login', {
+    return fetch('https://budgetwise-356702.uc.r.appspot.com/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ export function LoginCall(email){
 }
 
 export function SignUp(email){
-    return fetch('http://budget-wise-app.ey.r.appspot.com/signUp', {
+    return fetch('https://budgetwise-356702.uc.r.appspot.com/signUp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export function SignUp(email){
 }
 
 export function isAuth(){
-    return fetch('http://budget-wise-app.ey.r.appspot.com/isUserAuth', {
+    return fetch('https://budgetwise-356702.uc.r.appspot.com/isUserAuth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
