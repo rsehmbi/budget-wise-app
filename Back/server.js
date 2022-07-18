@@ -6,7 +6,7 @@ app.use('/', cors())
 
 const PORT = process.env.PORT || 3000
 const path = require('path')
-const  reactBuild = path.join(__dirname, '../','Front', 'build')
+const  reactBuild = path.join(__dirname, 'build')
 
 
 const dotenv = require('dotenv');

@@ -16,10 +16,9 @@ runtime: nodejs16
 # [END gae_quickstart_yaml]
 env: standard
 handlers:
-  # Serve all static files with url ending with a file extension
-  - url: /(.*\..+)$
-    static_files: ./Front/build/
-    upload: ./Front/build/(.*\..+)$
-  - url: /.*
-    static_files: ./Front/build/index.html
-    upload: ./Front/build/index.html
+  - url: /
+    static_files: build/index.html
+    upload: build/index.html
+
+  - url: /
+    static_dir: build
