@@ -24,17 +24,29 @@ Your app is ready to be deployed!
 ### Budget Table
 
 ```
-
 CREATE TABLE budgettable (
-    userid int,
+    userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
     budgetname varchar(255),
     amount int,
-    maximumamount int
+    maximumamount int,
+    primary key (userid, budgetname)
 );
 
-// Same user id because one user will have multiple budgets
-INSERT INTO budgettable VALUES (1, 'Car Payment', 100, 500)
-INSERT INTO budgettable VALUES (1, 'Groceries', 400, 800)
-INSERT INTO budgettable VALUES (1, 'Rentals', 400, 1000)
+CREATE TABLE expensetable (
+    userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
+    budgetcategory varchar(255) REFERENCES budgettable (budgetname) ON DELETE CASCADE,
+    amount int NOT NULL,
+    description varchar(255),
+    date DATE NOT NULL,
+);
+
+CREATE TABLE expensetable (
+    userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
+    budgetcategory varchar(255),
+    amount int NOT NULL,
+    description varchar(255),
+    date DATE NOT NULL,
+    FOREIGN KEY (userid, budgetcategory) REFERENCES budgettable(userid, budgetname) ON DELETE CASCADE
+);
 
 ```
