@@ -12,7 +12,7 @@ export function LoginCall(email){
 }
 
 export function SignUp(email){
-    return fetch('http://budget-wise-app.ey.r.appspot.com/signUp', {
+    return fetch('/signUp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
