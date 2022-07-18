@@ -12,6 +12,13 @@
 # limitations under the License.
 
 # [START gae_quickstart_yaml]
-runtime: nodejs10
+runtime: nodejs16
 # [END gae_quickstart_yaml]
 env: standard
+handlers:
+  - url: /
+    static_files: build/index.html
+    upload: build/index.html
+
+  - url: /
+    static_dir: build
