@@ -1,7 +1,7 @@
 
 
 export function LoginCall(email){
-    return fetch('/login', {
+    return fetch('http://budget-wise-app.ey.r.appspot.com/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export function SignUp(email){
 }
 
 export function isAuth(){
-    return fetch('/isUserAuth', {
+    return fetch('http://budget-wise-app.ey.r.appspot.com/isUserAuth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
