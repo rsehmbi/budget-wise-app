@@ -1,12 +1,14 @@
-import {PageHeader, Button, Popconfirm, message} from 'antd';
+import {PageHeader, Button, Popconfirm, message, Skeleton} from 'antd';
 import BudgetCard from './BudgetCard.tsx';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AddBudget from './AddBudget.tsx';
+import {gapi} from "gapi-script";
 
 
 export default function BudgetPlanner() {
     const [budgetList, setBudgetList] = React.useState([]);
-    const [isModalVisible, setIsModalVisible] = useState(false); 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isSkeleton, setSkeleton] = useState(true);
 
     const getBudgetListAPICall = async () => {
         await fetch('/getBudgetList', {
@@ -20,13 +22,17 @@ export default function BudgetPlanner() {
             response.json().then((response) => {
                 if (response['isSuccess']) {
                     setBudgetList(response.res)
+                    setTimeout(() => {
+                        setSkeleton(false)
+                    }, 500);
                 }
                 else{
                     console.log("Error while calling getBudgetList API"+ response.message)
                 }
             })
         })
-    }    
+    }
+
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -67,7 +73,7 @@ export default function BudgetPlanner() {
     };
     
     return (
-        <>
+        <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>
         <PageHeader
             title="Budget Planner"
             subTitle="Plan your budget"
@@ -94,7 +100,7 @@ export default function BudgetPlanner() {
             }
             </div>
             <AddBudget budgetApiCall={getBudgetListAPICall} visible={isModalVisible} handleCancel={handleCancel} budgetList={budgetList} handleOk={handleOk}></AddBudget>
-      </>
+        </Skeleton>
   )
 }
 

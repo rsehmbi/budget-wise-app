@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Select, Button, Space, PageHeader, message} from 'antd';
+import {Table, Select, Button, Space, PageHeader, message, Skeleton} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
@@ -61,6 +61,7 @@ const SelectMenuProperties = {                // Drop down menu style proeprties
 
 // Component for Table and drop down menu
 function BudgetTable(){
+    const [isSkeleton, setSkeleton] = useState(true);
     const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
     const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
     
@@ -87,6 +88,9 @@ function BudgetTable(){
             var expensesType = response.res.map(item => ({value: item.budgetname, label: item.budgetname}))
             expensesType.push({value: ALL_LOGS, label: ALL_LOGS})
             setBudgetNames(expensesType)
+            setTimeout(() => {
+                setSkeleton(false)
+            }, 500);
             // console.log("The budget names are: " + budgetNames)
         }
         else{
@@ -135,7 +139,7 @@ function BudgetTable(){
     }
 
     return(
-    <>
+        <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>
         <PageHeader
             title="Budget Logs"
             subTitle="Check your expenditure"
@@ -155,7 +159,7 @@ function BudgetTable(){
             />
       
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
-    </>
+        </Skeleton>
     )
 }
 
