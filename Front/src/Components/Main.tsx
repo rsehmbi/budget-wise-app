@@ -18,6 +18,7 @@ import App from "./App.tsx";
 import {Link, Route, Routes} from "react-router-dom";
 import BudgetPlanner from "./BudgetPlanner.tsx";
 import BudgetTable from "./BudgetLog.tsx";
+import PageNotFound from "./PageNotFound.tsx";
 
 
 export function encrypted(encryptString: string){
@@ -116,6 +117,7 @@ function Main() {
                     </Col>
                 </Row>
                     <Routes>
+                        <Route path="*" element={<PageNotFound />}/>
                         <Route path="/" element={<BudgetPlanner/>}/>
                         <Route path="/BudgetLog" element={<BudgetTable/>}/>
                     </Routes>
