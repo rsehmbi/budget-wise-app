@@ -139,6 +139,7 @@ function BudgetTable(){
     }
 
     return(
+        <div style={{paddingTop: "60px"}}>
         <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>
         <PageHeader
             title="Budget Logs"
@@ -160,6 +161,7 @@ function BudgetTable(){
       
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
         </Skeleton>
+        </div>
     )
 }
 

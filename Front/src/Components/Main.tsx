@@ -8,13 +8,16 @@ import * as React from "react";
 // @ts-ignore
 import Login from "./Login.tsx";
 import CryptoJS from "crypto-js"
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {gapi} from "gapi-script";
 // @ts-ignore
 import {isAuth} from "../Services/Login.ts";
 import {Button, Col, Row, Tooltip} from "antd";
 // import {Route, Routes} from 'react-router-dom'
 import App from "./App.tsx";
+import {Link, Route, Routes} from "react-router-dom";
+import BudgetPlanner from "./BudgetPlanner.tsx";
+import BudgetTable from "./BudgetLog.tsx";
 
 
 export function encrypted(encryptString: string){
@@ -40,6 +43,7 @@ export function deleteAllCookies() {
 
 
 function Main() {
+    const [isBudgetLog, setBudgetLog] = useState(window.location.href.includes("/BudgetLog"))
     const [email, setEmail] = React.useState(undefined);
 
     useEffect(() => {
@@ -53,6 +57,9 @@ function Main() {
         gapi.load('client:auth2', start);
         if ((email === undefined) && localStorage.getItem("token") !== null ){
             isLoggedIn()
+        }
+        if (window.location.href.includes("/BudgetLog")){
+            setBudgetLog(true)
         }
     }, []);
 
@@ -79,24 +86,39 @@ function Main() {
     const renderMenu = () => {
         return (
             <div>
-                <Row style={{height: "50px", width: "100%", position: "fixed", top: 0, boxShadow: "0 2px 8px #f0f1f2",zIndex: 1000, backgroundColor: "#e7e7e7"}}>
-                    <Col span={12}>
-                        <Row style={{paddingTop: "10px", paddingLeft: "25px", height: "40px", alignItems: "center"}}>
+                <Row style={{height: "60px", width: "100%", position: "fixed", top: 0, boxShadow: "0 2px 8px #f0f1f2",zIndex: 1000, backgroundColor: "#ffffff"}}>
+                    <Col span={6} style={{alignItems: "center", display: "flex", justifyContent: "start"}}>
+                        <Row style={{paddingLeft: "25px", height: "40px", alignItems: "center", fontSize: "17px"}}>
                             Budget Wise App
                         </Row>
                     </Col>
-                    <Col span={12}>
-                        <Row style={{paddingRight: "25px", justifyContent: "flex-end", alignItems: "center", height: "40px", paddingTop: "10px"}}>
-                            <div className={'text'} style={{paddingRight: "20px"}}>{email}</div>
+                    <Col span={12} style={{alignItems: "center", display: "flex", justifyContent: "center"}}>
+                    <Row style={{height: "40px", alignItems: "center", justifyContent: "center"}}>
+                        <Link to="/" style={{fontSize: "15px"}}>
+                            <Button type={"link"} onClick={() => {setBudgetLog(false)}} style={{fontSize: "15px", color: isBudgetLog ? "unset" : "#1890ff"}}>
+                                Budget Portfolio
+                            </Button>
+                            </Link>
+                        <Link to="/BudgetLog">
+                            <Button type={"link"} onClick={() => {setBudgetLog(true)}} style={{marginLeft: "50px", fontSize: "15px", color: isBudgetLog ? "#1890ff" : "unset"}}>
+                                Budget Logs
+                            </Button>
+                            </Link>
+                    </Row>
+                    </Col>
+                    <Col span={6} style={{alignItems: "center", display: "flex", justifyContent: "end"}}>
+                        <Row style={{paddingRight: "25px", justifyContent: "flex-end", alignItems: "center", height: "40px"}}>
+                            <div className={'text'} style={{paddingRight: "20px", fontSize: "15px", paddingBottom: "2px"}}>{email}</div>
                             <Tooltip placement="bottom" title={"Log out"}>
                                 <Button ghost={true} type="link" onClick={logOut} shape="circle"><LoginOutlined  style={{color: "#000000"}} /></Button>
                             </Tooltip>
                         </Row>
                     </Col>
                 </Row>
-                <div style={{marginTop: "50px"}}>
-                    <App/>
-                </div>
+                    <Routes>
+                        <Route path="/" element={<BudgetPlanner/>}/>
+                        <Route path="/BudgetLog" element={<BudgetTable/>}/>
+                    </Routes>
             </div>
         )
     }

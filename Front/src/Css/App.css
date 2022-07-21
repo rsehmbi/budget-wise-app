@@ -29,3 +29,7 @@
     height: 450px;
     background-repeat: no-repeat;
 }
+
+a{
+    color: unset!important;
+}

@@ -73,6 +73,7 @@ export default function BudgetPlanner() {
     };
     
     return (
+        <div style={{paddingTop: "60px"}}>
         <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>
         <PageHeader
             title="Budget Planner"
@@ -101,6 +102,7 @@ export default function BudgetPlanner() {
             </div>
             <AddBudget budgetApiCall={getBudgetListAPICall} visible={isModalVisible} handleCancel={handleCancel} budgetList={budgetList} handleOk={handleOk}></AddBudget>
         </Skeleton>
+        </div>
   )
 }
 
