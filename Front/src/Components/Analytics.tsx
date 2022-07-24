@@ -13,7 +13,7 @@ import { Pie } from '@ant-design/plots';
 function Analytics(){
     const [budgetList, setBudgetList] = React.useState([]);
     const [selectedGraph, setSelectedGraph] = useState("none");
-    const [isSkeleton, setSkeleton] = useState(false);
+    const [isSkeleton, setSkeleton] = useState(true);
 
     useEffect(() => {
         getBudgetListAPICall();
@@ -44,35 +44,10 @@ function Analytics(){
 
 
     const DemoPie = () => {
-        if (budgetList){
-
-        }
-        const data = [
-            {
-                type: '分类一',
-                value: 27,
-            },
-            {
-                type: '分类二',
-                value: 25,
-            },
-            {
-                type: '分类三',
-                value: 18,
-            },
-            {
-                type: '分类四',
-                value: 15,
-            },
-            {
-                type: '分类五',
-                value: 10,
-            },
-            {
-                type: '其他',
-                value: 5,
-            },
-        ];
+        let data = []
+        budgetList.forEach((el) => {
+            data.push({type: el.budgetname, value: parseInt(el.amount)})
+        })
         const config = {
             appendPadding: 10,
             data,
@@ -105,7 +80,7 @@ function Analytics(){
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                     },
-                    content: 'AntV\nG2Plot',
+                    content: data.length === 0 ? 'Sorry no data\n To Show' : 'Pie\nChart',
                 },
             },
         };
@@ -122,20 +97,19 @@ function Analytics(){
                     <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
                 </Select>
             </Row>
-        <Col span={24} style={{height: "600px", paddingTop: "50px"}}>
+            <Row>
+                <Col span={6}>
+                </Col>
+                <Col span={12} style={{height: "600px", paddingTop: "50px"}}>
 
-            { selectedGraph === "Pie Chart" ?  DemoPie()
-                    :
-                    null}
+                    { selectedGraph === "Pie Chart" ?  DemoPie()
+                        :
+                        null}
 
-        </Col>
-
-
-
-
-
-
-
+                </Col>
+                <Col span={6}>
+                </Col>
+            </Row>
         </Skeleton>
         </div>
     )
