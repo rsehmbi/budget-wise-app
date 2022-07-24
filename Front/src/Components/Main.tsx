@@ -19,6 +19,7 @@ import {Link, Route, Routes} from "react-router-dom";
 import BudgetPlanner from "./BudgetPlanner.tsx";
 import BudgetTable from "./BudgetLog.tsx";
 import PageNotFound from "./PageNotFound.tsx";
+import Analytics from "./Analytics.tsx";
 
 
 export function encrypted(encryptString: string){
@@ -45,6 +46,7 @@ export function deleteAllCookies() {
 
 function Main() {
     const [isBudgetLog, setBudgetLog] = useState(window.location.href.includes("/BudgetLog"))
+    const [isAnalytics, setAnalytics] = useState(window.location.href.includes("/Analytics"))
     const [email, setEmail] = React.useState(undefined);
 
     useEffect(() => {
@@ -61,6 +63,9 @@ function Main() {
         }
         if (window.location.href.includes("/BudgetLog")){
             setBudgetLog(true)
+        }
+        if (window.location.href.includes("/Analytics")){
+            setAnalytics(true)
         }
     }, []);
 
@@ -96,15 +101,28 @@ function Main() {
                     <Col span={12} style={{alignItems: "center", display: "flex", justifyContent: "center"}}>
                     <Row style={{height: "40px", alignItems: "center", justifyContent: "center"}}>
                         <Link to="/" style={{fontSize: "15px"}}>
-                            <Button type={"link"} onClick={() => {setBudgetLog(false)}} style={{fontSize: "15px", color: isBudgetLog ? "unset" : "#1890ff"}}>
+                            <Button type={"link"} onClick={() => {setBudgetLog(false)
+                                                                    setAnalytics(false)}}
+                                    style={{fontSize: "15px", color: isBudgetLog || isAnalytics ? "unset" : "#1890ff"}}>
                                 Budget Portfolio
                             </Button>
                             </Link>
                         <Link to="/BudgetLog">
-                            <Button type={"link"} onClick={() => {setBudgetLog(true)}} style={{marginLeft: "50px", fontSize: "15px", color: isBudgetLog ? "#1890ff" : "unset"}}>
+                            <Button type={"link"} onClick={() => {setBudgetLog(true)
+                                                                    setAnalytics(false)
+                            }}
+                                    style={{marginLeft: "50px", fontSize: "15px", color: isBudgetLog ? "#1890ff" : "unset"}}>
                                 Budget Logs
                             </Button>
                             </Link>
+                        <Link to="/Analytics">
+                            <Button type={"link"} onClick={() => {setAnalytics(true)
+                                                                setBudgetLog(false)
+                            }}
+                                    style={{marginLeft: "50px", fontSize: "15px", color: isAnalytics ? "#1890ff" : "unset"}}>
+                                Analytics
+                            </Button>
+                        </Link>
                     </Row>
                     </Col>
                     <Col span={6} style={{alignItems: "center", display: "flex", justifyContent: "end"}}>
@@ -117,9 +135,10 @@ function Main() {
                     </Col>
                 </Row>
                     <Routes>
-                        <Route path="*" element={<PageNotFound />}/>
+                        <Route path="*" element={<PageNotFound setAnalytics={setAnalytics} setBudgetLog={setBudgetLog} />}/>
                         <Route path="/" element={<BudgetPlanner/>}/>
                         <Route path="/BudgetLog" element={<BudgetTable/>}/>
+                        <Route path="/Analytics" element={<Analytics/>}/>
                     </Routes>
             </div>
         )
