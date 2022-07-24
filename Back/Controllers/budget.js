@@ -105,7 +105,7 @@ exports.addbudget = async (req, res) => {
     var amount = req.body.amount
     var currentUserId = res.locals.userid
 
-    const add_budget_query = `INSERT INTO budgetta    ble (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
+    const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
     try {
         await pool.query(add_budget_query,[currentUserId, expense, amount, maxamount])
         res.json({
