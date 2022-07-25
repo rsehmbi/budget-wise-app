@@ -84,6 +84,7 @@ function Main() {
     }
 
     const logOut = () => {
+        window.location.href = "/"
         deleteAllCookies()
         localStorage.clear()
         setEmail(undefined)
