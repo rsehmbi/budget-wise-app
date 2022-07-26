@@ -69,6 +69,7 @@ export default function BudgetPlanner() {
     };
 
     const handleCreditListOk = () => {
+        getAvailableCreditAPICall()
         setIsCreditListModalVisible(false);
     };
 
@@ -160,7 +161,7 @@ export default function BudgetPlanner() {
             </div>
                 <AddBudget budgetApiCall={getBudgetListAPICall} visible={isModalVisible} handleCancel={handleCancel} budgetList={budgetList} handleOk={handleOk}></AddBudget>
                 <AddCreditCard creditApiCall={getAvailableCreditAPICall} visible={isCreditModalVisible} handleCancel={handleCreditCancel} handleOk={handleCreditOk}></AddCreditCard>
-                <CardList visible={isCreditListModalVisible} handleCancel={handleCreditListCancel} handleOk={handleCreditListOk} ></CardList>
+                <CardList creditApiCall={getAvailableCreditAPICall} visible={isCreditListModalVisible} handleCancel={handleCreditListCancel} handleOk={handleCreditListOk} ></CardList>
         </Skeleton>
         </div>
   )

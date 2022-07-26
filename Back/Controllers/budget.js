@@ -361,3 +361,27 @@ exports.deleteCreditCard = async (req, res) => {
         })
     }
 }
+
+exports.updateCreditCardAmount = async (req, res) => {
+    var token = res.locals.userid
+    var amount = parseInt(req.body.amount)
+    var number = parseInt(req.body.number)
+    const update_cc_amount_query = `UPDATE "creditcards" 
+                   SET "amount" = $1 
+                   WHERE "userid" = $2 AND "number" = $3`
+    try {
+        const result = await pool.query(update_cc_amount_query,[amount, token, number])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}

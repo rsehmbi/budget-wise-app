@@ -3,7 +3,7 @@ import { Modal, Input, message } from 'antd';
 import { CreditCardOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Avatar, List } from 'antd';
 
-function CardList({ creditAPICall, data, visible, handleCancel, handleOk }) {
+function CardList({ creditAPICall, visible, handleCancel, handleOk }) {
     const [cardList, setCardList] = React.useState([]);
     
     const getCardListAPICall = async () => {
@@ -17,7 +17,6 @@ function CardList({ creditAPICall, data, visible, handleCancel, handleOk }) {
         }).then((response) => {
             response.json().then((response) => {
                 if (response['isSuccess']) {
-                    console.log(response.res)
                     setCardList(response.res)
                 }
                 else{
@@ -25,6 +24,35 @@ function CardList({ creditAPICall, data, visible, handleCancel, handleOk }) {
                 }
             })
         })
+    }
+
+
+    const updateCCAmountAPICall = async (amt, nos) => {
+        await fetch('/updateCreditCardAmount', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
+            },
+            body: JSON.stringify({
+                'amount': amt,
+                'number': nos,
+            }) 
+        }).then((response) => {
+            response.json().then((response) => {
+                if (response) {
+                    getCardListAPICall()
+                }
+            })
+        })
+    }
+
+    const updateCCAmount = (amt, nos) => {
+        if (amt && nos) { 
+            console.log("I come here")
+            updateCCAmountAPICall(amt, nos)
+        } 
     }
 
     const deleteCreditCard = async (nos) => {
@@ -42,6 +70,7 @@ function CardList({ creditAPICall, data, visible, handleCancel, handleOk }) {
             response.json().then((response) => {
                 if (response['isSuccess']) {
                     getCardListAPICall()
+                    creditAPICall()
                 }
                 else{
                     console.log("Error while calling Card List API"+ response.message)
@@ -69,7 +98,7 @@ function CardList({ creditAPICall, data, visible, handleCancel, handleOk }) {
                         <>
                         <div>
                             <label>Amount</label>
-                            <Input style={{ width: '80px', display: 'flex', justifyContent: 'center'}} type='number' defaultValue={item['amount']} />
+                                <Input style={{ width: '80px', display: 'flex', justifyContent: 'center' }} type='number' onChange={(event) => updateCCAmount(event.target.value, item['number'])} defaultValue={item['amount']} />
                         </div>
                             <DeleteOutlined onClick={() => deleteCreditCardFromList(item['number'])} style={{ color:'red', marginLeft:"10px" }}/>
                         </>  
