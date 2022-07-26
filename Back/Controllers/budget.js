@@ -270,35 +270,114 @@ exports.getBudgetLogs = async (req, res) => {
     }
 }
 
-// Update description and amount for a log
-exports.updateAmount = async (req, res) => {
-    var amount = parseInt(req.body.amount)
-    var budgetName =  req.body.budgetcategory
-    var description = req.body.description
+exports.addCreditCard = async (req, res) => {
     var currentUserId = res.locals.userid
-    
-    const update_amount_query = `UPDATE "expensetable" 
-                                SET "amount" = $1, "date" = CURRENT_DATE
-                                WHERE "description" = $2 AND "userid" = $3 AND "budgetcategory" = $4`
-
-    const update_amount = `UPDATE "budgettable" 
-                           SET "amount" = (SELECT sum(amount) FROM "expensetable" WHERE "budgetcategory" = $1 AND "userid" = $2 GROUP BY budgetcategory) 
-                           WHERE "userid" = $2 AND "budgetname"=$3`
+    var cardname = req.body.cardname
+    var expiry = req.body.expiry
+    var cardnumber  = req.body.number
+    var amount = parseInt(req.body.amount)
+    const add_creditcard_query = `INSERT INTO creditcards (userid, cardname, expiry, number, amount) VALUES ($1,$2,$3,$4,$5)`    
     try {
-        await pool.query(update_amount_query,[amount, description, currentUserId, budgetName])
-        await pool.query(update_amount, [budgetName, currentUserId, budgetName])
+        await pool.query(add_creditcard_query, [currentUserId, cardname, expiry, cardnumber, amount])
         res.json({
             isSuccess: true,
             message: "Success",
         })
     }
     catch (error) {
+        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
             message: "Failed",
         })
+    }
+}
+
+exports.getAvailableCredit = async (req, res) => {
+    var token = res.locals.userid
+    var total_credit_query_string = `SELECT SUM (amount) AS total_credit FROM creditcards WHERE userid = $1`
+    var total_expense_query_string = `SELECT SUM (amount) AS total_expense FROM budgettable WHERE userid = $1`
+    
+    try {
+        const total_credit = await pool.query(total_credit_query_string, [token])
+        const total_expense = await pool.query(total_expense_query_string,[token])
+        let available_Credit = parseFloat(total_credit.rows[0]['total_credit']) - parseFloat(total_expense.rows[0]['total_expense'])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: available_Credit,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.getUserCreditCards = async (req, res) => {
+    var token = res.locals.userid
+    var query_string = `SELECT * FROM creditcards WHERE userid = $1`
+    
+    try {
+        const result = await pool.query(query_string, [token])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error) {
         console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.deleteCreditCard = async (req, res) => {
+    var token = res.locals.userid
+    var number = parseInt(req.body.number)
+    var delete_query_string = `DELETE FROM creditcards WHERE userid = $1 AND number = $2`
+    try {
+        const result = await pool.query(delete_query_string,[token, number])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.updateCreditCardAmount = async (req, res) => {
+    var token = res.locals.userid
+    var amount = parseInt(req.body.amount)
+    var number = parseInt(req.body.number)
+    const update_cc_amount_query = `UPDATE "creditcards" 
+                   SET "amount" = $1 
+                   WHERE "userid" = $2 AND "number" = $3`
+    try {
+        const result = await pool.query(update_cc_amount_query,[amount, token, number])
+        console.log(error)
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
     }
 }
 
@@ -324,6 +403,37 @@ exports.deleteLog = async (req, res) => {
     }
     catch (error){
         console.log(error);
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Update description and amount for a log
+exports.updateAmount = async (req, res) => {
+    var amount = parseInt(req.body.amount)
+    var budgetName =  req.body.budgetcategory
+    var description = req.body.description
+    var currentUserId = res.locals.userid
+    
+    const update_amount_query = `UPDATE "expensetable" 
+                                SET "amount" = $1, "date" = CURRENT_DATE
+                                WHERE "description" = $2 AND "userid" = $3 AND "budgetcategory" = $4`
+
+    const update_amount = `UPDATE "budgettable" 
+                           SET "amount" = (SELECT sum(amount) FROM "expensetable" WHERE "budgetcategory" = $1 AND "userid" = $2 GROUP BY budgetcategory) 
+                           WHERE "userid" = $2 AND "budgetname"=$3`
+    try {
+        await pool.query(update_amount_query,[amount, description, currentUserId, budgetName])
+        await pool.query(update_amount, [budgetName, currentUserId, budgetName])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
         res.json({
             error: error,
             isSuccess: false,
