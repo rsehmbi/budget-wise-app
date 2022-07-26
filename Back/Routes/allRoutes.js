@@ -15,7 +15,8 @@ const { getbudgetList,
     updateMaxAmount,
     addCreditCard,
     getAvailableCredit,
-    getUserCreditCards,} = require('../Controllers/budget')
+    getUserCreditCards,
+    deleteCreditCard} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -62,5 +63,7 @@ _r.get('/BudgetLog/getbudgetlogs/:name', verifyJWT, getNameLogs)
 _r.post('/addCreditCard', verifyJWT, addCreditCard)
 _r.get('/getAvailableCredit', verifyJWT, getAvailableCredit)
 _r.get('/getUserCreditCards', verifyJWT, getUserCreditCards)
+
+_r.delete('/deleteCreditCard', verifyJWT, deleteCreditCard)
 
 module.exports = _r

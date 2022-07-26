@@ -340,3 +340,24 @@ exports.getUserCreditCards = async (req, res) => {
         })
     }
 }
+
+exports.deleteCreditCard = async (req, res) => {
+    var token = res.locals.userid
+    var number = parseInt(req.body.number)
+    var delete_query_string = `DELETE FROM creditcards WHERE userid = $1 AND number = $2`
+    try {
+        const result = await pool.query(delete_query_string,[token, number])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
