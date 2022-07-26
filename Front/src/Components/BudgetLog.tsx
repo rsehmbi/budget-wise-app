@@ -1,18 +1,46 @@
 import * as React from "react";
-import {Table, Select, Button, Space, PageHeader, message, Skeleton} from 'antd';
+import {Table, Select, Button, Space, PageHeader, message, Modal, Input, Popconfirm, Skeleton} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
-import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import {getBudgetLogs, getBudgetNames, getBudNameLogs, deleteLogAPI, updateLogsAPICall } from '../Services/BudgetServices.ts';
 // @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
+
+
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
 const ALL_LOGS = 'All';                          // For state where we get all information
 
-// Columns to display in logs
-const columns = [
+const tableProperties = {                      // Table Style Properties
+    width: '90%',
+    margin: 'auto'
+}
+
+const SelectMenuProperties = {                // Drop down menu style proeprties
+    width: "10rem",
+    // marginLeft: "80%",
+    // marginBottom: "2rem",
+    // marginTop: "2rem"
+}
+
+
+// Component for Table and drop down menu
+function BudgetTable(){
+    const [isSkeleton, setSkeleton] = useState(true);
+    const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
+    const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
+    const [currentName, setCurrentName] = useState(ALL_LOGS)
+
+    // Modal Information
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [modalAmount, setModalAmount] = useState(0);
+    const [modalExpenseDescrip, setModalExpenseDescrip] = useState("")
+    const [modalTitle, setModalTitle] = useState("")
+
+    // Columns to display in logs
+    const columns = [
     {
         title: 'Budget Category',
         dataIndex: 'budgetcategory',
@@ -36,34 +64,27 @@ const columns = [
     {
         title: 'Action',
         key: 'action',
-        render: (_) => (
+        render: (_, record) => (
+            <>
           <Space size="middle">
-            <Button type="link" onClick={()=>message.warning("Feature in progress")} icon={<EditFilled />}></Button>
-            <Button type="link" onClick={()=>message.warning("Feature in progress")} danger icon={<DeleteFilled />}></Button>
+            <Button type="link" onClick={()=>showEditModal(record)} icon={<EditFilled />}></Button>
+            <Popconfirm
+                    title={`Are you sure to delete?`}
+                    onConfirm={() => confirmDelete(record)}
+                    onCancel={cancel}
+                    okText="Delete"
+                    cancelText="Cancel"
+                >
+                <Button type="link" danger icon={<DeleteFilled />}></Button>
+                </Popconfirm>
+            {/* <Button type="link" onClick={()=>console.log(record)} danger icon={<DeleteFilled />}></Button> */}
+            
           </Space>
+      
+          </>
         ),
       }
 ]
-
-
-const tableProperties = {                      // Table Style Properties
-    width: '90%',
-    margin: 'auto'
-}
-
-const SelectMenuProperties = {                // Drop down menu style proeprties
-    width: "10rem",
-    // marginLeft: "80%",
-    // marginBottom: "2rem",
-    // marginTop: "2rem"
-}
-
-
-// Component for Table and drop down menu
-function BudgetTable(){
-    const [isSkeleton, setSkeleton] = useState(true);
-    const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
-    const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
     
     // Get all budget logs
     function getBudgetCategories(){
@@ -108,6 +129,7 @@ function BudgetTable(){
 
     // Get budget logs according to the budget name selected by user
     function getAllBudgetLogs(value){
+        setCurrentName(value);
         if ( value === ALL_LOGS){                  // Get all logs if state is ALL               
             getBudgetLogs().then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
@@ -138,6 +160,86 @@ function BudgetTable(){
         }
     }
 
+
+    // Modal functions
+    const showEditModal = (record) => {
+        setModalExpenseDescrip(record.description)
+        setModalAmount(parseInt(record.amount.match(/(\d+)/)))
+        setModalTitle(record.budgetcategory)
+        setIsEditModalVisible(true);
+    };
+
+    const hideEditModal = () => {
+        setIsEditModalVisible(false);
+    };
+
+    const validateInputs = () => {
+        if (modalExpenseDescrip === ""){
+            message.warning("Please enter a description")
+            return false
+
+        } else if (modalAmount === 0){
+            message.warning("Amount should not be equal to 0")
+            return false
+
+        }else if (!Number.isInteger(Number(modalAmount))){
+            message.warning("Amount should be integer")
+            return false
+        }else{
+            return true
+        }
+    }
+
+    const okClickHandle = () => {
+        if (validateInputs() === true) {
+            updateLog();
+
+            hideEditModal()
+            handlePreCancel()
+        }
+    }
+
+    const handlePreCancel = () => {
+        hideEditModal()
+    }
+
+    const handleAmountChange = (event) => { 
+        setModalAmount(event.target.value)
+    }
+    
+    function updateLog(){
+        updateLogsAPICall(modalTitle, modalAmount, modalExpenseDescrip).then((response) => {
+            response.json().then((response) => {
+                if (response.isSuccess) {
+                    getAllBudgetLogs(currentName);
+                    message.success('Log updated successfully');
+                }
+                else{
+                    console.log("Error in adding expense:" + response.error)
+                }
+            })
+        })
+    }
+
+    // Popup delete functions
+    const confirmDelete = (record) => {
+        console.log("Going to delete")
+
+        deleteLogAPI(record.budgetcategory, record.description).then((response) => {
+            response.json().then((response) => {
+                if (response['isSuccess']) {
+                    getAllBudgetLogs(currentName);
+                    message.success('Log Deleted Successfully');
+                }
+            })
+        })
+    };
+
+
+    const cancel = () => {
+        message.error('Cancelled');
+    };
+
     return(
         <div style={{paddingTop: "60px"}}>
         <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>
@@ -153,13 +255,20 @@ function BudgetTable(){
                     >
                         {budgetNames.map((item, index) => <Option value={item.value} key={index}>{item.label}</Option>)}
                     </Select>
-
                 ]
-                    
             }    
             />
-      
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
+
+        <Modal title={modalTitle} visible={isEditModalVisible} onOk={okClickHandle} onCancel={handlePreCancel}>
+        <label> Description: </label> <br/>
+                <p>{modalExpenseDescrip}</p>
+
+                <br/>
+                <label> Amount  </label> <br/>
+                <Input  onChange={handleAmountChange} value={modalAmount} type="number" /> <br />        
+                
+        </Modal>
         </Skeleton>
         </div>
     )
