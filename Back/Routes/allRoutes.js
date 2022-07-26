@@ -13,7 +13,8 @@ const { getbudgetList,
     deleteBudget, 
     deleteAllBudgets, 
     updateMaxAmount,
-    updateAmount} =  require('../Controllers/budget')
+    updateAmount,
+    deleteLog} =  require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -56,5 +57,6 @@ _r.put('/updateMaxAmount', verifyJWT, updateMaxAmount)
 _r.get('/BudgetLog/getbudgetlogs', verifyJWT, getBudgetLogs)
 _r.get('/BudgetLog/getbudgetlogs/:name', verifyJWT, getNameLogs)
 _r.put('/BudgetLog/updateLog', verifyJWT, updateAmount)
+_r.delete('/BudgetLog/deleteLog', verifyJWT, deleteLog)
 
 module.exports = _r

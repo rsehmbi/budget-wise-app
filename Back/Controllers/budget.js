@@ -301,3 +301,33 @@ exports.updateAmount = async (req, res) => {
         console.log(error)
     }
 }
+
+// Delete a specific log
+exports.deleteLog = async (req, res) => {
+    var token = res.locals.userid
+    var budgetCategory = req.body.budgetcategory
+    var description = req.body.description
+
+    var delete_query_string = `DELETE FROM expensetable WHERE userid = $1 AND budgetcategory = $2 AND description = $3`
+
+    const update_amount = `UPDATE "budgettable" 
+                            SET "amount" = (SELECT sum(amount) FROM "expensetable" WHERE "budgetcategory" = $1 AND "userid" = $2 GROUP BY budgetcategory) 
+                            WHERE "userid" = $2 AND "budgetname"=$3`
+    try {
+        const result = await pool.query(delete_query_string,[token, budgetCategory, description])
+        await pool.query(update_amount, [budgetCategory, token, budgetCategory])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        console.log(error);
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}

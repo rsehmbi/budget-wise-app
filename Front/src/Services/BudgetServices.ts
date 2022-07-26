@@ -1,14 +1,4 @@
 
-// // API call to get all logs for a user
-// export function getBudgetList(){
-//     return fetch('http://localhost:3000/getbudgetList', {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Accept': 'application/json',
-//             'x-access-token': localStorage.getItem('token')?.toString()}
-//     })
-// }
 
 // API call to get all logs for a user
 export function getBudgetLogs(){
@@ -59,8 +49,8 @@ export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
     })
 }
 
-export function deleteLog(category, description){
-    return fetch('/deleteLog', {
+export function deleteLogAPI(category, description){
+    return fetch('/BudgetLog/deleteLog', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

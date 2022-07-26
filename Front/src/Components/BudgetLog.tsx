@@ -2,12 +2,12 @@ import * as React from "react";
 import {Table, Select, Button, Space, PageHeader, message, Modal, Input, Popconfirm, Skeleton} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
-import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import {getBudgetLogs, getBudgetNames, getBudNameLogs, deleteLogAPI, updateLogsAPICall } from '../Services/BudgetServices.ts';
 // @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
-// @ts-ignore
-import {updateLogsAPICall} from '../Services/BudgetServices.ts';
+
+
 
 const {Option} = Select;                         // For specifiying drop down menu options
 
@@ -70,7 +70,7 @@ function BudgetTable(){
             <Button type="link" onClick={()=>showEditModal(record)} icon={<EditFilled />}></Button>
             <Popconfirm
                     title={`Are you sure to delete?`}
-                    onConfirm={confirmDelete}
+                    onConfirm={() => confirmDelete(record)}
                     onCancel={cancel}
                     okText="Delete"
                     cancelText="Cancel"
@@ -222,26 +222,17 @@ function BudgetTable(){
     }
 
     // Popup delete functions
-    const confirmDelete = async () => {
+    const confirmDelete = (record) => {
         console.log("Going to delete")
-        // await fetch('/deleteBudget', {
-        //     method: 'DELETE',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json',
-        //         'x-access-token': localStorage.getItem('token')?.toString()
-        //     },
-        //     body: JSON.stringify({
-        //       'budgetname': cardTitle,
-        //     }) 
-        // }).then((response) => {
-        //     response.json().then((response) => {
-        //         if (response['isSuccess']) {
-        //             budgetApiCall();
-        //             message.success('Budget Deleted Successfully');
-        //         }
-        //     })
-        // })
+
+        deleteLogAPI(record.budgetcategory, record.description).then((response) => {
+            response.json().then((response) => {
+                if (response['isSuccess']) {
+                    getAllBudgetLogs(currentName);
+                    message.success('Log Deleted Successfully');
+                }
+            })
+        })
     };
 
 
@@ -270,7 +261,7 @@ function BudgetTable(){
         <Table columns={columns} dataSource={budgetLogs} style={tableProperties}></Table>;
 
         <Modal title={modalTitle} visible={isEditModalVisible} onOk={okClickHandle} onCancel={handlePreCancel}>
-        <label> Description </label> <br/>
+        <label> Description: </label> <br/>
                 <p>{modalExpenseDescrip}</p>
 
                 <br/>
