@@ -58,3 +58,18 @@ export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
         }) 
     })
 }
+
+export function deleteLog(category, description){
+    return fetch('/deleteLog', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        },
+        body: JSON.stringify({
+          'budgetcategory': category,
+          'description': description
+        }) 
+    })
+}

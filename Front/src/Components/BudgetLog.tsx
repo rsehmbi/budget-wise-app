@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Select, Button, Space, PageHeader, message, Modal, Input, Skeleton} from 'antd';
+import {Table, Select, Button, Space, PageHeader, message, Modal, Input, Popconfirm, Skeleton} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
 import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
@@ -68,7 +68,16 @@ function BudgetTable(){
             <>
           <Space size="middle">
             <Button type="link" onClick={()=>showEditModal(record)} icon={<EditFilled />}></Button>
-            <Button type="link" onClick={()=>console.log(record)} danger icon={<DeleteFilled />}></Button>
+            <Popconfirm
+                    title={`Are you sure to delete?`}
+                    onConfirm={confirmDelete}
+                    onCancel={cancel}
+                    okText="Delete"
+                    cancelText="Cancel"
+                >
+                <Button type="link" danger icon={<DeleteFilled />}></Button>
+                </Popconfirm>
+            {/* <Button type="link" onClick={()=>console.log(record)} danger icon={<DeleteFilled />}></Button> */}
             
           </Space>
       
@@ -151,6 +160,8 @@ function BudgetTable(){
         }
     }
 
+
+    // Modal functions
     const showEditModal = (record) => {
         setModalExpenseDescrip(record.description)
         setModalAmount(parseInt(record.amount.match(/(\d+)/)))
@@ -162,7 +173,6 @@ function BudgetTable(){
         setIsEditModalVisible(false);
     };
 
-    // Modal functions
     const validateInputs = () => {
         if (modalExpenseDescrip === ""){
             message.warning("Please enter a description")
@@ -210,6 +220,34 @@ function BudgetTable(){
             })
         })
     }
+
+    // Popup delete functions
+    const confirmDelete = async () => {
+        console.log("Going to delete")
+        // await fetch('/deleteBudget', {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json',
+        //         'x-access-token': localStorage.getItem('token')?.toString()
+        //     },
+        //     body: JSON.stringify({
+        //       'budgetname': cardTitle,
+        //     }) 
+        // }).then((response) => {
+        //     response.json().then((response) => {
+        //         if (response['isSuccess']) {
+        //             budgetApiCall();
+        //             message.success('Budget Deleted Successfully');
+        //         }
+        //     })
+        // })
+    };
+
+
+    const cancel = () => {
+        message.error('Cancelled');
+    };
 
     return(
         <div style={{paddingTop: "60px"}}>
