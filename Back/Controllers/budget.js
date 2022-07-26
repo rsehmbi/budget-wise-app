@@ -105,7 +105,7 @@ exports.addbudget = async (req, res) => {
     var amount = req.body.amount
     var currentUserId = res.locals.userid
 
-    const add_budget_query = `INSERT INTO budgetta    ble (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
+    const add_budget_query = `INSERT INTO budgettable (userid, budgetname, amount, maximumamount) VALUES ($1,$2,$3,$4)`
     try {
         await pool.query(add_budget_query,[currentUserId, expense, amount, maxamount])
         res.json({
@@ -262,6 +262,77 @@ exports.getBudgetLogs = async (req, res) => {
         
     }
     catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+
+exports.addCreditCard = async (req, res) => {
+    var currentUserId = res.locals.userid
+    var cardname = req.body.cardname
+    var expiry = req.body.expiry
+    var cardnumber  = req.body.number
+    var amount = parseInt(req.body.amount)
+    const add_creditcard_query = `INSERT INTO creditcards (userid, cardname, expiry, number, amount) VALUES ($1,$2,$3,$4,$5)`    
+    try {
+        await pool.query(add_creditcard_query, [currentUserId, cardname, expiry, cardnumber, amount])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.getAvailableCredit = async (req, res) => {
+    var token = res.locals.userid
+    var total_credit_query_string = `SELECT SUM (amount) AS total_credit FROM creditcards WHERE userid = $1`
+    var total_expense_query_string = `SELECT SUM (amount) AS total_expense FROM budgettable WHERE userid = $1`
+    
+    try {
+        const total_credit = await pool.query(total_credit_query_string, [token])
+        const total_expense = await pool.query(total_expense_query_string,[token])
+        let available_Credit = parseFloat(total_credit.rows[0]['total_credit']) - parseFloat(total_expense.rows[0]['total_expense'])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: available_Credit,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.getUserCreditCards = async (req, res) => {
+    var token = res.locals.userid
+    var query_string = `SELECT * FROM creditcards WHERE userid = $1`
+    
+    try {
+        const result = await pool.query(query_string, [token])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error) {
+        console.log(error)
         res.json({
             error: error,
             isSuccess: false,

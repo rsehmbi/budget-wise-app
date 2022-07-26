@@ -12,7 +12,10 @@ const { getbudgetList,
     getNameLogs, 
     deleteBudget, 
     deleteAllBudgets, 
-    updateMaxAmount } =  require('../Controllers/budget')
+    updateMaxAmount,
+    addCreditCard,
+    getAvailableCredit,
+    getUserCreditCards,} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -44,7 +47,7 @@ _r.post('/isUserAuth', isUserAuth)
 _r.get('/getbudgetList', verifyJWT, getbudgetList)
 
 _r.get('/getbudgetaggregate', verifyJWT, getBudgetAggregate)
-_r.post('/addbudget',verifyJWT, addbudget)
+_r.post('/addbudget', verifyJWT, addbudget)
 _r.post('/addExpense', verifyJWT, addExpense)
 _r.put('/updatebudget', verifyJWT, updatebudget)
 _r.get('/BudgetLog/getBudgetNames',verifyJWT, getBudgetNames)
@@ -55,5 +58,9 @@ _r.put('/updateMaxAmount', verifyJWT, updateMaxAmount)
 _r.get('/BudgetLog/getbudgetlogs', verifyJWT, getBudgetLogs)
 
 _r.get('/BudgetLog/getbudgetlogs/:name', verifyJWT, getNameLogs)
+
+_r.post('/addCreditCard', verifyJWT, addCreditCard)
+_r.get('/getAvailableCredit', verifyJWT, getAvailableCredit)
+_r.get('/getUserCreditCards', verifyJWT, getUserCreditCards)
 
 module.exports = _r

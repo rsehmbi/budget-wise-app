@@ -1,5 +1,5 @@
 import * as React from "react";
-import '../CSS/App.css';
+import '../Css/App.css';
 import { Result, Button } from 'antd';
 import { Link } from "react-router-dom";
 
