@@ -42,3 +42,19 @@ export function getBudNameLogs(value){
                 'x-access-token': localStorage.getItem('token')?.toString()}
         })
 }
+
+export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
+    return fetch('/BudgetLog/updateLog', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        },
+        body: JSON.stringify({
+          'budgetcategory': budgetCategory,
+          'amount': amount,
+          'description': expenseDescrip ,
+        }) 
+    })
+}

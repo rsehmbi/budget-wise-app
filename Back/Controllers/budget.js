@@ -269,3 +269,35 @@ exports.getBudgetLogs = async (req, res) => {
         })
     }
 }
+
+// Update description and amount for a log
+exports.updateAmount = async (req, res) => {
+    var amount = parseInt(req.body.amount)
+    var budgetName =  req.body.budgetcategory
+    var description = req.body.description
+    var currentUserId = res.locals.userid
+    
+    const update_amount_query = `UPDATE "expensetable" 
+                                SET "amount" = $1, "date" = CURRENT_DATE
+                                WHERE "description" = $2 AND "userid" = $3 AND "budgetcategory" = $4`
+
+    const update_amount = `UPDATE "budgettable" 
+                           SET "amount" = (SELECT sum(amount) FROM "expensetable" WHERE "budgetcategory" = $1 AND "userid" = $2 GROUP BY budgetcategory) 
+                           WHERE "userid" = $2 AND "budgetname"=$3`
+    try {
+        await pool.query(update_amount_query,[amount, description, currentUserId, budgetName])
+        await pool.query(update_amount, [budgetName, currentUserId, budgetName])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+        console.log(error)
+    }
+}
