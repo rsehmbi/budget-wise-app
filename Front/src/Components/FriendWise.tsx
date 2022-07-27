@@ -2,7 +2,7 @@ import React from 'react';
 import {Skeleton, PageHeader, Button} from 'antd';
 import {useState} from 'react';
 
-function Etransfer() {
+function FriendWise() {
     const [isSkeleton, setSkeleton] = useState(false);
     const [modalHidden, setModalHidden] = useState(true);
 
@@ -17,7 +17,8 @@ function Etransfer() {
                 
                 extra={
                     [
-                        <Button onClick={showModal} key="1">Send E-Transfer</Button>,   
+                        <Button onClick={showModal} key="1">You Owe</Button>, 
+                        <Button onClick={showModal} key="2">Friend Owes</Button>,    
                     ]
             }    
             />
@@ -27,4 +28,4 @@ function Etransfer() {
        </div>)
 }
 
-export default Etransfer;
+export default FriendWise;

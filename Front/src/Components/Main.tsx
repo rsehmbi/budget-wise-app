@@ -20,7 +20,7 @@ import BudgetPlanner from "./BudgetPlanner.tsx";
 import BudgetTable from "./BudgetLog.tsx";
 import PageNotFound from "./PageNotFound.tsx";
 import Analytics from "./Analytics.tsx";
-import Etransfer from "./Etransfer.tsx"
+import FriendWise from "./FriendWise.tsx"
 
 
 export function encrypted(encryptString: string){
@@ -125,7 +125,7 @@ function Main() {
                                 Analytics
                             </Button>
                         </Link>
-                        <Link to="/Etransfer">
+                        <Link to="/FriendWise">
                             <Button type={"link"} onClick={() => {setAnalytics(false)
                                                                 setBudgetLog(false)
                             }}
@@ -149,7 +149,7 @@ function Main() {
                         <Route path="/" element={<BudgetPlanner/>}/>
                         <Route path="/BudgetLog" element={<BudgetTable/>}/>
                         <Route path="/Analytics" element={<Analytics/>}/>
-                        <Route path="Etransfer" element={<Etransfer/>}/>
+                        <Route path="Etransfer" element={<FriendWise/>}/>
                     </Routes>
             </div>
         )
