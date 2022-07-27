@@ -276,6 +276,7 @@ exports.addCreditCard = async (req, res) => {
     var expiry = req.body.expiry
     var cardnumber  = req.body.number
     var amount = parseInt(req.body.amount)
+    console.log("here")
     const add_creditcard_query = `INSERT INTO creditcards (userid, cardname, expiry, number, amount) VALUES ($1,$2,$3,$4,$5)`    
     try {
         await pool.query(add_creditcard_query, [currentUserId, cardname, expiry, cardnumber, amount])
