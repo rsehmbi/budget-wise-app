@@ -149,7 +149,7 @@ function Main() {
                         <Route path="/" element={<BudgetPlanner/>}/>
                         <Route path="/BudgetLog" element={<BudgetTable/>}/>
                         <Route path="/Analytics" element={<Analytics/>}/>
-                        <Route path="Etransfer" element={<FriendWise/>}/>
+                        <Route path="/FriendWise" element={<FriendWise/>}/>
                     </Routes>
             </div>
         )

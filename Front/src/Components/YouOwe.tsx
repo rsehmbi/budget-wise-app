@@ -64,11 +64,11 @@ function SendTransfer({visible, hideOweModal}) {
               
           <br/>
           <label> Description </label> <br/>
-          <Input onChange={handleDesciptionChange} placeholder={"Describe your expense"} maxLength={20} value={description} type="string"/> <br />
+          <Input onChange={handleDesciptionChange} placeholder={"What do you owe for?"} maxLength={20} value={description} type="string"/> <br />
 
           <br/>
           <label> Amount </label> <br/>
-          <Input onChange={handleAmountChange} placeholder={"How much you owe?"} maxLength={4} value={amount} type="integer"/> <br />
+          <Input onChange={handleAmountChange} maxLength={4} value={amount} type="integer"/> <br />
        </Modal>
        </>
        )
