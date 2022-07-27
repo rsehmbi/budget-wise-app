@@ -1,8 +1,11 @@
 import React from 'react';
 import {Modal, Input} from 'antd';
 import {useState} from 'react';
+// @ts-ignore
+import { youOweAPI } from '../Services/BudgetServices.ts';
 
-function SendTransfer({visible, handleCancel}) {
+
+function SendTransfer({visible, hideOweModal}) {
     const [recEmail, setRecEmail] = useState("");
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState(0);
@@ -33,15 +36,24 @@ function SendTransfer({visible, handleCancel}) {
         //     setDefaultValues();
         //     handlePreCancel()
         // }
-
+        addYouOwe()
         
     }
 
     const handlePreCancel = () => {
         setDefaultValues()
-        handleCancel()
+        hideOweModal()
     }
-
+    
+    const addYouOwe = async () => {
+       youOweAPI(recEmail, amount, description).then((response) => {
+            response.json().then((response) => {
+                if (response) {
+                //   budgetApiCall()
+                }
+            })
+        })
+    }
     
 
     return (

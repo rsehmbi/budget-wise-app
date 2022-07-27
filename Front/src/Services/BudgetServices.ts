@@ -33,6 +33,7 @@ export function getBudNameLogs(value){
         })
 }
 
+// Update an amount from log
 export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
     return fetch('/BudgetLog/updateLog', {
         method: 'PUT',
@@ -49,6 +50,7 @@ export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
     })
 }
 
+// Delete a log
 export function deleteLogAPI(category, description){
     return fetch('/BudgetLog/deleteLog', {
         method: 'DELETE',
@@ -60,6 +62,23 @@ export function deleteLogAPI(category, description){
         body: JSON.stringify({
           'budgetcategory': category,
           'description': description
+        }) 
+    })
+}
+
+// Owing money
+export function youOweAPI(receiver, amount, description){
+    return fetch('/youOwe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        },
+        body: JSON.stringify({
+            'receiver': receiver,
+            'amount': amount,
+            'description': description
         }) 
     })
 }

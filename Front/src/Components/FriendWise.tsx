@@ -1,14 +1,21 @@
 import React from 'react';
 import {Skeleton, PageHeader, Button} from 'antd';
 import {useState} from 'react';
+// @ts-ignore
+import YouOwe from './YouOwe.tsx';
 
 function FriendWise() {
     const [isSkeleton, setSkeleton] = useState(false);
-    const [modalHidden, setModalHidden] = useState(true);
+    const [oweModal, setOweModal] = useState(false);
 
-    const showModal = () => {
-        setModalHidden(false)
+    const showOweModal = () => {
+        setOweModal(true)
     }
+
+    const hideOweModal = () => {
+        setOweModal(false)
+    }
+
 
     return (
        <div style={{paddingTop: "60px"}}>
@@ -17,12 +24,12 @@ function FriendWise() {
                 
                 extra={
                     [
-                        <Button onClick={showModal} key="1">You Owe</Button>, 
-                        <Button onClick={showModal} key="2">Friend Owes</Button>,    
+                        <Button onClick={showOweModal} key="1">You Owe</Button>, 
+                        <Button onClick={showOweModal} key="2">Friend Owes</Button>,    
                     ]
             }    
             />
-
+            <YouOwe visible={oweModal} hideOweModal={hideOweModal}/>
 
             </Skeleton>
        </div>)
