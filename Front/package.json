@@ -2,7 +2,7 @@
   "name": "budget-wise-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3000",
+   
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@testing-library/jest-dom": "^5.16.4",
@@ -22,7 +22,7 @@
     "@ant-design/plots": "^1.1.1"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts --max_old_space_size=8128 start",
+    "start": "react-scripts start",
     "build": "BUILD_PATH='../Back/build' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -43,6 +43,7 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ],
+    "proxy": "http://localhost:3000/"
   }
 }

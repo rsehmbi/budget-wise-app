@@ -20,6 +20,7 @@ import BudgetPlanner from "./BudgetPlanner.tsx";
 import BudgetTable from "./BudgetLog.tsx";
 import PageNotFound from "./PageNotFound.tsx";
 import Analytics from "./Analytics.tsx";
+import Etransfer from "./Etransfer.tsx"
 
 
 export function encrypted(encryptString: string){
@@ -124,6 +125,14 @@ function Main() {
                                 Analytics
                             </Button>
                         </Link>
+                        <Link to="/Etransfer">
+                            <Button type={"link"} onClick={() => {setAnalytics(false)
+                                                                setBudgetLog(false)
+                            }}
+                                    style={{marginLeft: "50px", fontSize: "15px", color: isAnalytics ? "#1890ff" : "unset"}}>
+                                Etransfer
+                            </Button>
+                        </Link>
                     </Row>
                     </Col>
                     <Col span={6} style={{alignItems: "center", display: "flex", justifyContent: "end"}}>
@@ -140,6 +149,7 @@ function Main() {
                         <Route path="/" element={<BudgetPlanner/>}/>
                         <Route path="/BudgetLog" element={<BudgetTable/>}/>
                         <Route path="/Analytics" element={<Analytics/>}/>
+                        <Route path="Etransfer" element={<Etransfer/>}/>
                     </Routes>
             </div>
         )
