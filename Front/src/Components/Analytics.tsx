@@ -226,7 +226,7 @@ function Analytics(){
                         <Select.Option value={"Line Chart"} >Line chart</Select.Option>
                         <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
                 </Select>
-                {specificPieType !== "" ?
+                {specificPieType !== "" && selectedGraph === "Pie Chart" ?
                     <RangePicker format="YYYY-MM" allowClear={false} onChange={(e) => {handlePicker(e)}} style={{width: "250px", marginLeft: "30px"}} picker="month" />
                     :
                     null
