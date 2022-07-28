@@ -6,7 +6,7 @@ import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/Budget
 // @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { CaretLeftOutlined } from "@ant-design/icons";
-import { Line, Pie } from '@ant-design/plots';
+import {Bar, Line, Pie} from '@ant-design/plots';
 
 
 
@@ -127,6 +127,23 @@ function Analytics(){
             </>;
     }
 
+    const BarChart = () => {
+        let data = []
+        budgetList.forEach((el) => {
+            data.push({type: el.budgetname, value: parseInt(el.amount)})
+        })
+        const config = {
+            data,
+            xField: 'value',
+            yField: 'year',
+            seriesField: 'year',
+            legend: {
+                position: 'top-left',
+            },
+        };
+        return <Bar {...config} />;
+    };
+
 
     const PieChart = (specificType?: string) => {
         let data = []
@@ -222,9 +239,15 @@ function Analytics(){
                     :
                     null
                 }
-                <Select defaultValue={selectedGraph} onChange={(e) => {setSelectedGraph(e)}} style={{width: "200px", marginLeft: "30px"}}>
+                <Select defaultValue={selectedGraph} onChange={(e) => {
+                    setSpecificPieType("")
+                    setSpecificPie(false)
+                    setStartDate("")
+                    setEndDate("")
+                    setSelectedGraph(e)}} style={{width: "200px", marginLeft: "30px"}}>
                         <Select.Option value={"Line Chart"} >Line chart</Select.Option>
                         <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
+                        <Select.Option value={"Bar Chart"} >Bar Chart</Select.Option>
                 </Select>
                 {specificPieType !== "" && selectedGraph === "Pie Chart" ?
                     <RangePicker format="YYYY-MM" allowClear={false} onChange={(e) => {handlePicker(e)}} style={{width: "250px", marginLeft: "30px"}} picker="month" />
@@ -248,6 +271,9 @@ function Analytics(){
                     }
                     {
                         selectedGraph === "Line Chart" ? <LineChart/>:null
+                    }
+                    {
+                        selectedGraph === "Bar Chart" ? BarChart() : null
                     }
                 </Col>
                 <Col span={6}>
