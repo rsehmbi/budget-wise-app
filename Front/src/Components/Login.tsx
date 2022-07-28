@@ -9,7 +9,8 @@ import {Button, Form, Input, message, Modal, Row} from "antd";
 import {deleteAllCookies, encrypted} from "./Main.tsx";
 // @ts-ignore
 import {LoginCall, SignUp} from "../Services/Login.ts";
-import {MailOutlined} from "@ant-design/icons";
+import { MailOutlined } from "@ant-design/icons";
+import budgetpicture from '../Images/budgetwise_app.svg';
 
 
 function Login(props) {
@@ -73,16 +74,22 @@ function Login(props) {
         setVisible(false);
     };
 
-  return (
-      <div className="container">
-          <div className="login-section" style={{width: "60vh"}}>
-              <Row style={{justifyContent: "center", alignItems: "center", height: "50px", fontSize: "35px"}}>Budget Wise App</Row>
+    return (
+        <>  
+        <header>
+          <div className="overlay">
+            <h1> BudgetWise App</h1>
+            </div>
+        </header>
+          <div className="container">
+          <div> <img src={budgetpicture} alt="bidgetwiseapp" /></div>
+          <div className="login-section" style={{width: "40vh"}}>
               <br />
               <Row style={{justifyContent: "center", paddingTop: "40px"}}>
-                  <GoogleLogin
+                <GoogleLogin 
                       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                       render={(renderProps) => (
-                          <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                          <Button  style={{width:"200px"}} onClick={renderProps.onClick} disabled={renderProps.disabled}>
                               Login
                           </Button>
                       )}
@@ -91,14 +98,16 @@ function Login(props) {
                       onFailure={(res) => {onFailure(res)}}
                       cookiePolicy={'single_host_origin'}
                   />
-                  <Button onClick={() => {setVisible(true)}} style={{marginLeft: "20px"}}>Sign up</Button>
-                  <Modal
+                </Row>
+                <Row style={{justifyContent: "center", paddingTop: "40px"}}>
+                    <Button onClick={() => {setVisible(true)}} style={{width:"200px"}}>Sign up</Button>
+                    <Modal
                       title="Write your google email please"
                       visible={visible}
                       onOk={handleOk}
                       confirmLoading={confirmLoading}
                       onCancel={handleCancel}
-                  >
+                    >
                       <Form form={form} className="login-form" >
                           <Form.Item name={'email'} label="Email" rules={[{ type: 'email',message: "The input is not valid E-mail!" }]}>
                               <Input
@@ -109,9 +118,11 @@ function Login(props) {
                       </Form.Item>
                       </Form>
                   </Modal>
-              </Row>
+                </Row>
           </div>
       </div>
+      </>
+
   );
 }
 
