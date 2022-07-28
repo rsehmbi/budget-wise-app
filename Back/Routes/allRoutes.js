@@ -21,7 +21,10 @@ const { getbudgetList,
     updateAmount,
     deleteLog,
     addYouOwe,
-    addFriendOwe} = require('../Controllers/budget')
+    addFriendOwe,
+    getAllOwings,
+    getOwingMe,
+    getMyOwings} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -73,8 +76,13 @@ _r.get('/getUserCreditCards', verifyJWT, getUserCreditCards)
 _r.delete('/deleteCreditCard', verifyJWT, deleteCreditCard)
 _r.put('/updateCreditCardAmount', verifyJWT, updateCreditCardAmount)
 
-_r.post('/youOwe', verifyJWT, addYouOwe)
-_r.post('/friendOwe', verifyJWT, addFriendOwe)
+_r.post('/FriendWise/youOwe', verifyJWT, addYouOwe)
+_r.post('/FriendWise/friendOwe', verifyJWT, addFriendOwe)
+
+_r.get('/FriendWise/getAllOwings', verifyJWT, getAllOwings)
+_r.get('/FriendWise/getMyOwings', verifyJWT, getMyOwings)
+_r.get('/FriendWise/getOwingMe', verifyJWT, getOwingMe)
+
 
 
 module.exports = _r

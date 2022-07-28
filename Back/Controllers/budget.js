@@ -481,12 +481,10 @@ exports.addFriendOwe = async (req, res) => {
 
     const userEmail = `SELECT email FROM users WHERE id=$1`
     const add_owing_query = `INSERT INTO owings (sender, receiver, amount, description, date) VALUES ($1,$2,$3,$4, CURRENT_DATE)`
-   
     
     try {
-        // await pool.query(add_budget_query,[currentUserId, budgetCategory, amount, description])
         receiver = await pool.query(userEmail, [currentUserId])
-        console.log(receiver.rows[0].email)
+        // console.log(receiver.rows[0].email)
         await pool.query(add_owing_query, [sender, receiver.rows[0].email, amount, description])
         res.json({
             isSuccess: true,
@@ -494,6 +492,79 @@ exports.addFriendOwe = async (req, res) => {
         })
     }
     catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Get all owing logs
+exports.getAllOwings = async (req, res) => {
+    var currentUser = res.locals.userid
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var query_string = `SELECT * FROM owings WHERE sender=$1 OR receiver=$1`
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        const result = await pool.query(query_string, [email])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Get logs of all those who owe you
+exports.getOwingMe = async (req, res) => {
+    var currentUser = res.locals.userid
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var query_string = `SELECT * FROM owings WHERE receiver=$1`
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        const result = await pool.query(query_string, [email])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+
+// Get logs where you owe 
+exports.getMyOwings = async (req, res) => {
+    var currentUser = res.locals.userid
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var query_string = `SELECT * FROM owings WHERE sender=$1`
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        const result = await pool.query(query_string, [email])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
         res.json({
             error: error,
             isSuccess: false,

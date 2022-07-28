@@ -1,6 +1,6 @@
 import React from 'react';
 import {Skeleton, PageHeader, Button, Table, Select} from 'antd';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 // @ts-ignore
 import AddOwing from './AddOwing.tsx';
 // @ts-ignore
@@ -77,6 +77,11 @@ function FriendWise() {
         //     ),
         //   }
     ]
+
+    useEffect(() => {
+        getOwingLogs(ALL_LOGS);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
     const showOweModal = () => {
         setOweModal(true)
