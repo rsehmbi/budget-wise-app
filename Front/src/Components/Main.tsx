@@ -48,6 +48,7 @@ export function deleteAllCookies() {
 function Main() {
     const [isBudgetLog, setBudgetLog] = useState(window.location.href.includes("/BudgetLog"))
     const [isAnalytics, setAnalytics] = useState(window.location.href.includes("/Analytics"))
+    const [isFriendWise, setFriendWise] = useState(window.location.href.includes("/FriendWise"))
     const [email, setEmail] = React.useState(undefined);
 
     useEffect(() => {
@@ -67,6 +68,9 @@ function Main() {
         }
         if (window.location.href.includes("/Analytics")){
             setAnalytics(true)
+        }
+        if (window.location.href.includes("/FriendWise")){
+            setFriendWise(true)
         }
     }, []);
 
@@ -104,14 +108,16 @@ function Main() {
                     <Row style={{height: "40px", alignItems: "center", justifyContent: "center"}}>
                         <Link to="/" style={{fontSize: "15px"}}>
                             <Button type={"link"} onClick={() => {setBudgetLog(false)
-                                                                    setAnalytics(false)}}
-                                    style={{fontSize: "15px", color: isBudgetLog || isAnalytics ? "unset" : "#1890ff"}}>
+                                                                    setAnalytics(false)
+                                                                    setFriendWise(false)}}
+                                    style={{fontSize: "15px", color: isBudgetLog || isAnalytics || isFriendWise ? "unset" : "#1890ff"}}>
                                 Budget Portfolio
                             </Button>
                             </Link>
                         <Link to="/BudgetLog">
                             <Button type={"link"} onClick={() => {setBudgetLog(true)
                                                                     setAnalytics(false)
+                                                                    setFriendWise(false)
                             }}
                                     style={{marginLeft: "50px", fontSize: "15px", color: isBudgetLog ? "#1890ff" : "unset"}}>
                                 Budget Logs
@@ -120,6 +126,7 @@ function Main() {
                         <Link to="/Analytics">
                             <Button type={"link"} onClick={() => {setAnalytics(true)
                                                                 setBudgetLog(false)
+                                                                setFriendWise(false)
                             }}
                                     style={{marginLeft: "50px", fontSize: "15px", color: isAnalytics ? "#1890ff" : "unset"}}>
                                 Analytics
@@ -127,10 +134,11 @@ function Main() {
                         </Link>
                         <Link to="/FriendWise">
                             <Button type={"link"} onClick={() => {setAnalytics(false)
-                                                                setBudgetLog(false)
+                                                                 setBudgetLog(false)
+                                                                 setFriendWise(true)
                             }}
-                                    style={{marginLeft: "50px", fontSize: "15px", color: isAnalytics ? "#1890ff" : "unset"}}>
-                                Etransfer
+                                    style={{marginLeft: "50px", fontSize: "15px", color: isFriendWise ? "#1890ff" : "unset"}}>
+                                Friend Wise
                             </Button>
                         </Link>
                     </Row>
