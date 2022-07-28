@@ -98,12 +98,12 @@ function AddOwing({getTotalOwings, getOwingLogs, dropDown, visible, hideOweModal
           
           <br/>
           <label> Email  </label> <br/>
-          <Input  placeholder="Email" onChange={handleEmailChange} value={email} maxLength={20} type="string" /> <br />        
+          <Input  placeholder="Email" onChange={handleEmailChange} value={email} maxLength={35} type="string" /> <br />        
         
          
           <br/>
           <label> Description </label> <br/>
-          <Input onChange={handleDesciptionChange} placeholder={"Owing Description"} maxLength={20} value={description} type="string"/> <br />
+          <Input onChange={handleDesciptionChange} placeholder={"Owing Description"} maxLength={50} value={description} type="string"/> <br />
 
           <br/>
           <label> Amount </label> <br/>
