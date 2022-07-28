@@ -130,3 +130,35 @@ export function getOwingMeLogs(){
                 'x-access-token': localStorage.getItem('token')?.toString()}
         })
 }
+
+// Delete a log
+export function deleteOweLog(id){
+    return fetch('/FriendWise/deleteOweLog', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        },
+        body: JSON.stringify({
+          'id': id
+        }) 
+    })
+}
+
+// Update an amount from log
+export function updateOweLogAPICall(id, amount, description){
+    return fetch('/FriendWise/updateOweLog', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        },
+        body: JSON.stringify({
+          'id': id,
+          'amount': amount,
+          'description': description
+        }) 
+    })
+}

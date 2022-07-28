@@ -480,7 +480,7 @@ exports.addFriendOwe = async (req, res) => {
     var currentUserId = res.locals.userid
 
     const userEmail = `SELECT email FROM users WHERE id=$1`
-    const add_owing_query = `INSERT INTO owings (sender, receiver, amount, description, date) VALUES ($1,$2,$3,$4, CURRENT_DATE)`
+    const add_owing_query = `INSERT INTO owings (id, sender, receiver, amount, description, date) VALUES (DEFAULT, $1,$2,$3,$4, CURRENT_DATE)`
     
     try {
         receiver = await pool.query(userEmail, [currentUserId])
@@ -565,6 +565,53 @@ exports.getMyOwings = async (req, res) => {
         })
     }
     catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.deleteOweLog= async (req, res) => {
+    var id = req.body.id
+
+    var delete_query_string = `DELETE FROM owings WHERE id=$1 `
+    try {
+        const result = await pool.query(delete_query_string,[id])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Update description and amount for a log
+exports.updateOweLog = async (req, res) => {
+    var amount = parseInt(req.body.amount)
+    var description = req.body.description
+    var id = req.body.id
+    
+    const update_owe_query = `UPDATE "owings" 
+                                SET "amount" = $1, "description"=$2, "date" = CURRENT_DATE
+                                WHERE "id"=$3`
+
+    try {
+        await pool.query(update_owe_query,[amount, description, id])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
         res.json({
             error: error,
             isSuccess: false,
