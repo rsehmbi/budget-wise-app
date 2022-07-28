@@ -61,7 +61,6 @@ exports.getbudgetList = async (req, res) => {
     var query_string = `SELECT * FROM budgettable WHERE userid = $1`
     try {
         const result = await pool.query(query_string,[token])
-        console.log(result.rows)
         res.json({
             isSuccess: true,
             message: "Success",
@@ -172,7 +171,6 @@ exports.updateMaxAmount = async (req, res) => {
             isSuccess: false,
             message: "Failed",
         })
-        console.log(error)
     }
 }
 
@@ -253,7 +251,6 @@ exports.getBudgetLogs = async (req, res) => {
     var query_string = `SELECT * FROM expensetable WHERE userid = $1`
     try {
         const result = await pool.query(query_string, [token])
-        console.log(result.rows)
         res.json({
             isSuccess: true,
             message: "Success",
@@ -285,7 +282,6 @@ exports.addCreditCard = async (req, res) => {
         })
     }
     catch (error) {
-        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
@@ -331,7 +327,6 @@ exports.getUserCreditCards = async (req, res) => {
         })
     }
     catch (error) {
-        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
@@ -370,7 +365,6 @@ exports.updateCreditCardAmount = async (req, res) => {
                    WHERE "userid" = $2 AND "number" = $3`
     try {
         const result = await pool.query(update_cc_amount_query,[amount, token, number])
-        console.log(error)
     }
     catch (error){
         res.json({
@@ -402,7 +396,6 @@ exports.deleteLog = async (req, res) => {
         })
     }
     catch (error){
-        console.log(error);
         res.json({
             error: error,
             isSuccess: false,
@@ -434,6 +427,29 @@ exports.updateAmount = async (req, res) => {
         })
     }
     catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+
+exports.getDateAmountDescription = async (req, res) => {
+    var token = res.locals.userid
+    var query_string = `SELECT to_char(date,'yyyy-mm-dd'), amount, description FROM expensetable WHERE userid = $1`
+    
+    try {
+        const result = await pool.query(query_string, [token])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error) {
+        console.log(error)
         res.json({
             error: error,
             isSuccess: false,

@@ -19,7 +19,9 @@ const { getbudgetList,
     deleteCreditCard,
     updateCreditCardAmount,
     updateAmount,
-    deleteLog} = require('../Controllers/budget')
+    deleteLog,
+    getDateAmountDescription,
+} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -67,6 +69,8 @@ _r.delete('/BudgetLog/deleteLog', verifyJWT, deleteLog)
 _r.post('/addCreditCard', verifyJWT, addCreditCard)
 
 _r.get('/getAvailableCredit', verifyJWT, getAvailableCredit)
+
+_r.get('/getDateAmountDescription', verifyJWT, getDateAmountDescription)
 _r.get('/getUserCreditCards', verifyJWT, getUserCreditCards)
 _r.delete('/deleteCreditCard', verifyJWT, deleteCreditCard)
 _r.put('/updateCreditCardAmount', verifyJWT, updateCreditCardAmount)
