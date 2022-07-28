@@ -6,7 +6,7 @@ import { youOweAPI, friendOweAPI } from '../Services/BudgetServices.ts';
 
 const { Option } = Select;
 
-function AddOwing({getOwingLogs, dropDown, visible, hideOweModal}) {
+function AddOwing({getTotalOwings, getOwingLogs, dropDown, visible, hideOweModal}) {
     const [email, setEmail] = useState("");
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState(0);
@@ -67,6 +67,7 @@ function AddOwing({getOwingLogs, dropDown, visible, hideOweModal}) {
                 if (response) {
                     message.success("Added the amount you owe")
                     getOwingLogs(dropDown)
+                    getTotalOwings()
                 }
             })
         })
@@ -77,7 +78,8 @@ function AddOwing({getOwingLogs, dropDown, visible, hideOweModal}) {
              response.json().then((response) => {
                  if (response) {
                      message.success("Added the amount your friend owes")
-                 //   budgetApiCall()
+                    getOwingLogs(dropDown)
+                    getTotalOwings()
                  }
              })
          })

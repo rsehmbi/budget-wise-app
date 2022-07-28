@@ -1,13 +1,15 @@
 import React from 'react';
-import {Skeleton, PageHeader, message, Button, Table, Select, Space, Popconfirm, Modal, Input} from 'antd';
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import {Skeleton, PageHeader, message, Button, Table, Select, Space, Popconfirm, Modal, Input, Tag} from 'antd';
+import { DeleteFilled, EditFilled, DollarOutlined } from "@ant-design/icons";
 import {useState, useEffect} from 'react';
+// @ts-ignore
+import { currencyFormatter } from "../Utils/CurrencyUtils.tsx";
 // @ts-ignore
 import AddOwing from './AddOwing.tsx';
 // @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 // @ts-ignore
-import {getAllOwingLogs, getMyOwingLogs, getOwingMeLogs, deleteOweLog, updateOweLogAPICall} from '../Services/BudgetServices.ts';
+import {getAllOwingLogs, getMyOwingLogs, getOwingMeLogs, deleteOweLog, updateOweLogAPICall, getTotalOwingsAPI} from '../Services/BudgetServices.ts';
 
 const { Option } = Select;
 
@@ -27,6 +29,7 @@ function FriendWise() {
     const [oweModal, setOweModal] = useState(false);
     const [owingLogs, setOwingLogs] = useState([]); 
     const [curLogs, setCurLogs] = useState(ALL_LOGS)   
+    const [totalOwings, setTotalOwings]= useState(0)
 
     // Edit Modal
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -117,6 +120,7 @@ function FriendWise() {
             response.json().then((response) => {
                 if (response.isSuccess) {
                     getOwingLogs(curLogs);
+                    getTotalOwings()
                     message.success('Owings updated successfully');
                 }
                 else{
@@ -149,6 +153,7 @@ function FriendWise() {
             response.json().then((response) => {
                 if (response['isSuccess']) {
                     getOwingLogs(curLogs);
+                    getTotalOwings()
                     message.success('Log Deleted Successfully');
                 }
             })
@@ -157,6 +162,7 @@ function FriendWise() {
 
     useEffect(() => {
         getOwingLogs(ALL_LOGS);
+        getTotalOwings();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -189,6 +195,7 @@ function FriendWise() {
                     addCurrency(response.res)      // Add currency type
                     setOwingLogs(response.res)
                     setSkeleton(false)
+                    getTotalOwings()
                  
                 }
                 else{
@@ -204,6 +211,7 @@ function FriendWise() {
                     addCurrency(response.res)      // Add currency type
                     setOwingLogs(response.res)
                     setSkeleton(false)
+                    getTotalOwings()
                  
                 }
                 else{
@@ -219,6 +227,7 @@ function FriendWise() {
                     addCurrency(response.res)      // Add currency type
                     setOwingLogs(response.res)
                     setSkeleton(false)
+                    getTotalOwings()
                  
                 }
                 else{
@@ -230,11 +239,28 @@ function FriendWise() {
 
     }
 
+    const getTotalOwings = () => { 
+        getTotalOwingsAPI().then((response) => {
+            response.json().then((response) => {
+                if (response.isSuccess) {
+                    setTotalOwings(response.res)
+                }
+                else{
+                    console.log("Error updating response" + response.error)
+                }
+            })
+        })
+
+    }
+
 
     return (
        <div style={{paddingTop: "60px"}}>
-            <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>    
+            <Skeleton style={{padding: "50px 50px 50px 50px"}} loading={isSkeleton}>   
+            
             <PageHeader
+            title={`Total Owings  `}
+            tags={<Tag style={{ width: "120px", height:"25px", fontSize:"16px", textAlign: 'center'}} icon={<DollarOutlined />} color="blue">{currencyFormatter.format(totalOwings)}</Tag>} 
                 
                 extra={
                     [
@@ -252,7 +278,9 @@ function FriendWise() {
             }    
             />
             <Table columns={columns} dataSource={owingLogs} style={tableProperties}></Table>;
-            <AddOwing getOwingLogs={getOwingLogs} dropDown={curLogs} visible={oweModal} hideOweModal={hideOweModal}/>
+
+            <AddOwing getTotalOwings={getTotalOwings} getOwingLogs={getOwingLogs} dropDown={curLogs} visible={oweModal} hideOweModal={hideOweModal}/>
+
             <Modal title="Edit Amount" visible={isEditModalVisible} onOk={okClickHandle} onCancel={handlePreCancel}>
                 <label> Description: </label> <br/>
                 <Input onChange={handleDescripChange} value={modalDescrip} type="string"/><br/>

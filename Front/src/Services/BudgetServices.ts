@@ -162,3 +162,15 @@ export function updateOweLogAPICall(id, amount, description){
         }) 
     })
 }
+    
+// Get total Owings
+export function getTotalOwingsAPI(){
+    return fetch('/FriendWise/getTotalOwings', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        }, 
+    })
+}

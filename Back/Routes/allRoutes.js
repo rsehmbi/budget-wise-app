@@ -26,7 +26,8 @@ const { getbudgetList,
     getOwingMe,
     getMyOwings,
     deleteOweLog,
-    updateOweLog} = require('../Controllers/budget')
+    updateOweLog,
+    getTotalOwings} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -84,10 +85,10 @@ _r.post('/FriendWise/friendOwe', verifyJWT, addFriendOwe)
 _r.get('/FriendWise/getAllOwings', verifyJWT, getAllOwings)
 _r.get('/FriendWise/getMyOwings', verifyJWT, getMyOwings)
 _r.get('/FriendWise/getOwingMe', verifyJWT, getOwingMe)
+_r.get('/FriendWise/getTotalOwings', verifyJWT, getTotalOwings)
 
 _r.delete('/FriendWise/deleteOweLog', verifyJWT, deleteOweLog)
 _r.put('/FriendWise/updateOweLog', verifyJWT, updateOweLog)
-
 
 
 module.exports = _r

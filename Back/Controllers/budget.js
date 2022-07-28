@@ -619,3 +619,37 @@ exports.updateOweLog = async (req, res) => {
         })
     }
 }
+
+// Get total owings for a user
+exports.getTotalOwings = async (req, res) => {
+    var currentUser = res.locals.userid
+
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var you_owe_query_string = `SELECT SUM (amount) AS you_owe FROM owings WHERE sender = $1`
+    var owes_me_query_string = `SELECT SUM (amount) AS owes_me FROM owings WHERE receiver= $1`
+    
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        
+
+        const you_owe = await pool.query(you_owe_query_string, [email])
+        const owes_me = await pool.query(owes_me_query_string,[email])
+        
+        let total_owings = parseFloat(owes_me.rows[0]['owes_me']) - parseFloat(you_owe.rows[0]['you_owe'])
+
+      
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: total_owings,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
