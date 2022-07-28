@@ -6,13 +6,13 @@ import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/Budget
 // @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { CaretLeftOutlined } from "@ant-design/icons";
-import { Pie } from '@ant-design/plots';
+import { Line, Pie } from '@ant-design/plots';
 
 
 
 function Analytics(){
     const [budgetList, setBudgetList] = React.useState([]);
-    const [selectedGraph, setSelectedGraph] = useState("none");
+    const [selectedGraph, setSelectedGraph] = useState("Line Chart");
     const [isSkeleton, setSkeleton] = useState(true);
     const [startDate, setStartDate] = React.useState("");
     const [endDate, setEndDate] = React.useState("");
@@ -66,6 +66,65 @@ function Analytics(){
                 }
             })
         })
+    }
+
+    const LineChart = () => { 
+        const [data, setData] = useState([]);
+
+        useEffect(() => {
+            asyncFetch();
+        }, []);
+
+        const asyncFetch = () => {
+            fetch('/getDateAmountDescription', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
+            }
+        }).then((response) => response.json())
+                .then((json) => setData(json.res))
+
+            .catch((error) => {
+                console.log('fetch data failed', error);
+            });
+        };
+        const config = {
+            data,
+            legend: { position: 'top' },
+            padding: 'auto',
+            xField: 'to_char',
+            yField: 'amount',
+            xAxis: {
+                label: {
+                },
+                // type: 'timeCat',
+                tickCount: 5,
+            },
+            smooth: true,
+            label: {
+                style: {
+                    fill: '#aaa',
+                },
+            },
+            point: {
+                size: 5,
+                shape: 'circle',
+            },
+            animation: {
+            appear: {
+                animation: 'path-in',
+                duration: 5000,
+                },
+            },
+            
+        };
+
+        return <>
+                <h1 style={{width: "100%",  textAlign: "center"}}>Spendings per day (Date Vs Amount Spent)</h1>
+                <Line {...config} />
+            </>;
     }
 
 
@@ -164,8 +223,8 @@ function Analytics(){
                     null
                 }
                 <Select defaultValue={selectedGraph} onChange={(e) => {setSelectedGraph(e)}} style={{width: "200px", marginLeft: "30px"}}>
-                    <Select.Option value={"none"} >none</Select.Option>
-                    <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
+                        <Select.Option value={"Line Chart"} >Line chart</Select.Option>
+                        <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
                 </Select>
                 {specificPieType !== "" ?
                     <RangePicker format="YYYY-MM" allowClear={false} onChange={(e) => {handlePicker(e)}} style={{width: "250px", marginLeft: "30px"}} picker="month" />
@@ -174,9 +233,9 @@ function Analytics(){
                 }
             </Row>
             <Row>
-                <Col span={6}>
+                <Col span={2}>
                 </Col>
-                <Col span={12} style={{height: "600px", paddingTop: "50px"}}>
+                <Col span={20} style={{height: "800px", paddingTop: "50px"}}>
 
                     {selectedGraph === "Pie Chart" && isSpecificPie ? PieChart(specificPieType)
                         :
@@ -187,8 +246,9 @@ function Analytics(){
                             :
                             null
                     }
-
-
+                    {
+                        selectedGraph === "Line Chart" ? <LineChart/>:null
+                    }
                 </Col>
                 <Col span={6}>
                 </Col>
