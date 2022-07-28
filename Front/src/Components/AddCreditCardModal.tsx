@@ -53,10 +53,10 @@ function AddCreditCard({ creditApiCall, visible, handleCancel, handleOk }) {
         }).then((response) => {
             response.json().then((response) => {
                 if (response.isSuccess) {
-                    message.success('Expense added successfully');
+                    message.success('Credit added successfully');
                 }
                 else{
-                    console.log("Error in adding expense:" + response.error)
+                    console.log("Error in adding credit card:" + response.error)
                 }
             })
         })

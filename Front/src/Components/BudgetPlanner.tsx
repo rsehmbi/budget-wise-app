@@ -9,7 +9,7 @@ import CardList from './CardList.tsx';
 
 export default function BudgetPlanner() {
     const [budgetList, setBudgetList] = React.useState([]);
-    const [availableCredit, setavailableCredit] = React.useState(0);
+    const [availableCredit, setavailableCredit] = React.useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isCreditModalVisible, setIsCreditModalVisible] = useState(false);
     const [isCreditListModalVisible, setIsCreditListModalVisible] = useState(false);
@@ -86,8 +86,29 @@ export default function BudgetPlanner() {
         setIsCreditModalVisible(false);
     };
 
-    const showModal = () => {
-        setIsModalVisible(true);
+    const showModal = async () => {
+        await fetch('/getAvailableCredit', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()
+            }, 
+        }).then((response) => {
+            response.json().then((response) => {
+                if (response.isSuccess) {
+                    if (response.res) {
+                        setIsModalVisible(true);
+                    }
+                    else { 
+                        message.error('No credit detected. Please add credit before adding budget.');
+                    }
+                }
+                else {
+                    console.log("Error in fetching credit card info")
+                }
+            })
+        })
     };
 
     const handleCancel = () => {
@@ -155,7 +176,7 @@ export default function BudgetPlanner() {
             <div style={budgetRows}>
             {
                 budgetList.map(budget => (
-                    <BudgetCard budgetApiCall={getBudgetListAPICall} key={ budget["budgetname"] } cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
+                    <BudgetCard creditApiCall={getAvailableCreditAPICall} budgetApiCall={getBudgetListAPICall} key={ budget["budgetname"] } cardTitle={ budget["budgetname"] } amount={budget["amount"]} maxAmount={ budget["maximumamount"]}></BudgetCard>
             )) 
             }
             </div>
