@@ -68,7 +68,7 @@ export function deleteLogAPI(category, description){
 
 // Owing money
 export function youOweAPI(receiver, amount, description){
-    return fetch('/youOwe', {
+    return fetch('/FriendWise/youOwe', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export function youOweAPI(receiver, amount, description){
 }
 
 export function friendOweAPI(sender, amount, description){
-    return fetch('/friendOwe', {
+    return fetch('/FriendWise/friendOwe', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -97,4 +97,36 @@ export function friendOweAPI(sender, amount, description){
             'description': description
         }) 
     })
+}
+
+// Get all the owing logs
+export function getAllOwingLogs(){
+    return fetch(`/FriendWise/getAllOwings`,{
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()}
+        })
+}
+
+// Get all logs for who you owe
+export function getMyOwingLogs(){
+    return fetch(`/FriendWise/getMyOwings`,{
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()}
+        })
+}
+// Get all logs for who owes me
+export function getOwingMeLogs(){
+    return fetch(`/FriendWise/getOwingMe`,{
+            method: 'Get',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'x-access-token': localStorage.getItem('token')?.toString()}
+        })
 }
