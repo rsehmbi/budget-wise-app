@@ -82,3 +82,19 @@ export function youOweAPI(receiver, amount, description){
         }) 
     })
 }
+
+export function friendOweAPI(sender, amount, description){
+    return fetch('/friendOwe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-access-token': localStorage.getItem('token')?.toString()
+        },
+        body: JSON.stringify({
+            'receiver': sender,
+            'amount': amount,
+            'description': description
+        }) 
+    })
+}

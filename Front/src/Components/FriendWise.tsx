@@ -2,7 +2,7 @@ import React from 'react';
 import {Skeleton, PageHeader, Button} from 'antd';
 import {useState} from 'react';
 // @ts-ignore
-import YouOwe from './YouOwe.tsx';
+import AddOwing from './AddOwing.tsx';
 
 function FriendWise() {
     const [isSkeleton, setSkeleton] = useState(false);
@@ -24,12 +24,11 @@ function FriendWise() {
                 
                 extra={
                     [
-                        <Button onClick={showOweModal} key="1">You Owe</Button>, 
-                        <Button onClick={showOweModal} key="2">Friend Owes</Button>,    
+                        <Button onClick={showOweModal} key="1">Add Owing</Button>,   
                     ]
             }    
             />
-            <YouOwe visible={oweModal} hideOweModal={hideOweModal}/>
+            <AddOwing visible={oweModal} hideOweModal={hideOweModal}/>
 
             </Skeleton>
        </div>)
