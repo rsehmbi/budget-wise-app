@@ -20,6 +20,7 @@ const { getbudgetList,
     updateCreditCardAmount,
     updateAmount,
     deleteLog,
+    getDateAmountDescription,
     addYouOwe,
     addFriendOwe,
     getAllOwings,
@@ -75,6 +76,8 @@ _r.delete('/BudgetLog/deleteLog', verifyJWT, deleteLog)
 _r.post('/addCreditCard', verifyJWT, addCreditCard)
 
 _r.get('/getAvailableCredit', verifyJWT, getAvailableCredit)
+
+_r.get('/getDateAmountDescription', verifyJWT, getDateAmountDescription)
 _r.get('/getUserCreditCards', verifyJWT, getUserCreditCards)
 _r.delete('/deleteCreditCard', verifyJWT, deleteCreditCard)
 _r.put('/updateCreditCardAmount', verifyJWT, updateCreditCardAmount)
