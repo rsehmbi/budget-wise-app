@@ -442,7 +442,7 @@ exports.updateAmount = async (req, res) => {
     }
 }
 
-// Add new expenses for budget name already in database to the expensetable and update amount in budgettable
+// Add what you owe
 exports.addYouOwe = async (req, res) => {
     var receiver = req.body.receiver
     var amount = parseInt(req.body.amount)
@@ -458,6 +458,36 @@ exports.addYouOwe = async (req, res) => {
         sender = await pool.query(userEmail, [currentUserId])
         console.log(sender.rows[0].email)
         await pool.query(add_owing_query, [sender.rows[0].email, receiver, amount, description])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Add what your friend owes
+exports.addFriendOwe = async (req, res) => {
+    var sender = req.body.sender
+    var amount = parseInt(req.body.amount)
+    var description =  req.body.description
+    var currentUserId = res.locals.userid
+
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    const add_owing_query = `INSERT INTO owings (sender, receiver, amount, description, date) VALUES ($1,$2,$3,$4, CURRENT_DATE)`
+   
+    
+    try {
+        // await pool.query(add_budget_query,[currentUserId, budgetCategory, amount, description])
+        receiver = await pool.query(userEmail, [currentUserId])
+        console.log(receiver.rows[0].email)
+        await pool.query(add_owing_query, [sender, receiver.rows[0].email, amount, description])
         res.json({
             isSuccess: true,
             message: "Success",

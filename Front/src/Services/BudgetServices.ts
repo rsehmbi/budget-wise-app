@@ -92,7 +92,7 @@ export function friendOweAPI(sender, amount, description){
             'x-access-token': localStorage.getItem('token')?.toString()
         },
         body: JSON.stringify({
-            'receiver': sender,
+            'sender': sender,
             'amount': amount,
             'description': description
         }) 

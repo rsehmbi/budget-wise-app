@@ -20,7 +20,8 @@ const { getbudgetList,
     updateCreditCardAmount,
     updateAmount,
     deleteLog,
-    addYouOwe} = require('../Controllers/budget')
+    addYouOwe,
+    addFriendOwe} = require('../Controllers/budget')
 
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
@@ -73,6 +74,7 @@ _r.delete('/deleteCreditCard', verifyJWT, deleteCreditCard)
 _r.put('/updateCreditCardAmount', verifyJWT, updateCreditCardAmount)
 
 _r.post('/youOwe', verifyJWT, addYouOwe)
+_r.post('/friendOwe', verifyJWT, addFriendOwe)
 
 
 module.exports = _r

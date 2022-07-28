@@ -43,10 +43,12 @@ function AddOwing({visible, hideOweModal}) {
         //     setDefaultValues();
         //     handlePreCancel()
         // }
-        if(whoOwes === "youOwe"){
+        if(whoOwes == "youOwe"){
+            console.log("You owe")
             addYouOwe()
         }
         else{
+            console.log("friend Owes")
             addFriendOwe()
         }
         
@@ -74,7 +76,7 @@ function AddOwing({visible, hideOweModal}) {
         friendOweAPI(email, amount, description).then((response) => {
              response.json().then((response) => {
                  if (response) {
-                     message.success("Added the amount you owe")
+                     message.success("Added the amount your friend owes")
                  //   budgetApiCall()
                  }
              })
