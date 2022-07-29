@@ -2,7 +2,13 @@ import * as React from "react";
 import {Table, Select, Button, Space, PageHeader, message, Skeleton, Col, Row, DatePicker, Tooltip} from 'antd';
 import { useState, useEffect } from 'react';
 // @ts-ignore
-import {getBudgetLogs, getBudgetNames, getBudNameLogs } from '../Services/BudgetServices.ts';
+import {
+    getAllOwingLogs,
+    getBudgetLogs,
+    getBudgetNames,
+    getBudNameLogs,
+    getMyOwingLogs, getOwingMeLogs
+} from '../Services/BudgetServices.ts';
 // @ts-ignore
 import { parseDate, addCurrency} from "../Utils/UtilFunctions.ts";
 import { CaretLeftOutlined } from "@ant-design/icons";
@@ -10,7 +16,7 @@ import {Bar, Line, Pie} from '@ant-design/plots';
 
 
 
-function Analytics(){
+function Analytics(props: any){
     const [budgetList, setBudgetList] = React.useState([]);
     const [selectedGraph, setSelectedGraph] = useState("Line Chart");
     const [isSkeleton, setSkeleton] = useState(true);
@@ -19,6 +25,7 @@ function Analytics(){
     const [isSpecificPie, setSpecificPie] = React.useState(false);
     const [specificPieType, setSpecificPieType] = React.useState("");
     const [budgetLogs, setBudgetLogs] = useState([]);
+    const [owingLogs, setOwingLogs] = useState([]);
 
 
     const { RangePicker } = DatePicker;
@@ -26,6 +33,7 @@ function Analytics(){
     useEffect(() => {
         getBudgetListAPICall();
         getAllBudgetLogs();
+        getOwingLogs();
 
     }, [])
 
@@ -42,6 +50,20 @@ function Analytics(){
                 }
             })
         })
+    }
+
+    function getOwingLogs(){
+            getAllOwingLogs().then((response) => {response.json().then((response) => {
+                if (response.isSuccess) {
+                    parseDate(response.res)        // Set date format
+                    setOwingLogs(response.res)
+
+                }
+                else{
+                    console.log("Failed to get all owing logs: " + response.error)
+                }
+            })
+            })
     }
 
 
@@ -127,16 +149,29 @@ function Analytics(){
             </>;
     }
 
-    const BarChart = () => {
+    const BarChart = (isFriendWise: boolean) => {
         let data = []
-        budgetList.forEach((el) => {
-            data.push({type: el.budgetname, value: parseInt(el.amount)})
-        })
+        if (isFriendWise){
+            owingLogs.forEach((el) => {
+                if (el.sender === props.email){
+                    data.push({type: "You owe", value: parseInt(el.amount)})
+                }
+                else{
+                    data.push({type: "Owes you", value: parseInt(el.amount)})
+                }
+            })
+        }
+        else{
+            budgetList.forEach((el) => {
+                data.push({type: el.budgetname, value: parseInt(el.amount)})
+            })
+        }
+
         const config = {
             data,
             xField: 'value',
-            yField: 'year',
-            seriesField: 'year',
+            yField: 'type',
+            seriesField: 'type',
             legend: {
                 position: 'top-left',
             },
@@ -247,7 +282,8 @@ function Analytics(){
                     setSelectedGraph(e)}} style={{width: "200px", marginLeft: "30px"}}>
                         <Select.Option value={"Line Chart"} >Line chart</Select.Option>
                         <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
-                        <Select.Option value={"Bar Chart"} >Bar Chart</Select.Option>
+                        <Select.Option value={"Bar Chart for budgets"} >Bar Chart for budgets"</Select.Option>
+                        <Select.Option value={"Bar Chart for friend wise"} >Bar Chart for friend wise</Select.Option>
                 </Select>
                 {specificPieType !== "" && selectedGraph === "Pie Chart" ?
                     <RangePicker format="YYYY-MM" allowClear={false} onChange={(e) => {handlePicker(e)}} style={{width: "250px", marginLeft: "30px"}} picker="month" />
@@ -258,7 +294,7 @@ function Analytics(){
             <Row>
                 <Col span={2}>
                 </Col>
-                <Col span={20} style={{height: "800px", paddingTop: "50px"}}>
+                <Col span={20} style={{height: "700px", padding: "50px 50px 50px 50px"}}>
 
                     {selectedGraph === "Pie Chart" && isSpecificPie ? PieChart(specificPieType)
                         :
@@ -273,10 +309,13 @@ function Analytics(){
                         selectedGraph === "Line Chart" ? <LineChart/>:null
                     }
                     {
-                        selectedGraph === "Bar Chart" ? BarChart() : null
+                        selectedGraph === "Bar Chart for budgets" ? BarChart() : null
+                    }
+                    {
+                        selectedGraph === "Bar Chart for friend wise" ? BarChart(true) : null
                     }
                 </Col>
-                <Col span={6}>
+                <Col span={2}>
                 </Col>
             </Row>
         </Skeleton>

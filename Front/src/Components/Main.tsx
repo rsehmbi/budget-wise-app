@@ -156,7 +156,7 @@ function Main() {
                         <Route path="*" element={<PageNotFound setAnalytics={setAnalytics} setBudgetLog={setBudgetLog} />}/>
                         <Route path="/" element={<BudgetPlanner/>}/>
                         <Route path="/BudgetLog" element={<BudgetTable/>}/>
-                        <Route path="/Analytics" element={<Analytics/>}/>
+                        <Route path="/Analytics" element={<Analytics email={email}/>}/>
                         <Route path="/FriendWise" element={<FriendWise/>}/>
                     </Routes>
             </div>
