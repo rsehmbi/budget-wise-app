@@ -1,7 +1,7 @@
 import React from 'react'
-import { Modal, Input, message } from 'antd';
+import { Modal, Input} from 'antd';
 import { CreditCardOutlined, DeleteOutlined } from '@ant-design/icons'
-import { Avatar, List } from 'antd';
+import { List } from 'antd';
 
 function CardList({ creditAPICall, visible, handleCancel, handleOk }) {
     const [cardList, setCardList] = React.useState([]);

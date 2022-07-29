@@ -1,7 +1,7 @@
 import { PageHeader, Button, Popconfirm, message, Skeleton, Tag } from 'antd';
 import { DollarOutlined } from '@ant-design/icons'
 import BudgetCard from './BudgetCard.tsx';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import AddBudget from './AddBudget.tsx';
 import AddCreditCard from './AddCreditCardModal.tsx';
 import CardList from './CardList.tsx';

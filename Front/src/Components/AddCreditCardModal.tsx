@@ -1,6 +1,5 @@
 import {Modal, Input, message} from 'antd';
 import React from 'react';
-import PaymentForm from './Card.tsx';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css'
 

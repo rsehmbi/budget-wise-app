@@ -14,7 +14,6 @@ import {gapi} from "gapi-script";
 import {isAuth} from "../Services/Login.ts";
 import {Button, Col, Row, Tooltip} from "antd";
 // import {Route, Routes} from 'react-router-dom'
-import App from "./App.tsx";
 import {Link, Route, Routes} from "react-router-dom";
 import BudgetPlanner from "./BudgetPlanner.tsx";
 import BudgetTable from "./BudgetLog.tsx";

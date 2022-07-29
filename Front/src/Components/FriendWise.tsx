@@ -188,7 +188,7 @@ function FriendWise() {
 
     function getOwingLogs(value){
         setCurLogs(value)
-        if(value==ALL_LOGS){
+        if(value===ALL_LOGS){
             getAllOwingLogs().then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
                     parseDate(response.res)        // Set date format
@@ -204,7 +204,7 @@ function FriendWise() {
                 })
             })
         }
-        else if(value=="youOwe"){
+        else if(value==="youOwe"){
             getMyOwingLogs().then((response) => {response.json().then((response) => {
                 if (response.isSuccess) {
                     parseDate(response.res)        // Set date format

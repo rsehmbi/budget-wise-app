@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Input, message, Select, AutoComplete} from 'antd';
+import {Modal, Input, message, Select} from 'antd';
 import {useState} from 'react';
 // @ts-ignore
 import { youOweAPI, friendOweAPI } from '../Services/BudgetServices.ts';
@@ -43,7 +43,7 @@ function AddOwing({getTotalOwings, getOwingLogs, dropDown, visible, hideOweModal
         //     setDefaultValues();
         //     handlePreCancel()
         // }
-        if(whoOwes == "youOwe"){
+        if(whoOwes === "youOwe"){
             console.log("You owe")
             addYouOwe()
         }
