@@ -297,15 +297,24 @@ exports.getAvailableCredit = async (req, res) => {
     
     try {
         const total_credit = await pool.query(total_credit_query_string, [token])
-        const total_expense = await pool.query(total_expense_query_string,[token])
-        let available_Credit = parseFloat(total_credit.rows[0]['total_credit']) - parseFloat(total_expense.rows[0]['total_expense'])
+        const total_expense = await pool.query(total_expense_query_string, [token])
+        let credit = parseFloat(total_credit.rows[0]['total_credit'])
+        let expense = parseFloat(total_expense.rows[0]['total_expense'])
+        if (credit.toString() == "NaN") { 
+            credit = 0
+        }
+        if (expense.toString() == "NaN") { 
+            expense = 0
+        }
+        let available_Credit = parseFloat(credit - expense)
         res.json({
             isSuccess: true,
             message: "Success",
             res: available_Credit,
         })
     }
-    catch (error){
+    catch (error) {
+        console.log(error)
         res.json({
             error: error,
             isSuccess: false,
