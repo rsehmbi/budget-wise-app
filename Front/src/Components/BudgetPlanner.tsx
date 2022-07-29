@@ -143,7 +143,8 @@ export default function BudgetPlanner() {
             response.json().then((response) => {
                 if (response['isSuccess']) {
                     getBudgetListAPICall();
-                    message.success('Budget Deleted Successfully');
+                    getAvailableCreditAPICall();
+                    message.success('All budgets deleted Successfully');
                 }
             })
         })

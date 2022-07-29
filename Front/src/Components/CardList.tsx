@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Input} from 'antd';
+import { Modal, Input, Popconfirm, message} from 'antd';
 import { CreditCardOutlined, DeleteOutlined } from '@ant-design/icons'
 import { List } from 'antd';
 
@@ -81,12 +81,17 @@ function CardList({ creditAPICall, visible, handleCancel, handleOk }) {
     
     const deleteCreditCardFromList = (nos) => { 
         deleteCreditCard(nos)
+        message.success('Credit Card Deleted');
     }
 
     React.useEffect(() => {
         getCardListAPICall();
     }, [visible])
 
+    const cancel = (e: React.MouseEvent<HTMLElement>) => {
+        message.error('Cancelled');
+    };
+    
   return (
         <>
           <Modal title="My Card List" visible={visible} onOk={handleOk} onCancel={handleCancel}>
@@ -99,8 +104,17 @@ function CardList({ creditAPICall, visible, handleCancel, handleOk }) {
                         <div>
                             <label>Amount</label>
                                 <Input style={{ width: '80px', display: 'flex', justifyContent: 'center' }} type='number' onChange={(event) => updateCCAmount(event.target.value, item['number'])} defaultValue={item['amount']} />
-                        </div>
-                            <DeleteOutlined onClick={() => deleteCreditCardFromList(item['number'])} style={{ color:'red', marginLeft:"10px" }}/>
+                            </div>
+                        <Popconfirm
+                            title="Are you sure to delete credit card?"
+                            onConfirm={() => deleteCreditCardFromList(item['number'])}
+                            onCancel={cancel}
+                            okText="Delete"
+                            cancelText="Cancel"
+                        >
+                        <DeleteOutlined style={{ color:'red', marginLeft:"10px" }}/>
+                        </Popconfirm>,
+                            
                         </>  
                 }>
                     <List.Item.Meta

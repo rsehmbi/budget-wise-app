@@ -1,4 +1,4 @@
-import {LoginOutlined} from '@ant-design/icons';
+import {LoginOutlined, RocketTwoTone, FolderOpenTwoTone, DashboardTwoTone, IdcardTwoTone } from '@ant-design/icons';
 import '../Css/App.css';
 // // @ts-ignore
 // import BudgetPlanner from './BudgetPlanner.tsx';
@@ -110,7 +110,7 @@ function Main() {
                                                                     setAnalytics(false)
                                                                     setFriendWise(false)}}
                                     style={{fontSize: "15px", color: isBudgetLog || isAnalytics || isFriendWise ? "unset" : "#1890ff"}}>
-                                Budget Portfolio
+                                <RocketTwoTone /> Budget Portfolio
                             </Button>
                             </Link>
                         <Link to="/BudgetLog">
@@ -119,7 +119,7 @@ function Main() {
                                                                     setFriendWise(false)
                             }}
                                     style={{marginLeft: "50px", fontSize: "15px", color: isBudgetLog ? "#1890ff" : "unset"}}>
-                                Budget Logs
+                                <FolderOpenTwoTone />Budget Logs
                             </Button>
                             </Link>
                         <Link to="/Analytics">
@@ -128,7 +128,7 @@ function Main() {
                                                                 setFriendWise(false)
                             }}
                                     style={{marginLeft: "50px", fontSize: "15px", color: isAnalytics ? "#1890ff" : "unset"}}>
-                                Analytics
+                                <DashboardTwoTone />Analytics
                             </Button>
                         </Link>
                         <Link to="/FriendWise">
@@ -137,7 +137,7 @@ function Main() {
                                                                  setFriendWise(true)
                             }}
                                     style={{marginLeft: "50px", fontSize: "15px", color: isFriendWise ? "#1890ff" : "unset"}}>
-                                Friend Wise
+                            <IdcardTwoTone />    Split-trac
                             </Button>
                         </Link>
                     </Row>
