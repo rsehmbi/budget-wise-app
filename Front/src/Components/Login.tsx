@@ -2,8 +2,7 @@
 import '../Css/App.css';
 import * as React from "react";
 import {GoogleLogin} from 'react-google-login'
-import {useEffect, useState} from "react";
-import {gapi} from "gapi-script"
+import {useState} from "react";
 import {Button, Form, Input, message, Modal, Row} from "antd";
 // @ts-ignore
 import {deleteAllCookies, encrypted} from "./Main.tsx";

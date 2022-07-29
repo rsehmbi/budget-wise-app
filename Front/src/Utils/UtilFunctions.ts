@@ -16,6 +16,4 @@ export function addCurrency(data){
         var currency = currencyFormatter.format(row['amount'])
         row['amount'] = currency
     })
-    
-
 }

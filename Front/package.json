@@ -24,6 +24,7 @@
   "scripts": {
     "start": "PORT=3001 react-scripts --max_old_space_size=8128 start",
     "build": "BUILD_PATH='../Back/build' react-scripts build",
+    "build2": "react-scripts build && move build ../Back/build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

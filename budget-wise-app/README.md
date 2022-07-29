@@ -41,12 +41,22 @@ CREATE TABLE expensetable (
 );
 
 CREATE TABLE expensetable (
+    id SERIAL PRIMARY KEY,
     userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
     budgetcategory varchar(255),
     amount int NOT NULL,
     description varchar(255),
     date DATE NOT NULL,
     FOREIGN KEY (userid, budgetcategory) REFERENCES budgettable(userid, budgetname) ON DELETE CASCADE
+);
+
+CREATE TABLE owings (
+    id SERIAL PRIMARY KEY,
+    sender varchar(55),
+    receiver varchar(55),
+    amount int,
+    description varchar(255),
+    date DATE
 );
 
 ```

@@ -32,6 +32,7 @@ function BudgetTable(){
     const [budgetLogs, setBudgetLogs] = useState([]);             // State indicatingcurrently displayed logs on table
     const [budgetNames, setBudgetNames] = useState([]);           // State indicating distinc budget names
     const [currentName, setCurrentName] = useState(ALL_LOGS)
+    const [curId, setCurId] = useState(0)
 
     // Modal Information
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -166,6 +167,8 @@ function BudgetTable(){
         setModalExpenseDescrip(record.description)
         setModalAmount(parseInt(record.amount.match(/(\d+)/)))
         setModalTitle(record.budgetcategory)
+        setCurId(record.id)
+
         setIsEditModalVisible(true);
     };
 
@@ -206,9 +209,13 @@ function BudgetTable(){
     const handleAmountChange = (event) => { 
         setModalAmount(event.target.value)
     }
+
+    const handleDescripChange = (event) => { 
+        setModalExpenseDescrip(event.target.value)
+    }
     
     function updateLog(){
-        updateLogsAPICall(modalTitle, modalAmount, modalExpenseDescrip).then((response) => {
+        updateLogsAPICall(curId, modalTitle, modalAmount, modalExpenseDescrip).then((response) => {
             response.json().then((response) => {
                 if (response.isSuccess) {
                     getAllBudgetLogs(currentName);
@@ -225,7 +232,7 @@ function BudgetTable(){
     const confirmDelete = (record) => {
         console.log("Going to delete")
 
-        deleteLogAPI(record.budgetcategory, record.description).then((response) => {
+        deleteLogAPI(record).then((response) => {
             response.json().then((response) => {
                 if (response['isSuccess']) {
                     getAllBudgetLogs(currentName);
@@ -262,7 +269,7 @@ function BudgetTable(){
 
         <Modal title={modalTitle} visible={isEditModalVisible} onOk={okClickHandle} onCancel={handlePreCancel}>
         <label> Description: </label> <br/>
-                <p>{modalExpenseDescrip}</p>
+        <Input  onChange={handleDescripChange} value={modalExpenseDescrip} type="string" /> <br />
 
                 <br/>
                 <label> Amount  </label> <br/>

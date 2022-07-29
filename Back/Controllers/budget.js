@@ -127,7 +127,7 @@ exports.addExpense = async (req, res) => {
     var amount = parseInt(req.body.amount)
     var description =  req.body.description
     var currentUserId = res.locals.userid
-    const add_budget_query = `INSERT INTO expensetable (userid, budgetcategory, amount, description, date) VALUES ($1,$2,$3,$4, CURRENT_DATE)`
+    const add_budget_query = `INSERT INTO expensetable (id, userid, budgetcategory, amount, description, date) VALUES (DEFAULT, $1,$2,$3,$4, CURRENT_DATE)`
     const update_amount = `UPDATE budgettable 
                            SET amount = (SELECT sum(amount) FROM expensetable WHERE budgetcategory=$1 AND userid=$2 GROUP BY budgetcategory) 
                            WHERE userid=$3 AND budgetname=$4`
@@ -380,14 +380,15 @@ exports.deleteLog = async (req, res) => {
     var token = res.locals.userid
     var budgetCategory = req.body.budgetcategory
     var description = req.body.description
+    var id = req.body.id
 
-    var delete_query_string = `DELETE FROM expensetable WHERE userid = $1 AND budgetcategory = $2 AND description = $3`
+    var delete_query_string = `DELETE FROM expensetable WHERE id=$1`
 
     const update_amount = `UPDATE "budgettable" 
                             SET "amount" = (SELECT sum(amount) FROM "expensetable" WHERE "budgetcategory" = $1 AND "userid" = $2 GROUP BY budgetcategory) 
                             WHERE "userid" = $2 AND "budgetname"=$3`
     try {
-        const result = await pool.query(delete_query_string,[token, budgetCategory, description])
+        const result = await pool.query(delete_query_string,[id])
         await pool.query(update_amount, [budgetCategory, token, budgetCategory])
         res.json({
             isSuccess: true,
@@ -409,17 +410,19 @@ exports.updateAmount = async (req, res) => {
     var amount = parseInt(req.body.amount)
     var budgetName =  req.body.budgetcategory
     var description = req.body.description
+    var id = req.body.id
+
     var currentUserId = res.locals.userid
     
     const update_amount_query = `UPDATE "expensetable" 
-                                SET "amount" = $1, "date" = CURRENT_DATE
-                                WHERE "description" = $2 AND "userid" = $3 AND "budgetcategory" = $4`
+                                SET "amount" = $1, "description"=$2, "date" = CURRENT_DATE
+                                WHERE id=$3`
 
     const update_amount = `UPDATE "budgettable" 
                            SET "amount" = (SELECT sum(amount) FROM "expensetable" WHERE "budgetcategory" = $1 AND "userid" = $2 GROUP BY budgetcategory) 
                            WHERE "userid" = $2 AND "budgetname"=$3`
     try {
-        await pool.query(update_amount_query,[amount, description, currentUserId, budgetName])
+        await pool.query(update_amount_query,[amount, description, id])
         await pool.query(update_amount, [budgetName, currentUserId, budgetName])
         res.json({
             isSuccess: true,
@@ -435,7 +438,6 @@ exports.updateAmount = async (req, res) => {
     }
 }
 
-
 exports.getDateAmountDescription = async (req, res) => {
     var token = res.locals.userid
     var query_string = `SELECT to_char(date,'yyyy-mm-dd'), amount, description FROM expensetable WHERE userid = $1`
@@ -450,6 +452,219 @@ exports.getDateAmountDescription = async (req, res) => {
     }
     catch (error) {
         console.log(error)
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Add what you owe
+exports.addYouOwe = async (req, res) => {
+    var receiver = req.body.receiver
+    var amount = parseInt(req.body.amount)
+    var description =  req.body.description
+    var currentUserId = res.locals.userid
+
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    const add_owing_query = `INSERT INTO owings (sender, receiver, amount, description, date) VALUES ($1,$2,$3,$4, CURRENT_DATE)`
+   
+    
+    try {
+        // await pool.query(add_budget_query,[currentUserId, budgetCategory, amount, description])
+        sender = await pool.query(userEmail, [currentUserId])
+        console.log(sender.rows[0].email)
+        await pool.query(add_owing_query, [sender.rows[0].email, receiver, amount, description])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Add what your friend owes
+exports.addFriendOwe = async (req, res) => {
+    var sender = req.body.sender
+    var amount = parseInt(req.body.amount)
+    var description =  req.body.description
+    var currentUserId = res.locals.userid
+
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    const add_owing_query = `INSERT INTO owings (id, sender, receiver, amount, description, date) VALUES (DEFAULT, $1,$2,$3,$4, CURRENT_DATE)`
+    
+    try {
+        receiver = await pool.query(userEmail, [currentUserId])
+        // console.log(receiver.rows[0].email)
+        await pool.query(add_owing_query, [sender, receiver.rows[0].email, amount, description])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Get all owing logs
+exports.getAllOwings = async (req, res) => {
+    var currentUser = res.locals.userid
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var query_string = `SELECT * FROM owings WHERE sender=$1 OR receiver=$1`
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        const result = await pool.query(query_string, [email])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Get logs of all those who owe you
+exports.getOwingMe = async (req, res) => {
+    var currentUser = res.locals.userid
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var query_string = `SELECT * FROM owings WHERE receiver=$1`
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        const result = await pool.query(query_string, [email])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+
+// Get logs where you owe 
+exports.getMyOwings = async (req, res) => {
+    var currentUser = res.locals.userid
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var query_string = `SELECT * FROM owings WHERE sender=$1`
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        const result = await pool.query(query_string, [email])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+exports.deleteOweLog= async (req, res) => {
+    var id = req.body.id
+
+    var delete_query_string = `DELETE FROM owings WHERE id=$1 `
+    try {
+        const result = await pool.query(delete_query_string,[id])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: result.rows,
+        })
+    }
+    catch (error){
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Update description and amount for a log
+exports.updateOweLog = async (req, res) => {
+    var amount = parseInt(req.body.amount)
+    var description = req.body.description
+    var id = req.body.id
+    
+    const update_owe_query = `UPDATE "owings" 
+                                SET "amount" = $1, "description"=$2, "date" = CURRENT_DATE
+                                WHERE "id"=$3`
+
+    try {
+        await pool.query(update_owe_query,[amount, description, id])
+        res.json({
+            isSuccess: true,
+            message: "Success",
+        })
+    }
+    catch (error) {
+
+        res.json({
+            error: error,
+            isSuccess: false,
+            message: "Failed",
+        })
+    }
+}
+
+// Get total owings for a user
+exports.getTotalOwings = async (req, res) => {
+    var currentUser = res.locals.userid
+
+    const userEmail = `SELECT email FROM users WHERE id=$1`
+    var you_owe_query_string = `SELECT SUM (amount) AS you_owe FROM owings WHERE sender = $1`
+    var owes_me_query_string = `SELECT SUM (amount) AS owes_me FROM owings WHERE receiver= $1`
+    
+    try {
+        const user = await pool.query(userEmail, [currentUser])
+        const email = user.rows[0].email 
+        
+
+        const you_owe = await pool.query(you_owe_query_string, [email])
+        const owes_me = await pool.query(owes_me_query_string,[email])
+        
+        let total_owings = parseFloat(owes_me.rows[0]['owes_me']) - parseFloat(you_owe.rows[0]['you_owe'])
+
+      
+        res.json({
+            isSuccess: true,
+            message: "Success",
+            res: total_owings,
+        })
+    }
+    catch (error){
         res.json({
             error: error,
             isSuccess: false,
