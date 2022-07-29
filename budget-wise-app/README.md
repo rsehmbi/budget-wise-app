@@ -41,6 +41,7 @@ CREATE TABLE expensetable (
 );
 
 CREATE TABLE expensetable (
+    id SERIAL PRIMARY KEY,
     userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
     budgetcategory varchar(255),
     amount int NOT NULL,
