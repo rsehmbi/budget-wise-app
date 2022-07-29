@@ -149,12 +149,15 @@ function Analytics(props: any){
     const BarChart = (isFriendWise: boolean) => {
         let data = []
         if (isFriendWise){
+            data.push({type: "You owe", value: 0})
+            data.push({type: "Owes you", value: 0})
+
             owingLogs.forEach((el) => {
                 if (el.sender === props.email){
-                    data.push({type: "You owe", value: parseInt(el.amount)})
+                    data[0].value = data[0].value + parseInt(el.amount)
                 }
                 else{
-                    data.push({type: "Owes you", value: parseInt(el.amount)})
+                    data[1].value = data[1].value + parseInt(el.amount)
                 }
             })
         }
