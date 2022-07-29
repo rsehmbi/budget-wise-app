@@ -61,7 +61,7 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
             body: JSON.stringify({
               'budgetcategory': title,
               'amount': amount,
-              'description': expenseDescrip ,
+              'description': expenseDescrip,
             }) 
         }).then((response) => {
             response.json().then((response) => {

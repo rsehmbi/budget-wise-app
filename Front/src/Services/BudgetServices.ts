@@ -34,7 +34,7 @@ export function getBudNameLogs(value){
 }
 
 // Update an amount from log
-export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
+export function updateLogsAPICall(id, budgetCategory, amount, expenseDescrip){
     return fetch('/BudgetLog/updateLog', {
         method: 'PUT',
         headers: {
@@ -43,6 +43,7 @@ export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
             'x-access-token': localStorage.getItem('token')?.toString()
         },
         body: JSON.stringify({
+          'id': id,
           'budgetcategory': budgetCategory,
           'amount': amount,
           'description': expenseDescrip ,
@@ -51,7 +52,10 @@ export function updateLogsAPICall(budgetCategory, amount, expenseDescrip){
 }
 
 // Delete a log
-export function deleteLogAPI(category, description){
+export function deleteLogAPI(record){
+    var id = record.id
+    var category = record.category
+    var description = record.description
     return fetch('/BudgetLog/deleteLog', {
         method: 'DELETE',
         headers: {
@@ -61,7 +65,8 @@ export function deleteLogAPI(category, description){
         },
         body: JSON.stringify({
           'budgetcategory': category,
-          'description': description
+          'description': description,
+          'id': id
         }) 
     })
 }
