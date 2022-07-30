@@ -17,8 +17,10 @@ function Analytics(props: any){
     const [budgetList, setBudgetList] = React.useState([]);
     const [selectedGraph, setSelectedGraph] = useState("Line Chart");
     const [isSkeleton, setSkeleton] = useState(true);
-    const [startDate, setStartDate] = React.useState("");
-    const [endDate, setEndDate] = React.useState("");
+    const [startYear, setStartYear] = React.useState("");
+    const [endYear, setEndYear] = React.useState("");
+    const [startMonth, setStartMonth] = React.useState("");
+    const [endMonth, setEndMonth] = React.useState("");
     const [isSpecificPie, setSpecificPie] = React.useState(false);
     const [specificPieType, setSpecificPieType] = React.useState("");
     const [budgetLogs, setBudgetLogs] = useState([]);
@@ -147,7 +149,7 @@ function Analytics(props: any){
             </>
     }
 
-    const BarChart = (isFriendWise: boolean) => {
+    const BarChart = (isFriendWise?: boolean) => {
         let data = []
         if (isFriendWise){
             data.push({type: "You owe", value: 0})
@@ -189,13 +191,33 @@ function Analytics(props: any){
                 })
         }
         else{
-            if (startDate !== "" && endDate !== ""){
+            if (startMonth !== "" && endMonth !== "" && startYear !== "" && endYear !== ""){
                 budgetLogs.forEach((el) => {
-                    let date = el.date[6] === "-" ?  parseInt(el.date.substring(5,6)) : parseInt(el.date.substring(5,7))
-                    if (el.budgetcategory === specificType && date <= parseInt(endDate) && date >= parseInt(startDate) ) {
-                        data.push({type: el.description, value: parseInt(el.amount.substring(3, el.amount.length))})
-                    }
+                    let year = parseInt(el.date.substring(0,4))
+                    let month = el.date[6] === "-" ?  parseInt(el.date.substring(5,6)) : parseInt(el.date.substring(5,7))
+                    if (el.budgetcategory === specificType){
+                        if (year > parseInt(startYear) && year < parseInt(endYear)){
+                            data.push({type: el.description, value: parseInt(el.amount.substring(3, el.amount.length))})
+                        }
+                        else{
+                            if (year === parseInt(startYear) && year === parseInt(endYear)){
+                                if (month <= parseInt(endMonth) && month >= parseInt(startMonth)){
+                                    data.push({type: el.description, value: parseInt(el.amount.substring(3, el.amount.length))})
+                                }
+                            }
+                            else if (year === parseInt(startYear)){
+                                if ( month >= parseInt(startMonth)){
+                                    data.push({type: el.description, value: parseInt(el.amount.substring(3, el.amount.length))})
+                                }
+                            }
+                            else if (year === parseInt(endYear)){
+                                if ( month <= parseInt(endMonth)){
+                                    data.push({type: el.description, value: parseInt(el.amount.substring(3, el.amount.length))})
+                                }
+                            }
+                        }
 
+                    }
                 })
             }
             else {
@@ -253,8 +275,10 @@ function Analytics(props: any){
     }
 
     const handlePicker = (e) => {
-            setStartDate(e[0]._d.getMonth())
-            setEndDate(e[1]._d.getMonth())
+            setStartMonth(e[0]._d.getMonth())
+            setEndMonth(e[1]._d.getMonth())
+            setStartYear(e[0]._d.getFullYear())
+            setEndYear(e[1]._d.getFullYear())
     }
 
     return(
@@ -266,8 +290,8 @@ function Analytics(props: any){
                     <Button type={"link"}  onClick={() => {
                         setSpecificPieType("")
                         setSpecificPie(false)
-                        setStartDate("")
-                        setEndDate("")
+                        setStartMonth("")
+                        setEndMonth("")
                     }}>
                         <CaretLeftOutlined />
                     </Button>
@@ -278,8 +302,8 @@ function Analytics(props: any){
                 <Select defaultValue={selectedGraph} onChange={(e) => {
                     setSpecificPieType("")
                     setSpecificPie(false)
-                    setStartDate("")
-                    setEndDate("")
+                    setStartMonth("")
+                    setEndMonth("")
                     setSelectedGraph(e)}} style={{width: "200px", marginLeft: "30px"}}>
                         <Select.Option value={"Line Chart"} >Line chart</Select.Option>
                         <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
