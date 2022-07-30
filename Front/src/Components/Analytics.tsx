@@ -141,9 +141,10 @@ function Analytics(props: any){
         };
 
         return <>
-                <h1 style={{width: "100%",  textAlign: "center"}}>Spendings per day (Date Vs Amount Spent)</h1>
-                <Line {...config} />
-            </>;
+            <h2 style={{ width: "100%", textAlign: "center" }}>Spendings per day (Date Vs Amount Spent)</h2>
+            <Line {...config} />    
+            <p style={{width: "100%",  textAlign: "center", margin:"10px"}}> Dates </p>
+            </>
     }
 
     const BarChart = (isFriendWise: boolean) => {
@@ -282,8 +283,8 @@ function Analytics(props: any){
                     setSelectedGraph(e)}} style={{width: "200px", marginLeft: "30px"}}>
                         <Select.Option value={"Line Chart"} >Line chart</Select.Option>
                         <Select.Option value={"Pie Chart"} >Pie chart</Select.Option>
-                        <Select.Option value={"Bar Chart for budgets"} >Bar Chart for budgets"</Select.Option>
-                        <Select.Option value={"Bar Chart for friend wise"} >Bar Chart for friend wise</Select.Option>
+                        <Select.Option value={"Bar Chart for budgets"} >Budget Bar Chart</Select.Option>
+                        <Select.Option value={"Bar Chart for friend wise"} > Split Trac Bar Chart</Select.Option>
                 </Select>
                 {specificPieType !== "" && selectedGraph === "Pie Chart" ?
                     <RangePicker format="YYYY-MM" allowClear={false} onChange={(e) => {handlePicker(e)}} style={{width: "250px", marginLeft: "30px"}} picker="month" />
@@ -294,7 +295,7 @@ function Analytics(props: any){
             <Row>
                 <Col span={2}>
                 </Col>
-                <Col span={20} style={{height: "700px", padding: "50px 50px 50px 50px"}}>
+                <Col span={20} style={{height: "800px", padding: "50px 50px 50px 50px"}}>
 
                     {selectedGraph === "Pie Chart" && isSpecificPie ? PieChart(specificPieType)
                         :
