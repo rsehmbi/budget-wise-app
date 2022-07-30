@@ -319,7 +319,7 @@ function Analytics(props: any){
             <Row>
                 <Col span={2}>
                 </Col>
-                <Col span={20} style={{height: "800px", padding: "50px 50px 50px 50px"}}>
+                <Col span={20} style={{height: "700px", padding: "50px 50px 50px 50px"}}>
 
                     {selectedGraph === "Pie Chart" && isSpecificPie ? PieChart(specificPieType)
                         :
