@@ -53,11 +53,11 @@ import React from 'react';
 
   const validateInputs = () => {
     if (expense === ""){
-        message.warning("Please enter the expense name")
+        message.warning("Please enter the budget name")
         return false
 
     }else if(validateCopies(expense)) {
-        message.warning("expense name already exists")
+        message.warning("budget name already exists")
         return false
     }
     else if (maxamount === 0){
@@ -98,7 +98,7 @@ import React from 'react';
     return (
       <>
         <Modal title="Add Budget" visible={visible} onOk={okClickHandle} onCancel={handlePreCancel}>
-          <label> Expense </label> <br/>
+          <label> Budget Category </label> <br/>
           <Input onChange={handleExpenseChange} value={expense} placeholder="Ex: Groceries, car payment etc." /> <br />
           
           <br/>

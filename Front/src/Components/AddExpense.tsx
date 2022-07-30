@@ -1,7 +1,7 @@
 import { Modal, Input, message } from 'antd';
 import * as React from "react";
 
-function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
+function AddExpense({ creditApiCall, budgetApiCall, title, visible, handleOk, handleCancel}) {
     const [amount, setAmount] = React.useState(0);
     const [expenseDescrip, SetExpenseDescrip] = React.useState("")
 
@@ -11,26 +11,26 @@ function AddExpense({ budgetApiCall, title, visible, handleOk, handleCancel}) {
     }
     
     const validateInputs = () => {
-        if (expenseDescrip === ""){
+        if (expenseDescrip === "") {
             message.warning("Please enter the expense name")
             return false
 
-        } else if (amount === 0){
+        } else if (amount === 0) {
             message.warning("Max amount should not be equal to 0")
             return false
 
-        }else if (!Number.isInteger(Number(amount))){
+        } else if (!Number.isInteger(Number(amount))) {
             message.warning("Max amount should be integer")
             return false
-        }else{
-            return true
         }
+        return true
+        
     }
 
     const okClickHandle = () => {
         if (validateInputs() === true) {
             addExpenseAPICall();
-
+            creditApiCall();
             handleOk();
             setDefaultValues();
             handlePreCancel()

@@ -10,7 +10,7 @@ import { redColor, blueColor, yellowColor } from '../Constants/Colors.tsx'
 // @ts-ignore
 import AddExpense from './AddExpense.tsx';
 
-export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount }) {
+export default function BudgetCard({ creditApiCall, budgetApiCall, cardTitle, amount, maxAmount }) {
     const [isModalVisible, setIsModalVisible] = React.useState(false); 
     const [isEditModalVisible, setIsEditModalVisible] = React.useState(false);
     const [maxEditCardAmount, setMaxEditAmount] = React.useState(maxAmount);
@@ -144,7 +144,7 @@ export default function BudgetCard({ budgetApiCall, cardTitle, amount, maxAmount
                 <Button danger style={btnStyle}> Delete Expense</Button>
                 </Popconfirm>
             </div>
-          <AddExpense budgetApiCall={ budgetApiCall } title={cardTitle} visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk} ></AddExpense>
+          <AddExpense creditApiCall={ creditApiCall } budgetApiCall={ budgetApiCall } title={cardTitle} visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk} ></AddExpense>
 
       </Card>
   )
