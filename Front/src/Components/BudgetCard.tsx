@@ -141,7 +141,7 @@ export default function BudgetCard({ creditApiCall, budgetApiCall, cardTitle, am
                     okText="Delete"
                     cancelText="Cancel"
                 >
-                <Button danger style={btnStyle}> Delete Expense</Button>
+                <Button danger style={btnStyle}> Delete Budget</Button>
                 </Popconfirm>
             </div>
           <AddExpense creditApiCall={ creditApiCall } budgetApiCall={ budgetApiCall } title={cardTitle} visible={isModalVisible} handleCancel={handleCancel} handleOk={handleOk} ></AddExpense>
