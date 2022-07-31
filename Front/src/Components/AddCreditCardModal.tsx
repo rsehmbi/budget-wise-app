@@ -132,7 +132,11 @@ function AddCreditCard({ creditApiCall, visible, handleCancel, handleOk }) {
         }).then((response) => {
             response.json().then((response) => {
                 if (response.isSuccess) {
-                    message.success('Credit added successfully');
+                  message.success('Credit added successfully');
+                  state.number = '' 
+                  state.amount = '' 
+                  state.name = '' 
+                  state.expiry = '' 
                 }
                 else{
                     console.log(response.error)
@@ -161,6 +165,7 @@ function AddCreditCard({ creditApiCall, visible, handleCancel, handleOk }) {
             type="number"
             name="number"
             id="ccnumber"
+            value={state.number}
             placeholder="Card Number"
             onChange={handleInputChange}
             onFocus={handleInputFocus}
@@ -173,6 +178,7 @@ function AddCreditCard({ creditApiCall, visible, handleCancel, handleOk }) {
             type="text"
             name="name"
             id="ccName"
+            value={state.name}
             placeholder="Joint Visa/Mastercard"
             onChange={handleInputChange}
             onFocus={handleInputFocus}
@@ -185,6 +191,7 @@ function AddCreditCard({ creditApiCall, visible, handleCancel, handleOk }) {
             type="number"
             name="expiry"
             placeholder="mmYY"
+            value={state.expiry}
             id="ccexpiry"
             onChange={handleInputChange}
             onFocus={handleInputFocus}
@@ -198,6 +205,7 @@ function AddCreditCard({ creditApiCall, visible, handleCancel, handleOk }) {
             name="amount"
             id="ccAmount"
             placeholder="Amount"
+            value={state.amount}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             />
