@@ -30,6 +30,14 @@ CREATE TABLE users (
    isgeneraluser BOOLEAN
 );
 
+CREATE TABLE creditcards (
+   userid VARCHAR(255) ON DELETE CASCADE,
+   cardname VARCHAR(255),
+   expiry INT,
+   number NUMERIC,
+   amount INT
+);
+
 CREATE TABLE budgettable (
     userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
     budgetname varchar(255),
