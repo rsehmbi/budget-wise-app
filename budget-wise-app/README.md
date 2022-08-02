@@ -24,20 +24,18 @@ Your app is ready to be deployed!
 ### Budget Table
 
 ```
+CREATE TABLE users (
+   email VARCHAR(255),
+   id VARCHAR(255) PRIMARY KEY,
+   isgeneraluser BOOLEAN
+);
+
 CREATE TABLE budgettable (
     userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
     budgetname varchar(255),
     amount int,
     maximumamount int,
     primary key (userid, budgetname)
-);
-
-CREATE TABLE expensetable (
-    userid varchar(255) REFERENCES users (id) ON DELETE CASCADE,
-    budgetcategory varchar(255) REFERENCES budgettable (budgetname) ON DELETE CASCADE,
-    amount int NOT NULL,
-    description varchar(255),
-    date DATE NOT NULL,
 );
 
 CREATE TABLE expensetable (
